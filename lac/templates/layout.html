@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        {% block title %}
-            LAC
-        {% endblock  %}
-    </title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <nav></nav>
-    <main>
-        {% block content %}
-        {% endblock  %}
-    </main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} LAC {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="icon" href="{% static 'images/laclogo.ico' %}" />
+    <script src="{% static 'js/main.js' %}" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="top-header">
+        <div class="header-location-info">
+          <p>Brgy. Himbubulo Weste</p>
+          <p>Guinyangan, Quezon</p>
+        </div>
+        <div class="header-logo-container">
+          <img src="{% static 'images/logo1lac.png' %}" alt="lac logo" />
+        </div>
+        <div class="header-time-info">
+          <p id="header-weekday">Sunday</p>
+          <p id="header-date">January 1, 2000</p>
+          <p id="header-time">00:00 am</p>
+        </div>
+      </div>
+    </header>
+    <main>{% block content %} {% endblock %}</main>
+  </body>
 </html>
