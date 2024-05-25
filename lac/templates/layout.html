@@ -5,6 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %} LAC {% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="icon" href="{% static 'images/laclogo.ico' %}" />
     <script src="{% static 'js/main.js' %}" defer></script>
@@ -17,13 +25,34 @@
           <p>Guinyangan, Quezon</p>
         </div>
         <div class="header-logo-container">
-          <img src="{% static 'images/logo1lac.png' %}" alt="lac logo" />
+          <img
+            class="header-logo-img"
+            src="{% static 'images/logo1lac.png' %}"
+            alt="lac logo"
+          />
         </div>
         <div class="header-time-info">
           <p id="header-weekday">Sunday</p>
-          <p id="header-date">January 1, 2000</p>
-          <p id="header-time">00:00 am</p>
+          <p id="header-date">January 1, 2024</p>
+          <p id="header-time">12:00 am</p>
         </div>
+      </div>
+      <div class="seperator"></div>
+      <div class="navigation">
+        <nav class="header-nav">
+          <ul>
+            <li>
+              <a href="{% url 'content:index' %}" id="home" class="nav-link {% if request.resolver_match.view_name == 'content:index' %}active-link{% endif %}">HOME</a>
+            </li>
+            <li>
+              <a href="{% url 'content:rooms' %}" class="nav-link {% if request.resolver_match.view_name == 'content:rooms' %}active-link{% endif %}">ROOMS</a>
+            </li>
+            <li><a href="" class="nav-link {% if request.resolver_match.view_name == 'service' %}active-link{% endif %}">SERVICE</a></li>
+            <li><a href="" class="nav-link {% if request.resolver_match.view_name == 'contact' %}active-link{% endif %}">CONTACT</a></li>
+            <li><a href="" class="nav-link {% if request.resolver_match.view_name == 'about' %}active-link{% endif %}">ABOUT</a></li>
+          </ul>
+        </nav>
+        <a href=""><button class="header-book-btn">BOOK NOW</button></a>
       </div>
     </header>
     <main>{% block content %} {% endblock %}</main>
