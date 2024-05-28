@@ -25,14 +25,30 @@ const updateTime = () => {
     timeFormatOptions
   );
 
-  const weekdayElement = document.getElementById("header-weekday");
-  const dateElement = document.getElementById("header-date");
-  const timeElement = document.getElementById("header-time");
-
-  weekdayElement.textContent = formattedDay;
-  dateElement.textContent = formattedDate;
-  timeElement.textContent = formattedTime;
+  document.getElementById("header-weekday").textContent = formattedDay;
+  document.getElementById("header-date").textContent = formattedDate;
+  document.getElementById("header-time").textContent = formattedTime;
 };
 
 updateTime();
 setInterval(updateTime, 1000);
+
+const menuButton = document.querySelector(".menu-btn");
+const menuNav = document.querySelector(".header-nav");
+
+const toggleMenu = () => {
+  menuNav.style.display =
+    menuNav.style.display === "none" ||
+    getComputedStyle(menuNav).display === "none"
+      ? "block"
+      : "none";
+};
+
+menuButton.addEventListener("click", toggleMenu);
+
+const adjustMenuDisplay = () => {
+  menuNav.style.display = window.innerWidth > 900 ? "flex" : "none";
+};
+
+adjustMenuDisplay();
+window.addEventListener("resize", adjustMenuDisplay);

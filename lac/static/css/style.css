@@ -25,6 +25,7 @@ li {
     list-style-type: none;
 }
 
+
 /* Overall header styles */
 header {
     background-color: var(--main-bg-color);
@@ -66,14 +67,16 @@ header {
 }
 
 /* Bottom header or nav */
-.navigation {
-    margin: 0 100px;
+.header-nav {
     font-weight: 600;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.navigation {
+    margin: 0 100px;
+}
 
 ul {
     display: flex;
@@ -128,6 +131,16 @@ li {
     cursor: pointer;
 }
 
+/* for menu button */
+.menu-container {
+    display: none;
+}
+
+.menu-btn {
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+}
 
 @media screen and (max-width: 1265px) {
 
@@ -145,12 +158,50 @@ li {
         margin: 0 20px;
     }
 
-
 }
 
 @media screen and (max-width: 900px) {
 
+    .header-nav {
+        display: block;
+        background-color: #FFF;
+        padding: 0;
+    }
+
+    .menu-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0;
+    }
+
     .navigation {
+        padding: 10px 0;
+    }
+
+    .nav-link {
+        color: #000;
+        padding: 20px 20px;
+        cursor: pointer;
+        border: 0.5px solid #000;
+    }
+
+    .active-link {
+        color: var(--secondary-text-color);
+    }
+
+    .header-nav ul {
+        flex-direction: column;
+    }
+
+    .active-link::before {
+        width: 0;
+    }
+
+    .nav-link:hover::before {
+        width: 0;
+    }
+
+    .header-book-btn {
         display: none;
     }
 }
@@ -177,6 +228,7 @@ li {
     .header-time-info {
         text-align: center;
     }
+
 }
 
 @media screen and (max-width: 568px) {}

@@ -39,20 +39,55 @@
       </div>
       <div class="seperator"></div>
       <div class="navigation">
+        <div class="menu-container">
+          <h3>MENU</h3>
+          <img
+            src="{% static 'images/menu.png' %}"
+            alt="menu"
+            class="menu-btn"
+          />
+        </div>
         <nav class="header-nav">
           <ul>
             <li>
-              <a href="{% url 'content:index' %}" id="home" class="nav-link {% if request.resolver_match.view_name == 'content:index' %}active-link{% endif %}">HOME</a>
+              <a
+                href="{% url 'content:index' %}"
+                id="home"
+                class="nav-link {% if request.resolver_match.view_name == 'content:index' %}active-link{% endif %}"
+                >HOME</a
+              >
             </li>
             <li>
-              <a href="{% url 'content:rooms' %}" class="nav-link {% if request.resolver_match.view_name == 'content:rooms' %}active-link{% endif %}">ROOMS</a>
+              <a
+                href="{% url 'content:rooms' %}"
+                class="nav-link {% if request.resolver_match.view_name == 'content:rooms' %}active-link{% endif %}"
+                >ROOMS</a
+              >
             </li>
-            <li><a href="" class="nav-link {% if request.resolver_match.view_name == 'service' %}active-link{% endif %}">SERVICE</a></li>
-            <li><a href="" class="nav-link {% if request.resolver_match.view_name == 'contact' %}active-link{% endif %}">CONTACT</a></li>
-            <li><a href="" class="nav-link {% if request.resolver_match.view_name == 'about' %}active-link{% endif %}">ABOUT</a></li>
+            <li>
+              <a
+                href="{% url 'content:service' %}"
+                class="nav-link {% if request.resolver_match.view_name == 'content:service' %}active-link{% endif %}"
+                >SERVICE</a
+              >
+            </li>
+            <li>
+              <a
+                href="{% url 'content:contact' %}"
+                class="nav-link {% if request.resolver_match.view_name == 'content:contact' %}active-link{% endif %}"
+                >CONTACT</a
+              >
+            </li>
+            <li>
+              <a
+                href="{% url 'content:about' %}"
+                class="nav-link {% if request.resolver_match.view_name == 'content:about' %}active-link{% endif %}"
+                >ABOUT</a
+              >
+            </li>
           </ul>
+          <a href=""><button class="header-book-btn">BOOK NOW</button></a>
         </nav>
-        <a href=""><button class="header-book-btn">BOOK NOW</button></a>
       </div>
     </header>
     <main>{% block content %} {% endblock %}</main>
