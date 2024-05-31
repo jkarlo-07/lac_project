@@ -1,6 +1,61 @@
 {% extends "layout.html" %} 
-{% block title %} Home {% endblock %} 
+
+{% load static %} 
+
+{% block title %} 
+  Home 
+{% endblock%} 
 
 {% block content %}
-<h1>Homepage</h1>
+<section class="welcome-section">
+  <img
+    src="{% static 'images/main-cover.jpg' %}"
+    alt="lac-cover"
+    class="main-cover-img"
+  />
+  <form action="" class="welcome-form-container">
+    <h4>Booking</h4>
+    <div>
+      <label for="check-in">Arrival Date</label><br />
+    <input
+      type="text"
+      name="check-in "
+      id="check-in"
+      class="welcome-form-input"
+      readonly
+      value="yyyy/mm/dd"
+    /><br />
+    </div>
+    <div>
+      <label for="check-out">Departure Date</label><br />
+    <input
+      type="text"
+      name="check-out"
+      id="check-out"
+      class="welcome-form-input"
+      readonly
+      value="yyyy/mm/dd"
+    /><br />
+    </div>
+    <div>
+      <label for="room-type">Room</label><br />
+    <select name="room-type" id="room-type" class="welcome-form-input"></select>
+    </div>
+    <div>
+      <a href="#"
+      ><img
+        src="{% static 'images/check.png' %}"
+        alt="checkbutton"
+        id="check-btn"
+      />
+    </a>
+    </div>
+  </form>
+  <div class="welcome-text">
+    <p>Welcome to</p>
+    <h2>L.A.C Resort</h2>
+    <p>A place to experience and enjoy the life.</p>
+  </div>
+</section>
+<h1>try</h1>
 {% endblock %}

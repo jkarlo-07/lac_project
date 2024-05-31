@@ -9,6 +9,7 @@
     --main-bg-color: #070E13;
     --main-text-color: #FFFFF0;
     --secondary-text-color: #B58A60;
+    --main-bg-transparent: rgba(7, 14, 19, 0.9);
 }
 
 body {
@@ -142,11 +143,95 @@ li {
     cursor: pointer;
 }
 
+/* design for welcome section or cover in index */
+.welcome-section {
+    position: relative;
+    height: 120vh;
+    width: 100%;
+}
+
+
+.main-cover-img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(70%);
+}
+
+.welcome-form-container {
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--main-bg-transparent);
+    color: rgb(150, 150, 150);
+    margin-left: 100px;
+    padding: 40px;
+    height: 530px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 50% 100%, 0% 80%);
+}
+
+.welcome-form-container > * {
+    margin-bottom: 20px;
+}
+
+.welcome-form-container h4 {
+    font-weight: 400;
+    font-size: 1.8rem;
+    color: var(--secondary-text-color);
+}
+
+.welcome-form-input {
+    font-size: 16px;
+    color: rgb(150, 150, 150);
+    background-color: rgb(35, 41, 44);
+    border: 1px solid rgb(150, 150, 150);
+    padding: 1.25rem 3.75rem;
+    text-align: center;
+    width: 100%;
+}
+
+#check-btn {
+    position: absolute;
+    width: 50px;
+    height: auto;
+    transform: translateX(-50%);
+    left: 50%;
+    bottom: 40px;
+    cursor: pointer;
+}
+
+.welcome-text {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    z-index: 50;
+    color: var(--main-text-color);
+    margin-right: 100px;
+    text-align: end;
+}
+
+.welcome-text h2 {
+    font-size: 4.7rem;
+    font-weight: 400;
+}
+
 @media screen and (max-width: 1265px) {
 
     .top-header,
     .navigation {
         margin: 0 40px;
+    }
+    
+    /* for welcome section in index */
+    .welcome-form-container {
+        margin-left: 40px;
+    }
+
+    .welcome-text {
+        margin-right: 40px;
     }
 
 }
@@ -156,6 +241,15 @@ li {
     .top-header,
     .navigation {
         margin: 0 20px;
+    }
+
+    /* for welcome section in index */
+    .welcome-form-container {
+        margin-left: 20px;
+    }
+
+    .welcome-text {
+        margin-right: 20px;
     }
 
 }
@@ -204,6 +298,10 @@ li {
     .header-book-btn {
         display: none;
     }
+
+    .welcome-text {
+        max-width: 400px;
+    }
 }
 
 @media screen and (max-width: 767px) {
@@ -229,8 +327,68 @@ li {
         text-align: center;
     }
 
+    .welcome-section {
+        height: 90vh;
+        position: relative;
+    }
+
+    .welcome-form-container {
+        transform: none;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80vw;
+        margin-left: 0;
+        clip-path: none;
+        
+    }
+
+    .welcome-text {
+        min-width: 100vw;
+        max-width: fit-content;
+        top: auto;
+        bottom: 40px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        margin: 0;
+        text-align: center;
+    }
+
+    
+
 }
 
-@media screen and (max-width: 568px) {}
+@media screen and (max-width: 568px) {
+    .welcome-section {
+        height: 120vh;
+    }
 
-@media screen and (max-width: 480px) {}
+    .welcome-text h2 {
+        font-size: 3rem;
+    }
+
+    .welcome-section {
+        height: 90vh;
+    }
+}
+
+
+
+
+@media screen and (max-width: 480px) {
+    
+    .welcome-form-container {
+        width: 90vw;
+    }
+
+    #check-btn {
+        width: 40px;
+        bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 540px) and (max-height: 740px) {
+    .welcome-section {
+        height: 120vh;
+    }
+}
