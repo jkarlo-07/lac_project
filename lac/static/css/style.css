@@ -192,6 +192,13 @@ li {
     width: 100%;
 }
 
+#room-type {
+    padding: 0;
+    height: 60px;
+}
+
+
+
 #check-btn {
     position: absolute;
     width: 50px;
@@ -343,6 +350,10 @@ li {
         
     }
 
+    .room-option {
+        font-size: 0.5rem;
+    }
+
     .welcome-text {
         min-width: 100vw;
         max-width: fit-content;
@@ -353,7 +364,6 @@ li {
         margin: 0;
         text-align: center;
     }
-
     
 
 }
