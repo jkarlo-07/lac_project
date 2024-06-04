@@ -425,7 +425,7 @@ li {
     }
 
     .welcome-text h1 {
-        font-size: 50px;
+        font-size: 4rem;
     }
 
     .main-cover-img {
@@ -437,12 +437,12 @@ li {
 
 @media screen and (max-width: 568px) {
     .welcome-text h1{
-        font-size: 30px;
-        font-weight: 800;
+        font-size: 2rem;
+        font-weight: 600;
     }
 
     .welcome-text p {
-        font-size: 15px;
+        font-size: 1rem;
     }
 }
 
