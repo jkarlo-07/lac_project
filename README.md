@@ -16,10 +16,10 @@ VSCODE TERMINAL
 
 UPLOADING FILES IN BRANCH COLLAB
 
-- `git checkout -b collab`
+- `git checkout collab`
 - `git add .`
 - `git commit -m "Message"`
 - `git commit -m "Message"`
-- `git push origin collab`
+- `git push origin -m "Message"`
 
 
