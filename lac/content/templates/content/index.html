@@ -1,63 +1,51 @@
-{% extends "layout.html" %} 
-
+{% extends "layout.html" %}
 {% load static %} 
 
 {% block title %} 
   Home 
-{% endblock%} 
+{%endblock%} 
 
 {% block content %}
 <section class="welcome-section">
-  <img
-    src="{% static 'images/main-cover.jpg' %}"
-    alt="lac-cover"
-    class="main-cover-img"
-  />
+  <img src="{% static 'images/main-cover.jpg' %}" alt="cover-page" class="main-cover-img" />
   <form action="" class="welcome-form-container">
     <h4>Booking</h4>
-    <div>
-      <label for="check-in">Arrival Date</label><br />
+    <label for="check-in">Arrival Date</label><br />
     <input
       type="text"
       name="check-in "
       id="check-in"
-      class="welcome-form-input"
+      class="input-date"
       readonly
       value="yyyy/mm/dd"
     /><br />
-    </div>
-    <div>
-      <label for="check-out">Departure Date</label><br />
+    <label for="check-out">Departure Date</label><br />
     <input
       type="text"
       name="check-out"
       id="check-out"
-      class="welcome-form-input"
+      class="input-date"
       readonly
       value="yyyy/mm/dd"
-    /><br />
+    />
+    <div class="person-room-container">
+      <div class="room-container">
+        <label for="room-type">Room</label><br />
+        <select name="room-type" id="room-type"></select>
+      </div>
     </div>
-    <div>
-      <label for="room-type">Room</label><br />
-    <select name="room-type" id="room-type" class="welcome-form-input">
-      <option value="Deluxe" class="room-option">Deluxe</option>
-      <option value="E-House" class="room-option">E-House</option>
-    </select>
-    </div>
-    <div>
-      <a href="#"
+    <a href=""
       ><img
         src="{% static 'images/check.png' %}"
         alt="checkbutton"
         id="check-btn"
       />
     </a>
-    </div>
   </form>
   <div class="welcome-text">
-    <p>Welcome to</p>
-    <h2>L.A.C Resort</h2>
-    <p>A place to experience and enjoy the life.</p>
+    <p class="welcome-small-text">Welcome to</p>
+    <h1>L.A.C Resort</h1>
+    <p class="welcome-xsmall-text">A place to experience and enjoy the life.</p>
   </div>
 </section>
 <h1>try</h1>

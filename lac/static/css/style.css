@@ -10,6 +10,7 @@
     --main-text-color: #FFFFF0;
     --secondary-text-color: #B58A60;
     --main-bg-transparent: rgba(7, 14, 19, 0.9);
+    --input-color-text: rgb(150,150,150);
 }
 
 body {
@@ -146,28 +147,32 @@ li {
 /* design for welcome section or cover in index */
 .welcome-section {
     position: relative;
-    height: 120vh;
+    height: 800px;
     width: 100%;
 }
 
-
 .main-cover-img {
     position: absolute;
-    height: 100%;
     width: 100%;
+    height: 100%;
     object-fit: cover;
     filter: brightness(70%);
 }
 
+
+
+/* for the form container */
+
 .welcome-form-container {
     position: absolute;
-    z-index: 100;
-    top: 50%;
-    transform: translateY(-50%);
+    z-index: 50;
     background-color: var(--main-bg-transparent);
-    color: rgb(150, 150, 150);
-    margin-left: 100px;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 100px;
+    color: var(--main-text-color);
     padding: 40px;
+    line-height: 1.5;
     height: 530px;
     clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 50% 100%, 0% 80%);
 }
@@ -177,27 +182,54 @@ li {
 }
 
 .welcome-form-container h4 {
-    font-weight: 400;
-    font-size: 1.8rem;
     color: var(--secondary-text-color);
+    font-size: 2rem;
+    font-weight: 500;
 }
 
-.welcome-form-input {
-    font-size: 16px;
-    color: rgb(150, 150, 150);
+.welcome-form-container label {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--input-color-text);
+}
+
+.input-date {
+    font-size: 1rem;
+    color: var(--input-color-text);
     background-color: rgb(35, 41, 44);
-    border: 1px solid rgb(150, 150, 150);
-    padding: 1.25rem 3.75rem;
+    border: 1px solid var(--input-color-text);
+    padding: 18px 45px;
     text-align: center;
+}
+
+.room-container{
     width: 100%;
 }
 
+
+#person-count {
+    height: 60px;
+    width: 35px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    border: none;
+}
+
 #room-type {
-    padding: 0;
+    background-color: rgb(35, 41, 44);
+    border: 1px solid rgb(150, 150, 150);
+    color: var(--main-text-color);
+    width: 100%;
+    text-align: center;
     height: 60px;
 }
 
-
+.person-room-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
 
 #check-btn {
     position: absolute;
@@ -213,16 +245,22 @@ li {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    right: 0;
-    z-index: 50;
+    right: 100px;
     color: var(--main-text-color);
-    margin-right: 100px;
-    text-align: end;
+    text-align: right;
 }
 
-.welcome-text h2 {
-    font-size: 4.7rem;
+.welcome-text h1 {
+    font-size: 4.5rem;
     font-weight: 400;
+}
+
+.welcome-small-text {
+    font-size: 1.2rem;
+}
+
+.welcome-xsmall-text {
+    font-size: 1rem;
 }
 
 @media screen and (max-width: 1265px) {
@@ -234,11 +272,11 @@ li {
     
     /* for welcome section in index */
     .welcome-form-container {
-        margin-left: 40px;
+        left: 40px;
     }
 
     .welcome-text {
-        margin-right: 40px;
+        right: 40px;
     }
 
 }
@@ -252,11 +290,12 @@ li {
 
     /* for welcome section in index */
     .welcome-form-container {
-        margin-left: 20px;
+        left: 20px;
     }
 
     .welcome-text {
-        margin-right: 20px;
+        right: 20px;
+        width: 50%;
     }
 
 }
@@ -306,8 +345,12 @@ li {
         display: none;
     }
 
+    .welcome-form-container {
+        left: 10px;
+    }
+
     .welcome-text {
-        max-width: 400px;
+        right: 10px;
     }
 }
 
@@ -335,99 +378,71 @@ li {
     }
 
     .welcome-section {
-        height: 90vh;
+        height: 936px;
         position: relative;
     }
+   
 
     .welcome-form-container {
-        transform: none;
-        top: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80vw;
-        margin-left: 0;
+        position: relative;
+        left: 0;
+        width: 90vw;
+        margin: 80px auto;
         clip-path: none;
-        
+        height: auto;
+        transform: none;
+        top: 0;
     }
 
-    .room-option {
-        font-size: 0.5rem;
+    .person-room-container {
+        display: block;
+    }
+    
+    #check-btn {
+        position: relative;
+        bottom: 10px;
+    }
+
+    .input-date {
+        width: 100%;
+    }
+
+    #person-count {
+        width: 80%;
+    }
+
+    #room-type {
+        width: 100%;
     }
 
     .welcome-text {
-        min-width: 100vw;
-        max-width: fit-content;
-        top: auto;
-        bottom: 40px;
-        left: 50%;
-        transform: translate(-50%, 0);
-        margin: 0;
-        text-align: center;
+        position: relative; 
+        text-align: center; 
+        width: 100%; 
+        transform: none;
+        top: 0;
+        right: 0;
+    }
+
+    .welcome-text h1 {
+        font-size: 50px;
+    }
+
+    .main-cover-img {
+        margin-top: -80px;
     }
     
 
 }
 
 @media screen and (max-width: 568px) {
-    .welcome-section {
-        height: 120vh;
+    .welcome-text h1{
+        font-size: 30px;
+        font-weight: 800;
     }
 
-    .welcome-text h2 {
-        font-size: 3rem;
-    }
-    
-
-    .welcome-section {
-        height: 90vh;
-    }
-}
-
-
-
-
-@media screen and (max-width: 480px) {
-    
-    .welcome-form-container {
-        width: 90vw;
-    }
-
-    #check-btn {
-        width: 40px;
-        bottom: 20px;
-    }
-}
-
-
-
-/* for customize screens */
-@media screen and (max-width: 1000px) and (max-height: 650px) {
-
-    .welcome-section {
-        height: 150vh;
-    }
-
-    .welcome-form-container {
-        height: 90%;
-    }
-}
-
-
-@media screen and (max-width: 883px) and (max-height: 345px) {
-
-    .welcome-section {
-        height: 200vh;
-    }
-
-    .welcome-form-container {
-        height: 90%;
-    }
-}
-
-
-@media screen and (max-width: 540px) and (max-height: 740px) {
-    .welcome-section {
-        height: 120vh;
+    .welcome-text p {
+        font-size: 15px;
     }
 }
 
