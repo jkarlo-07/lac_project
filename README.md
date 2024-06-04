@@ -22,4 +22,7 @@ UPLOADING FILES IN BRANCH COLLAB
 - `git commit -m "Message"`
 - `git push origin -m "Message"`
 
+MERGE BRANCH
+- `git merge 'branch'`
+- `git push origin 'branch'`
 
