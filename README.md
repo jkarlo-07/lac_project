@@ -26,3 +26,5 @@ MERGE BRANCH
 - `git merge 'branch'`
 - `git push origin 'branch'`
 
+GET THE LATEST FILE IN GITHUB
+- `git pull origin main`
