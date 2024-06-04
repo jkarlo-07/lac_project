@@ -1,8 +1,9 @@
-Execute these commands in the terminal:
+
 
 POSTGRESQL
 -Create lac_db in postgre / pg admin
 
+Execute these commands in the terminal:
 VSCODE TERMINAL
 - `py -m venv .venv`
 - `source .venv/Scripts/activate`
