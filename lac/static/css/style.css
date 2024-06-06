@@ -98,6 +98,10 @@ li {
     padding: 20px 60px 20px 0;
 }
 
+.book-now-mobile-btn {
+    visibility: hidden;
+}
+
 .nav-link::before {
     content: '';
     position: absolute;
@@ -280,6 +284,7 @@ li {
 
 .index-room__text > * {
     margin-bottom: 20px;
+    color: var(--main-bg-color);
 }
 
 .index-room__title{
@@ -293,6 +298,15 @@ li {
     background-color: var(--main-bg-color);
 }
 
+.index-room__link a {
+    color: var(--secondary-text-color);
+    font-weight: 600;
+}
+
+
+.index-room__link a:hover {
+    color: var(--main-bg-color);
+}
 .index-room__intro {
     font-size: 1.2rem;
 }
@@ -443,6 +457,11 @@ li {
         cursor: pointer;
         border: 0.5px solid #000;
     }
+
+    .book-now-mobile-btn {
+        visibility: visible;
+    }
+    
 
     .active-link {
         color: var(--secondary-text-color);
