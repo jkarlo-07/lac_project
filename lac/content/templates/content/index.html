@@ -48,5 +48,38 @@
     <p class="welcome-xsmall-text">A place to experience and enjoy the life.</p>
   </div>
 </section>
-<h1>try</h1>
+<section class="index-room">
+  <div class="index-room__text">
+    <div class="index-room__title">
+      <h1>PICK A ROOM THAT <span class="secondary-text-color">BEST SUITS</span> YOUR INTEREST</h1>
+    </div>
+    <div class="index-room__seperator"></div>
+    <div class="index-room__intro">
+      <p>L.A.C resort offers 4 bedrooms, a swimming pool, cottages, and an E-house, ensuring a delightful and relaxing experience for the whole family and friends.</p>
+    </div>
+    <div class="index-room__link">
+      <a href="{% url 'content:rooms' %}" class="index-room__btn">VIEW ROOMS...</a>
+    </div>
+  </div>
+  <div class="index-room__content">
+    <div class="index-room__room-info">
+      <h2 class="secondary-text-color">E-House Cabin</h2>
+      <div class="seperator"></div>
+      <p>The E house cabin provides an exclusive space distinct from the main hotel. It features complete amenities such as air conditioning, a spacious king-size bed, a private bathroom, television, and complimentary Wi-Fi. Additionally, guests can indulge in the luxury of a personal pool for their relaxation and enjoyment.</p>
+      <p>Max Capacity: 8 people</p>
+      <p class="index-room__button"><a href="">BOOK NOW</a></p>
+    </div>
+    <div class="index-room__image-container">
+      <img 
+      class="index-room__cover"
+      src="{% static 'images/ehouse-room.jpg' %}" 
+      alt="E-House"
+      width="400"
+      />
+      <p class="index-room__price">P10,000 / day</p>
+    </div>
+    
+  </div>
+</section>
+
 {% endblock %}
