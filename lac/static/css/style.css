@@ -357,18 +357,57 @@ li {
     background-color: var(--main-bg-transparent);
 }
 
-.index-room__button {
+.index-room__button a {
     background-color: var(--secondary-text-color);
     width: fit-content;
     padding: 0.5rem 2rem;
     border-radius: 5px;
-}
-
-.index-room__button a {
     color: var(--main-text-color);
 }
 
+.index-room__button a:hover {
+    color: var(--main-bg-color);
+}
 
+.index-room__capacity {
+    color: var(--secondary-text-color);
+    font-weight: 600;
+}
+
+/* for index page in service section */
+.index-service {
+    margin: 80px 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.index-service__main-container {
+    padding: 40px;
+    position: relative;
+}
+
+.index-service__main-container::before {
+    content: "";
+    border: 1px solid;
+    height: 100%;
+    width: 40%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.index-service__container {
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 10px;
+}
+
+.index-service__container img {
+    width: 40px;
+    height: auto;
+}
 
 @media screen and (max-width: 1265px) {
 
@@ -387,7 +426,7 @@ li {
         right: 40px;
     }
 
-    .index-room {
+    .index-room, .index-service {
         margin: 80px 40px;
     }
 
@@ -411,14 +450,14 @@ li {
     }
 
     .index-room__price {
-    position: absolute;
-    z-index: 100;
-    bottom: 0;
-    background-color: var(--secondary-text-color);
-    padding: 0.5rem 2rem;
+        position: absolute;
+        z-index: 100;
+        bottom: 0;
+        background-color: var(--secondary-text-color);
+        padding: 0.5rem 2rem;
     }
 
-    .index-room {
+    .index-room, .index-service {
         margin: 80px 20px;
     }
 
@@ -574,6 +613,10 @@ li {
         margin-top: 0;
     }
     
+    .index-service {
+        flex-direction: column;
+        gap: 3.5rem;
+    }
 
 }
 
