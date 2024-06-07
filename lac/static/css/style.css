@@ -409,10 +409,54 @@ li {
     height: auto;
 }
 
+/* for resort intro in index */
+
+.index-intro {
+    background-color: var(--main-bg-color);
+    padding: 40px 0;
+}
+
+.index-intro__container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: center;
+    color: var(--main-text-color);
+    margin: 0 100px;
+}
+
+.index-intro__text {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.index-intro__text h2 {
+    color: var(--secondary-text-color);
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.index-intro__text p {
+    text-align: justify;
+}
+
+.intro-img {
+    width: 45%;
+    height: 60vh;
+    object-fit: cover;
+}
+
+.intro-logo {
+    width: 100px;
+    height: 100px;
+}
+
 @media screen and (max-width: 1265px) {
 
     .top-header,
-    .navigation {
+    .navigation, .index-intro__container {
         margin: 0 40px;
     }
     
@@ -435,7 +479,7 @@ li {
 @media screen and (max-width: 1024px) {
 
     .top-header,
-    .navigation {
+    .navigation, .index-intro__container {
         margin: 0 20px;
     }
 
@@ -469,6 +513,18 @@ li {
         width: 100%;
         align-items: center;
         text-align: center;
+    }
+
+    .index-intro__container {
+        flex-direction: column;
+    }
+
+    .index-intro__text {
+        width: 100%;
+    }
+
+    .intro-img {
+        width: 100%;
     }
 }
 
@@ -618,6 +674,9 @@ li {
         gap: 3.5rem;
     }
 
+    .intro-img {
+        height: 40vh;
+    }
 }
 
 @media screen and (max-width: 568px) {
