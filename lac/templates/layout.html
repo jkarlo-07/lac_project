@@ -86,11 +86,7 @@
               >
             </li>
             <li>
-              <a
-                href=""
-                class="nav-link book-now-mobile-btn"
-                >BOOK NOW</a
-              >
+              <a href="" class="nav-link book-now-mobile-btn">BOOK NOW</a>
             </li>
           </ul>
           <a href=""><button class="header-book-btn">BOOK NOW</button></a>
@@ -98,5 +94,56 @@
       </div>
     </header>
     <main>{% block content %} {% endblock %}</main>
+    <footer>
+      <div class="footer-container">
+        <div class="footer-follow-container">
+          <h3>FOLLOW US:</h3>
+          <div class="footer-socmed">
+            <a href=>
+              <img 
+                src="{% static 'images/facebook.png' %}" 
+                alt="facebook" 
+                class="socmed-icon"
+              />
+            </a>
+            <a href="">
+              <img
+                src="{% static 'images/instagram.png' %}"
+                alt="instagram"
+                class="socmed-icon"
+              />
+            </a>
+            <a href="">
+              <img
+                src="{% static 'images/email.png' %}"
+                alt="gmail"
+                class="socmed-icon"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="footer-gallery-container">
+          <h3>GALLERY</h3>
+          <div class="footer-gallery">
+            <img src="{% static 'images/lac8.jpg' %}" alt="cottage" width="40">
+            <img src="{% static 'images/lac9.jpg' %}" alt="cottage" width="40">
+            <img src="{% static 'images/lac10.jpg' %}" alt="cottage" width="40">
+            <img src="{% static 'images/gallery1.jpg' %}" alt="lac" width="40">
+            <img src="{% static 'images/gallery2.jpg' %}" alt="pool" width="40">
+            <img src="{% static 'images/gallery3.jpg' %}" alt="pool" width="40">
+          </div>
+        </div>
+        <div class="footer-contact">
+          <h3>CONTACT US</h3>
+          <p class="secondary-text-color">Address:</p>
+          <p>Brgy. Himbubulo Weste Guinyangan Quezon</p>
+          <p class="secondary-text-color">Call Us:</p>
+          <p>0939-819-4499</p>
+          <p class="secondary-text-color">Email:</p>
+          <p>lacresortandfarm@gmail.com</p>
+        </div>
+      </div>
+      <p class="footer-copyright">Copyright L.A.C Resort 2024</p>
+    </footer>
   </body>
 </html>

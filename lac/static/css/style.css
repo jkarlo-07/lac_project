@@ -146,6 +146,57 @@ li {
   cursor: pointer;
 }
 
+/* for footer section */
+footer {
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+  padding-bottom: 80px;
+}
+
+.footer-container {
+  margin: 0 100px;
+  padding: 60px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-logo {
+  width: 70px;
+}
+
+.footer-socmed {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.socmed-icon {
+  width: 3vw;
+}
+
+.footer-gallery-container {
+  width: 30%;
+}
+
+.footer-gallery img {
+  width: 30%;
+  height: 15vh;
+  object-fit: cover;
+}
+
+.footer-copyright {
+  text-align: center;
+}
+
+@supports (aspect-ratio: 1/1) {
+  .footer-gallery img {
+    width: 30%;
+    aspect-ratio: 1/1;
+    height: auto;
+  }
+}
+
 /* design for welcome section or cover in index */
 .welcome-section {
   position: relative;
@@ -483,26 +534,27 @@ li {
 
 /* for quote in index */
 .index-quote {
-    background-color: #000;
-    color: #fff;
-    opacity: 0.9;
+  background-color: #000;
+  color: #fff;
+  opacity: 0.9;
 }
 
 .index-quote__container {
-    padding: 60px 100px;
-    text-align: center;
+  padding: 60px 100px;
+  text-align: center;
 }
 
 .index-quote h2 {
-    font-size: 3rem;
-    font-weight: 800;
-    font-style: italic;
+  font-size: 3rem;
+  font-weight: 800;
+  font-style: italic;
 }
 
 @media screen and (max-width: 1265px) {
   .top-header,
   .navigation,
-  .index-intro__container {
+  .index-intro__container,
+  .footer-container {
     margin: 0 40px;
   }
 
@@ -529,7 +581,7 @@ li {
 @media screen and (max-width: 1024px) {
   .top-header,
   .navigation,
-  .index-intro__container {
+  .index-intro__container, .footer-container {
     margin: 0 20px;
   }
 
@@ -582,7 +634,6 @@ li {
   .index-quote__container {
     padding: 60px 20px;
   }
-  
 }
 
 @media screen and (max-width: 900px) {
@@ -662,6 +713,19 @@ li {
 
   .header-time-info {
     text-align: center;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer-gallery-container {
+    width: 100%;
+  }
+
+  .footer-gallery img{
+    width: 15%;
   }
 
   .welcome-section {
@@ -745,7 +809,6 @@ li {
   .index-quote h2 {
     font-size: 2rem;
   }
-
 }
 
 @media screen and (max-width: 568px) {
