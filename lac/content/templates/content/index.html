@@ -99,9 +99,9 @@
     </div>
   </div>
 </section>
-<section class="index-service">
-  <div class="index-service__main-container">
-    <div class="index-service__container">
+<section class="index-feature">
+  <div class="index-feature__main-container">
+    <div class="index-feature__container">
     <img 
       src="{% static 'images/wifi.png' %}" 
       alt="free wifi"
@@ -111,8 +111,8 @@
     <p>Enjoy seamless connectivity throughout your stay with complimentary high-speed WiFi.</p>
     </div>
   </div>
-  <div class="index-service__main-container">
-    <div class="index-service__container">
+  <div class="index-feature__main-container">
+    <div class="index-feature__container">
     <img 
       src="{% static 'images/atv.png' %}" 
       alt="atv motor"
@@ -122,8 +122,8 @@
     <p>Experience thrilling adventures at our hotel and resort with our exciting ATV rentals.</p>
     </div>
   </div>
-  <div class="index-service__main-container">
-    <div class="index-service__container">
+  <div class="index-feature__main-container">
+    <div class="index-feature__container">
     <img 
       src="{% static 'images/swimming-pool.png' %}" 
       alt="swimming pool"
@@ -152,6 +152,41 @@
       class="intro-logo"
       width="100"
     />
+  </div>
+</section>
+<section class="index-service">
+  <img 
+    src="{% static 'images/hut.png' %}" 
+    alt="service" 
+    class="index-service__icon"
+    width="100"
+  />
+  <h2>OUR SPECIAL <span class="secondary-text-color">SERVICES</span></h2>
+  <div class="index-service__img-container">
+    <img 
+      src="{% static 'images/lac5.jpg' %}" 
+      alt="cottage" 
+      class="index-service__img"
+      width="100"
+    />
+    <img 
+      src="{% static 'images/lac6.jpg' %}" 
+      alt="pool" 
+      class="index-service__img"
+      width="100"
+    />
+    <img 
+      src="{% static 'images/lac7.jpg' %}" 
+      alt="e-house" 
+      class="index-service__img"
+      width="100"
+    />
+  </div>
+  <p><a href="{% url 'content:service' %}" class="index-service__btn">View All</a></p>
+</section>
+<section class="index-quote">
+  <div class="index-quote__container">
+    <h2>"ONCE A YEAR GO SOMEPLACE YOU HAVE <span class="secondary-text-color">NEVER BEEN BEFORE"</span></h2>
   </div>
 </section>
 
