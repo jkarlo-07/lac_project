@@ -1,9 +1,71 @@
 {% extends "layout.html" %} 
-
+{% load static %}
 {% block title %}
     Rooms 
 {% endblock %} 
 
 {% block content %}
-    <h1>Rooms</h1>
+<section class="title">
+	<div class="title__background"></div>
+  <img src="{% static 'images/photos/main-cover.jpg' %}" alt="" class="title__cover" width="100">
+  <h1 class="title__text">ROOMS</h1>
+</section>
+<section class="rooms-section">
+	<div class="room-container">
+		<div class="room-price-image-container">
+			<img src="{% static "images/photos/first1.jpg" %}" alt="" width="100">
+			<p>P7,000 / day</p>
+		</div>
+		<div class="room-info-container">
+			<div class>
+				<h2 class="secondary-text-color">Deluxe Room</h2>
+				<div class="seperator"></div>
+			</div>
+			<p>The Deluxe Room is located on the first floor of the hotel. It has a capacity for 10 persons and features full air conditioning, a TV, and free WiFi.</p>
+			<a href=""><p class="room-book-btn">BOOK NOW</p></a>
+		</div>
+	</div>
+	<div class="room-container">
+		<div class="room-price-image-container">
+			<img src="{% static "images/photos/first1.jpg" %}" alt="" width="100">
+			<p>P7,000 / day</p>
+		</div>
+		<div class="room-info-container">
+			<div>
+				<h2 class="secondary-text-color">Standard Room</h2>
+				<div class="seperator"></div>
+			</div>
+			<p>The Standard Room is located on the second floor of the hotel. It has a capacity for 5 persons and features full air conditioning, a TV, and free WiFi.</p>
+			<a href=""><p class="room-book-btn">BOOK NOW</p></a>
+		</div>
+	</div>
+	<div class="room-container">
+		<div class="room-price-image-container">
+			<img src="{% static "images/photos/first1.jpg" %}" alt="" width="100">
+			<p>P7,000 / day</p>
+		</div>
+		<div class="room-info-container">
+			<div>
+				<h2 class="secondary-text-color">E-House Room</h2>
+				<div class="seperator"></div>
+			</div>
+			<p>The E house cabin provides an exclusive space distinct from the main hotel. It features complete amenities such as air conditioning, a spacious king-size bed, a private bathroom, television, and complimentary Wi-Fi.</p>
+			<a href=""><p class="room-book-btn">BOOK NOW</p></a>
+		</div>
+	</div>
+	<div class="room-container">
+		<div class="room-price-image-container">
+			<img src="{% static "images/photos/first1.jpg" %}" alt="" width="100">
+			<p>P7,000 / day</p>
+		</div>
+		<div class="room-info-container">
+			<div>
+				<h2 class="secondary-text-color">Executive Room</h2>
+				<div class="seperator"></div>
+			</div>
+			<p>The Executive Room is located on the third floor of the hotel. It has a capacity for 12-15 persons and features full air conditioning, a TV, and free WiFi.</p>
+			<a href=""><p class="room-book-btn">BOOK NOW</p></a>
+		</div>
+	</div>
+</section>
 {% endblock %}

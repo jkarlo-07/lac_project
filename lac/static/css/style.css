@@ -550,6 +550,106 @@ footer {
   font-style: italic;
 }
 
+/* FOR TITLE ON EACH PAGE*/
+
+.title {
+  position: relative;
+  height: 40vh;
+}
+
+.title__cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  object-fit: cover;
+}
+
+.title__background {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(150, 150, 150, 0.9);
+  z-index: 200;
+  position: absolute;
+  top: 0;
+}
+
+.title__text {
+  position: absolute;
+  z-index: 300;
+  top: 50%;
+  left: 100px;
+  transform: translateY(-50%);
+  color: var(--main-text-color);
+  font-size: 4.5rem;
+}
+
+/*FOR ROOM PAGE */
+.rooms-section {
+  margin: 80px 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 7rem;
+}
+
+.room-container {
+  flex: 1 1 40%;
+  position: relative;
+  height: 70vh;
+}
+
+.room-price-image-container {
+  width: 100%;
+  height: 80%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+
+.room-price-image-container img{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+}
+.room-price-image-container p {
+  background-color: var(--secondary-text-color);
+  color: var(--main-text-color);
+  position: absolute;
+  left: 10px;
+  bottom: -1rem;
+  padding: 0.5rem 2rem;
+  font-weight: 600;
+}
+
+.room-info-container {
+  position: absolute;
+  right: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgba(7, 14, 19, 0.8);
+  color: var(--main-text-color);
+  height: 100%;
+  width: 65%;
+  padding: 40px;
+}
+
+.room-info-container h2 {
+  font-size: 1.75rem;
+}
+
+.room-book-btn {
+  background-color: var(--secondary-text-color);
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem 0;
+  border-radius: 5px;
+}
+
 @media screen and (max-width: 1265px) {
   .top-header,
   .navigation,
@@ -576,6 +676,18 @@ footer {
   .index-quote__container {
     padding: 60px 40px;
   }
+
+  /* for title */
+  .title__text {
+    left: 40px;
+  }
+
+  /*FOR ROOM PAGE */
+  .rooms-section {
+    margin: 80px 40px;
+    gap: 2rem;
+  }
+
 }
 
 @media screen and (max-width: 1024px) {
@@ -634,6 +746,20 @@ footer {
   .index-quote__container {
     padding: 60px 20px;
   }
+
+  /* for title */
+  .title__text {
+    left: 20px;
+  }
+
+  /*FOR ROOM PAGE */
+  .rooms-section {
+    margin: 80px 20px;
+  }
+
+  .room-container {
+    flex: 1 1 80%;
+  }
 }
 
 @media screen and (max-width: 900px) {
@@ -691,6 +817,18 @@ footer {
   .welcome-text {
     right: 10px;
   }
+
+  /* for title */
+  .title {
+    height: 20vh;
+  }
+
+  .title__text {
+    font-size: 3rem;
+  }
+
+
+  
 }
 
 @media screen and (max-width: 767px) {
@@ -808,6 +946,15 @@ footer {
 
   .index-quote h2 {
     font-size: 2rem;
+  }
+
+  .room-container {
+    height: 60vh;
+  }
+
+  /*FOR ROOM PAGE */
+  .room-info-container {
+    width: 100%;
   }
 }
 

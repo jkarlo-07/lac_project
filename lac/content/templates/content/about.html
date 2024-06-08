@@ -1,6 +1,11 @@
 {% extends "layout.html" %} 
+{% load static %}
 {% block title %} About {% endblock %} 
 
 {% block content %}
-<h1>About</h1>
+<section class="title">
+  <div class="title__background"></div>
+  <img src="{% static 'images/photos/main-cover.jpg' %}" alt="" class="title__cover" width="100">
+  <h1 class="title__text">ABOUT US</h1>
+</section>
 {% endblock %}

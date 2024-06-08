@@ -52,12 +52,3 @@ const adjustMenuDisplay = () => {
 
 adjustMenuDisplay();
 window.addEventListener("resize", adjustMenuDisplay);
-
-const selectElement = document.getElementById('room-type');
-
-        selectElement.addEventListener('click', () => {
-            const optionElements = selectElement.options;
-            for (let option of optionElements) {
-                option.style.width = selectElement.clientWidth + 'px';
-            }
-        });
