@@ -1,11 +1,65 @@
 {% extends "layout.html" %} 
-{% load static %}
-{% block title %} Contact Us {% endblock %} 
+{% load static %} 
+
+{% block title %} 
+  Contact Us
+{%endblock %} 
 
 {% block content %}
 <section class="title">
   <div class="title__background"></div>
-  <img src="{% static 'images/photos/main-cover.jpg' %}" alt="" class="title__cover" width="100">
+  <img
+    src="{% static 'images/photos/main-cover.jpg' %}"
+    alt=""
+    class="title__cover"
+    width="100"
+  />
   <h1 class="title__text">CONTACT US</h1>
+</section>
+<section class="contact-location">
+  <div class="contact-location__text">
+    <h2>FIND <span class="secondary-text-color"> OUR LOCATION</span></h2>
+    <p>
+      Our hotel resort is located at Brgy. Himbubulo Weste, Guinayangan, Quezon,
+      Philippines. Whether you have questions, special requests, or simply want to
+      connect with us, our doors are always open for our valued guests.
+    </p>
+  </div>
+  <img
+    src="{% static 'images/photos/locatelac.jpg' %}"
+    alt="lac-location"
+    class="lac-location-img"
+    width="100"
+  />
+</section>
+<section class="contact-form-section">
+  <div class="contact-form__title">
+    <h2>USE THIS FORM TO <span class="secondary-text-color">CONTACT US</span></h2>
+    <p>Feel free to drop us a message, and we'll get back to you promptly, Alternatively, you can reach us via email and our phone number.</p>
+  </div>
+  <div class="contact-form-container">
+    <div class="contact-form__info">
+      <div>
+        <h3>MEET US</h3>
+        <p>Brgy. Himbubulo Weste Guinayangan,Quezon</p>
+      </div>
+      <div>
+        <h3>PHONE</h3>
+        <p>0939-819-4499</p>
+      </div>
+      <div>
+        <h3>EMAIL</h3>
+        <p>lacresortandfarm@gmail.com</p>
+        <p>lacresortfarm@gmail.com</p>
+      </div>
+      <div>
+        <h3>WEBSITE</h3>
+        <p>http://lacresort.com</p>
+      </div>
+    </div>
+    <form action="" class="contact-form-input">
+      
+    </form>
+  </div>
 </section>
 {% endblock %}

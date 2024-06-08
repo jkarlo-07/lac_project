@@ -695,9 +695,30 @@ footer {
   opacity: 1;
 }
 
-
 .service-icon {
   width: 3em;
+}
+
+/*FOR CONTACT PAGE */
+.contact-location {
+  margin: 80px 100px;
+  text-align: center;
+}
+
+.contact-location__text {
+  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.contact-location__text p {
+  font-size: 0.75em;
+}
+
+.lac-location-img {
+  width: 100%;
+  object-fit: cover;
 }
 
 @media screen and (max-width: 1265px) {
@@ -740,6 +761,11 @@ footer {
 
   /*FOR SEVICE PAGE */
   .service-section {
+    margin: 80px 40px;
+  }
+
+  /*FOR CONTACT PAGE */
+  .contact-location {
     margin: 80px 40px;
   }
 
@@ -818,6 +844,11 @@ footer {
 
   /*FOR SEVICE PAGE */
   .service-section {
+    margin: 80px 20px;
+  }
+
+  /*FOR CONTACT PAGE */
+  .contact-location {
     margin: 80px 20px;
   }
 }
@@ -1025,6 +1056,19 @@ footer {
   .service-info {
     opacity: 1;
     font-size: 1.5rem;
+  }
+
+  /*FOR CONTACT PAGE */
+  .contact-location {
+    margin: 40px 20px;
+  }
+
+  .contact-location__text {
+    font-size: 1rem;
+  }
+
+  .lac-location-img {
+    height: 60vh;
   }
 
 
