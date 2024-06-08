@@ -650,6 +650,56 @@ footer {
   border-radius: 5px;
 }
 
+/*FOR SERVICE PAGE*/
+.service-section {
+  margin: 80px 100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2.5rem;
+}
+
+.service__container {
+  flex: 1 1 30%;
+  position: relative;
+  height: 70vh;
+}
+
+.service-img {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-info {
+  position: absolute;
+  z-index: 200;
+  background-color: rgba(7, 14, 19, 0.8);
+  color: var(--main-text-color);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s ease-in-out;
+}
+
+.service__container:hover .service-info {
+  opacity: 1;
+}
+
+
+.service-icon {
+  width: 3em;
+}
+
 @media screen and (max-width: 1265px) {
   .top-header,
   .navigation,
@@ -686,6 +736,11 @@ footer {
   .rooms-section {
     margin: 80px 40px;
     gap: 2rem;
+  }
+
+  /*FOR SEVICE PAGE */
+  .service-section {
+    margin: 80px 40px;
   }
 
 }
@@ -759,6 +814,11 @@ footer {
 
   .room-container {
     flex: 1 1 80%;
+  }
+
+  /*FOR SEVICE PAGE */
+  .service-section {
+    margin: 80px 20px;
   }
 }
 
@@ -956,6 +1016,18 @@ footer {
   .room-info-container {
     width: 100%;
   }
+
+  /*FORE SERVICE PAGE */
+  .service__container {
+    flex: 1 1 100%;
+  }
+
+  .service-info {
+    opacity: 1;
+    font-size: 1.5rem;
+  }
+
+
 }
 
 @media screen and (max-width: 568px) {

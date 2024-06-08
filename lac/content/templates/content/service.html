@@ -1,11 +1,123 @@
 {% extends "layout.html" %} 
-{% load static %}
-{% block title %} Service {% endblock %} 
+{% load static %} 
+
+{% block title %} 
+  Service 
+{%endblock %} 
 
 {% block content %}
 <section class="title">
   <div class="title__background"></div>
-  <img src="{% static 'images/photos/main-cover.jpg' %}" alt="" class="title__cover" width="100">
+  <img
+    src="{% static 'images/photos/main-cover.jpg' %}"
+    alt=""
+    class="title__cover"
+    width="100"
+  />
   <h1 class="title__text">SERVICE</h1>
+</section>
+<section class="service-section">
+  <div class="service__container">
+    <img
+      src="{% static 'images/photos/lac5.jpg' %}"
+      alt="cottage"
+      class="service-img"
+      width="100"
+    />
+    <div class="service-info">
+      <img
+        src="{% static 'images/icons/servicelogo1.png' %}"
+        alt="cottage-icon"
+        class="service-icon"
+        width="100"
+      />
+      <h2>Cottage</h2>
+    </div>
+  </div>
+  <div class="service__container">
+    <img
+      src="{% static 'images/photos/lac6.jpg' %}"
+      alt="pool"
+      class="service-img"
+      width="100"
+    />
+    <div class="service-info">
+      <img
+        src="{% static 'images/icons/servicelogo2.png' %}"
+        alt="pool-icon"
+        class="service-icon"
+        width="100"
+      />
+      <h2>Pool</h2>
+    </div>
+  </div>
+  <div class="service__container">
+    <img
+      src="{% static 'images/photos/lac7.jpg' %}"
+      alt="e-house"
+      class="service-img"
+      width="100"
+    />
+    <div class="service-info">
+      <img
+        src="{% static 'images/icons/servicelogo3.png' %}"
+        alt="ehouse-icon"
+        class="service-icon"
+        width="100"
+      />
+      <h2>E-House</h2>
+    </div>
+  </div>
+  <div class="service__container">
+    <img
+      src="{% static 'images/photos/cover4.jpg' %}"
+      alt="atv"
+      class="service-img"
+      width="100"
+    />
+    <div class="service-info">
+      <img
+        src="{% static 'images/icons/servicelogo4.png' %}"
+        alt="atv-icon"
+        class="service-icon"
+        width="100"
+      />
+      <h2>ATV</h2>
+    </div>
+  </div>
+  <div class="service__container">
+    <img
+      src="{% static 'images/photos/cover5.jpg' %}"
+      alt="jacuzzi"
+      class="service-img"
+      width="100"
+    />
+    <div class="service-info">
+      <img
+        src="{% static 'images/icons/servicelogo5.png' %}"
+        alt="jacuzzi-icon"
+        class="service-icon"
+        width="100"
+      />
+      <h2>Jacuzzi</h2>
+    </div>
+  </div>
+  <div class="service__container">
+    <img
+      src="{% static 'images/photos/lac2.jpg' %}"
+      alt="room"
+      class="service-img"
+      width="100"
+    />
+    <div class="service-info">
+      <img
+        src="{% static 'images/icons/servicelogo6.png' %}"
+        alt="room-icon"
+        class="service-icon"
+        width="100"
+      />
+      <h2>Room</h2>
+    </div>
+  </div>
 </section>
 {% endblock %}
