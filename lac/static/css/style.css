@@ -1181,4 +1181,9 @@ footer {
   .index-service {
     font-size: 1.5rem;
   }
+
+  /*FOR CONTACT PAGE */
+  .contact-form__info > * {
+    flex: 1 1 100%;
+  }
 }
