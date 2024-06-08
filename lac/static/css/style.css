@@ -716,6 +716,7 @@ footer {
   font-size: 0.75em;
 }
 
+
 .lac-location-img {
   width: 100%;
   object-fit: cover;
@@ -1138,6 +1139,10 @@ footer {
   }
 
   .contact-location__text {
+    font-size: 1rem;
+  }
+
+  .contact-form__title {
     font-size: 1rem;
   }
 
