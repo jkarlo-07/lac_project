@@ -253,7 +253,7 @@ footer {
   text-align: center;
 }
 
-.room-container {
+.index-room-container {
   width: 100%;
 }
 
@@ -1054,7 +1054,7 @@ footer {
 
   #check-btn {
     position: relative;
-    bottom: 10px;
+    bottom: 0;
   }
 
   .input-date {
