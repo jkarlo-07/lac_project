@@ -749,6 +749,11 @@ footer {
   gap: 2rem;
 }
 
+
+.contact-form__info p {
+  font-size: 0.8em;
+}
+
 .contact-form__info > * {
   flex: 1 1 35%;
 }
@@ -1143,6 +1148,10 @@ footer {
   }
 
   .contact-form__title {
+    font-size: 1.2rem;
+  }
+
+  .contact-form__info {
     font-size: 1rem;
   }
 
