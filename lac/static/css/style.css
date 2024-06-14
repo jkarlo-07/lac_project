@@ -792,6 +792,101 @@ footer {
   border-radius: 5px;
 }
 
+/* FOR ABOUT PAGE */
+.about-quote-section {
+  margin: 80px 0;
+  background-color: var(--main-bg-color);
+}
+
+.about-quote {
+  padding: 60px 100px;
+  color: var(--main-text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.about-quote p {
+  font-size: 2.5rem;
+  font-style: italic;
+  font-weight: 800;
+}
+
+.quote-book-btn {
+  background-color: var(--secondary-text-color);
+  color: var(--main-text-color);
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+}
+
+/* For event in about page */
+.about-event {
+  display: flex;
+  justify-content: space-between;
+  margin: 80px 100px;
+}
+
+.about-event h2 {
+  font-size: 2rem;
+}
+
+.about-event-container img, .testimonial-text {
+  margin-top: 40px;
+}
+
+.about-event-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 auto;
+  font-size: 1.5rem;
+}
+
+.about-event-container p {
+  font-size: 0.75em;
+}
+
+
+.event-img-container{
+  height: 70vh;
+  overflow: hidden;
+}
+
+.event-img-track {
+  position: relative;
+  height: 100%;
+  transition: transform 250ms ease-in;
+}
+
+.event-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-img-slide{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+.arrow-btn {
+  width: 50px;
+  cursor: pointer;
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+}
+
+
 @media screen and (max-width: 1265px) {
   .top-header,
   .navigation,
@@ -842,6 +937,15 @@ footer {
 
   .contact-form__info {
     width: 60%;
+  }
+
+  /* FOR ABOUT PAGE */
+  .about-quote {
+    padding: 60px 40px;
+  }
+
+  .about-event {
+    margin: 80px 40px;
   }
 }
 
@@ -929,6 +1033,20 @@ footer {
   .contact-form__info {
     width: 65%;
   }
+
+  .about-quote {
+    padding: 60px 20px;
+  }
+
+  /* for event in about page */
+  .staff-img-container{
+    height: 400px;
+  }
+
+  .about-event {
+    margin: 80px 20px;
+  }
+
 }
 
 @media screen and (max-width: 900px) {
@@ -998,6 +1116,10 @@ footer {
 
   .contact-form__info {
     width: 80%;
+  }
+  
+  .about-quote p {
+    font-size: 2rem;
   }
   
 }
@@ -1176,7 +1298,27 @@ footer {
     width: 100%;
   }
 
+  /* FOR ABOUT PAGE */
+  .about-room {
+    margin: 80px 20px;
+  }
+
+  .about-quote {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .event-img-container {
+    height: 200px;
+  }
+  
+  .about-event-container {
+    font-size: 1.25rem;
+  }
+
 }
+
 
 @media screen and (max-width: 568px) {
   .welcome-text h1 {
@@ -1199,5 +1341,10 @@ footer {
   /*FOR CONTACT PAGE */
   .contact-form__info > * {
     flex: 1 1 100%;
+  }
+
+  /*FOR ABOUT PAGE */
+  .about-quote p {
+    font-size: 1.5rem;
   }
 }

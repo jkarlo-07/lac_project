@@ -1,11 +1,145 @@
 {% extends "layout.html" %} 
-{% load static %}
-{% block title %} About {% endblock %} 
+{% load static %} 
+
+{% block title %} 
+  About 
+{%endblock%}
 
 {% block content %}
 <section class="title">
   <div class="title__background"></div>
-  <img src="{% static 'images/photos/main-cover.jpg' %}" alt="" class="title__cover" width="100">
+  <img
+    src="{% static 'images/photos/main-cover.jpg' %}"
+    alt=""
+    class="title__cover"
+    width="100"
+  />
   <h1 class="title__text">ABOUT US</h1>
 </section>
+<section class="index-room about-room">
+  <div class="index-room__text">
+    <div class="index-room__title">
+      <h1>
+        PICK A ROOM THAT
+        <span class="secondary-text-color">BEST SUITS</span> YOUR INTEREST
+      </h1>
+    </div>
+    <div class="index-room__seperator"></div>
+    <div class="index-room__intro">
+      <p>
+        L.A.C resort offers 4 bedrooms, a swimming pool, cottages, and an
+        E-house, ensuring a delightful and relaxing experience for the whole
+        family and friends.
+      </p>
+    </div>
+    <div class="index-room__link">
+      <a href="{% url 'content:rooms' %}" class="index-room__btn"
+        >VIEW ROOMS...</a
+      >
+    </div>
+  </div>
+  <div class="index-room__content">
+    <div class="index-room__room-info">
+      <h2 class="secondary-text-color">E-House Cabin</h2>
+      <div class="seperator"></div>
+      <p>
+        The E house cabin provides an exclusive space distinct from the main
+        hotel. It features complete amenities such as air conditioning, a
+        spacious king-size bed, a private bathroom, television, and
+        complimentary Wi-Fi. Additionally, guests can indulge in the luxury of a
+        personal pool for their relaxation and enjoyment.
+      </p>
+      <p class="index-room__capacity">Max Capacity: 8 people</p>
+      <p class="index-room__button"><a href="">BOOK NOW</a></p>
+    </div>
+    <div class="index-room__image-container">
+      <img
+        class="index-room__cover"
+        src="{% static 'images/photos/ehouse-room.jpg' %}"
+        alt="E-House"
+        width="400"
+      />
+      <p class="index-room__price">P10,000 / day</p>
+    </div>
+  </div>
+</section>
+<section class="index-feature">
+  <div class="index-feature__main-container">
+    <div class="index-feature__container">
+      <img
+        src="{% static 'images/icons/wifi.png' %}"
+        alt="free wifi"
+        width="100"
+      />
+      <h3>Free Wifi</h3>
+      <p>
+        Enjoy seamless connectivity throughout your stay with complimentary
+        high-speed WiFi.
+      </p>
+    </div>
+  </div>
+  <div class="index-feature__main-container">
+    <div class="index-feature__container">
+      <img
+        src="{% static 'images/icons/atv.png' %}"
+        alt="atv motor"
+        width="100"
+      />
+      <h3>ATV Motor</h3>
+      <p>
+        Experience thrilling adventures at our hotel and resort with our
+        exciting ATV rentals.
+      </p>
+    </div>
+  </div>
+  <div class="index-feature__main-container">
+    <div class="index-feature__container">
+      <img
+        src="{% static 'images/icons/swimming-pool.png' %}"
+        alt="swimming pool"
+        width="100"
+      />
+      <h3>Swimming Pool</h3>
+      <p>
+        Immerse yourself in leisure at our hotel and resort, featuring a pool
+        surrounded by lush landscapes.
+      </p>
+    </div>
+  </div>
+</section>
+<section class="about-quote-section">
+  <div class="about-quote">
+    <p>Your <span class="secondary-text-color">Home</span> Away From Home</p>
+    <p class="quote-book-btn">BOOK NOW</p>
+  </div>
+</section>
+<section class="about-event">
+  <div class="about-event-container">
+    <h2>OUR <span class="secondary-text-color">EVENTS</span></h2>
+    <p>
+      We warmly welcome all types of celebration, at our venue, be it a wedding,
+      corporate event, or any other joyous occasion. Let's celebrate life's
+      special moments together with us.
+    </p>
+    <div class="event-img-container">
+      <ul class="event-img-track">
+        <li class="event-img-slide current-slide">
+          <img src="{% static "images/photos/events1.jpg" %}" alt="wedding" class="event-img" />
+        </li>
+        <li class="event-img-slide">
+          <img src="{% static "images/photos/events2.jpg" %}" alt="wedding" class="event-img" />
+        </li>
+        <li class="event-img-slide">
+          <img src="{% static "images/photos/events3.jpg" %}" alt="bday" class="event-img" />
+        </li>
+      </ul>
+    </div>
+    <div class="button-container">
+      <img src="{% static 'images/icons/prev.png' %}" alt="prev" class="arrow-btn prev" />
+      <img src="{% static 'images/icons/next.png' %}" alt="next" class="arrow-btn next" />
+    </div>
+  </div>
+</section>
+<script src='{% static 'js/carousel.js' %}' defer></script>
+ 
 {% endblock %}
