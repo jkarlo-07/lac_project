@@ -11,6 +11,7 @@ VSCODE TERMINAL
 - `pip install "psycopg[binary]"`
 - `pip install pillow`
 - `cd lac/`
+- `py manage.py createsuperuser`
 - `py manage.py makemigrations`
 - `py manage.py migrate`
 - `py manage.py runserver`
