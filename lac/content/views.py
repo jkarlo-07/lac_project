@@ -45,7 +45,7 @@ def contact_view(request):
                     fail_silently=False,
                 )
                 
-                return JsonResponse({'message': 'Email sent successfully!'})
+                return JsonResponse({'message': 'Message has been sent!'})
             
             except BadHeaderError:
                 return JsonResponse({'error': 'Invalid header found.'}, status=400)

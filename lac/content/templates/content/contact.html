@@ -97,7 +97,9 @@
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        return response.json().then(err => {
+            throw new Error(err.error || 'Unknown error');
+        });
       }
       return response.json();
     })
@@ -106,8 +108,7 @@
       document.getElementById("contactForm").reset();
     })
     .catch(error => {
-      console.error('Error:', error);
-      showModal('Error: Unable to send email.', 'error');
+      showModal(error, 'error');
     });
   });
 
@@ -125,7 +126,6 @@
     var modalOverlay = document.getElementById("modalOverlay");
     var overlaybackground = document.getElementById("overlay-background")
     modalOverlay.style.display = "none";
-    modalOverlay.classList.remove("success", "error");
     overlaybackground.style.display = "none";
   }
 </script>
