@@ -32,6 +32,7 @@
     width="100"
   />
 </section>
+
 <section class="contact-form-section">
   <div class="contact-form__title">
     <h2>USE THIS FORM TO <span class="secondary-text-color">CONTACT US</span></h2>
@@ -57,15 +58,75 @@
         <p> https://lacresort.com</p>
       </div>
     </div>
-    <form action="" class="contact-form-input">
+    <form id="contactForm" method="POST" class="contact-form-input">
+      {% csrf_token %}
       <input type="text" id="form-contact-input" name="name" placeholder="Your name here">
-      <div class="form-contact-email-subject">
+       <div class="form-contact-email-subject">
         <input type="text" id="form-contact-email" name="email" placeholder="Email">
         <input type="text" id="form-contact-subject" name="subject" placeholder="Subject" >
       </div>
       <textarea name="message" id="form-contact-message" cols="30" rows="10" placeholder="Enter your message here"></textarea>
-      <button id="form-contact-btn">SEND MESSAGE</button>
+      <button id="form-contact-btn" type="submit">SEND MESSAGE</button>
     </form>
-  </div>
+    
+
+    <div id="overlay-background"></div>
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal-content" id="model-container">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <p id="modalMessage"></p>
+      </div>
+    </div>
 </section>
+
+<script>
+  document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault();  
+    
+    var overlaybackground = document.getElementById("overlay-background");
+    overlaybackground.style.display = "block";
+    
+    var formData = new FormData(this);
+    
+    fetch('/contact/', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      showModal(data.message, data.status);
+      document.getElementById("contactForm").reset();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showModal('Error: Unable to send email.', 'error');
+    });
+  });
+
+  function showModal(message, status) {
+    var modalOverlay = document.getElementById("modalOverlay");
+    var modalMessage = document.getElementById("modalMessage");
+    var modalContainer = document.getElementById("model-container")
+
+    modalMessage.textContent = message;
+
+    modalOverlay.style.display = "block";
+  }
+
+  function closeModal() {
+    var modalOverlay = document.getElementById("modalOverlay");
+    var overlaybackground = document.getElementById("overlay-background")
+    modalOverlay.style.display = "none";
+    modalOverlay.classList.remove("success", "error");
+    overlaybackground.style.display = "none";
+  }
+</script>
 {% endblock %}
