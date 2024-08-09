@@ -10,11 +10,52 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Login</h1>
+<div class="main-container">
+  <img src="{% static 'images/photos/lac1.jpg' %}" alt="cover-page" id="cover-page">
+
+  <form method="post" id="login-form" novalidate>
+      <h1 class="brown-fg">Login</h1>
+      <div>
+          <label for="email">Email</label><br>
+          <input type="email" name="email" id="email">
+      </div>
+
+      <div>
+          <label for="password">Password</label><br>
+          <div id="password-container">
+              <input type="password" name="password" id="password">
+              <img src="{% static 'images/icons/hidden.png' %}" alt="" id="password-toggle">
+          </div>
+      </div>
+
+      <button>Log in</button>
+      <div>
+          <a href="forgot-password.php" class="gray-fg">
+              <p>Forgot Password?</p>
+          </a><br>
+          <p class="gray-fg">Don't have an account?</p>
+          <a href="{% url 'users:signup' %}">
+              <p id="signup-href">Create account</p>
+          </a>
+      </div>
+  </form>
+</div>
 
 
 {% endblock %}
 
 {% block extra_script %}
-  console.log("hello");
+  var passwordImg = document.getElementById('password-toggle');
+  var passwordInput = document.getElementById('password');
+
+  passwordImg.addEventListener('click', function() {
+      if (passwordInput.type == 'password') {
+          passwordInput.type = 'text';
+          passwordImg.src = "{% static 'images/icons/view.png' %}"
+      }else{
+          passwordInput.type = 'password';
+          passwordImg.src = "{% static 'images/icons/hidden.png' %}";
+      }
+  });
+
 {% endblock %}

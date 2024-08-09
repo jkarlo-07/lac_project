@@ -10,5 +10,62 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Signup</h1>
+<div class="main-container">
+  <img src="{% static 'images/photos/lac1.jpg' %}" alt="cover-page" id="cover-page">
+  <form action="php-process/process-signup.php" method="post" id="signup" novalidate>
+      <h1 class="brown-fg">Sign up</h1>
+      <div>
+          <label for="name">Name</label><br>
+          <input type="text" id="name" name="name">
+      </div>
+
+      <div>
+          <label for="email">Email</label><br>
+          <input type="email" id="email" name="email">
+      </div>
+
+      <div>
+          <label for="password">Password</label><br>
+          <div class="password-container">
+              <input type="password" id="password" name="password" class="password">
+              <img src="{% static 'images/icons/hidden.png' %}" alt="" class="password-toggle">
+          </div>
+      </div>
+
+      <div>
+          <label for="password_confirmation">Repeat password</label><br>
+          <div class="password-container">
+              <input type="password" id="password_confirmation" name="password_confirmation" class="password">
+              <img src="{% static 'images/icons/hidden.png' %}" alt="" class="password-toggle">
+          </div>
+
+      </div>
+
+      <button>Sign up</button>
+      <div>
+          <p class="gray-fg">Have an account?</p>
+          <a href="{% url 'users:login' %}">
+              <p id="login-href">Log In</p>
+          </a>
+      </div>
+
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+  var passwordToggles = document.querySelectorAll('.password-toggle');
+  var passwordInputs = document.querySelectorAll('.password');
+
+  passwordToggles.forEach(function(toggle, index) {
+      toggle.addEventListener('click', function() {
+          if (passwordInputs[index].type === 'password') {
+              passwordInputs[index].type = 'text';
+              toggle.src = '{% static 'images/icons/view.png' %}';
+          } else {
+              passwordInputs[index].type = 'password';
+              toggle.src = '{% static 'images/icons/hidden.png' %}'; 
+          }
+      });
+  });
 {% endblock %}
