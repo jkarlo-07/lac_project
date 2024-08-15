@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} LAC {% endblock %}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+    <link rel="icon" href="{% static 'images/icons/laclogo.ico' %}" />
+  </head>
+  <body>
+    <header>
+      <div class="header-title">
+        <img src="{% static "images/icons/hamburger.svg" %}" alt="menu"
+        width="100" />
+        <h1>Dashboard</h1>
+      </div>
+      <div>
+        <div class="search-input-container">
+          <input type="text" class="search-input" />
+          <p class="header-search-text">Search</p>
+        </div>
+      </div>
+      <div>
+        <img src="{% static "images/icons/email-button.png" %}" alt="email" class="header-icons" width="100" />
+        <img src="{% static "images/icons/notification.png" %}" alt="notif" class="header-icons" width="100" />
+        <img src="{% static "images/icons/comment.png" %}" alt="message" class="header-icons" width="100" />
+        <img src="{% static "images/icons/user.png" %}" alt="profile" class="header-icons" width="100" />
+      </div>
+    </header>
+
+    <script>
+      const searchInput = document.querySelector(".search-input");
+      const headerSearchText = document.querySelector(".header-search-text");
+
+      searchInput.addEventListener("input", function () {
+        if (searchInput.value.trim() !== "") {
+          headerSearchText.classList.add("hidden");
+        } else {
+          headerSearchText.classList.remove("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>
