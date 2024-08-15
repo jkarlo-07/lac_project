@@ -60,3 +60,6 @@ def contact_view(request):
 
 def about_view(request):
     return render(request, "content/about.html")
+
+def book_view1(request):
+    return render(request, "content/booking.html")
