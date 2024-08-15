@@ -36,18 +36,32 @@ li {
 
 header {
   display: flex;
+  position: fixed;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 1.5rem;
+}
+
+.header-menu {
+  width: 2.25rem;
 }
 
 .header-title {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 2.25rem;
+}
+
+.header-title > h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .search-input-container {
-  width: 200px;
-  height: 35px;
+  width: 300px;
+  height: 2.5rem;
   position: relative;
 }
 
@@ -56,17 +70,50 @@ header {
   height: 100%;
   border-radius: 0.5rem;
   padding: 0 1rem;
+  background-color: #fcfcfc;
+  color: var(--input-color-text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+
+.search-icon {
+  height: 50%;
+  width: auto;
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 
 .header-search-text {
+  font-size: 0.75rem;
+  color: #c8c8c8;
   position: absolute;
   top: 50%;
   left: 1rem;
   transform: translateY(-50%);
-  transition: opacity 0.3s ease; 
+  transition: opacity 0.3s ease;
 }
 
 .header-search-text.hidden {
   opacity: 0;
   visibility: hidden;
+}
+
+.header-icon-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2.25rem;
+}
+
+.header-icons {
+  width: 1.75rem;
+  cursor: pointer;
 }

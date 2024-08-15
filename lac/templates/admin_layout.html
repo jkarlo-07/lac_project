@@ -15,17 +15,17 @@
   <body>
     <header>
       <div class="header-title">
-        <img src="{% static "images/icons/hamburger.svg" %}" alt="menu"
+        <img src="{% static "images/icons/hamburger.png" %}" alt="menu" class="header-menu"
         width="100" />
         <h1>Dashboard</h1>
       </div>
       <div>
         <div class="search-input-container">
-          <input type="text" class="search-input" />
-          <p class="header-search-text">Search</p>
+          <input type="text" class="search-input" placeholder="Search..." />
+          <img src="{% static "images/icons/search.png" %}" alt="search" class="search-icon" width="100">
         </div>
       </div>
-      <div>
+      <div class="header-icon-container">
         <img src="{% static "images/icons/email-button.png" %}" alt="email" class="header-icons" width="100" />
         <img src="{% static "images/icons/notification.png" %}" alt="notif" class="header-icons" width="100" />
         <img src="{% static "images/icons/comment.png" %}" alt="message" class="header-icons" width="100" />
@@ -44,6 +44,7 @@
           headerSearchText.classList.remove("hidden");
         }
       });
+
     </script>
   </body>
 </html>
