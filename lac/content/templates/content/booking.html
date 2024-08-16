@@ -10,4 +10,27 @@
 {% endblock %}
 
 {% block content %}
+<div class="booking_container">
+  <div class="booking-step-wrapper clearfix">
+    <div class="booking-step active">
+      <span class="step-number">1</span>
+      <span class="step-label">Rooms</span>
+    </div>
+    <div class="booking-step">
+      <span class="step-number">2</span>
+      <span class="step-label">Add-Ons</span>
+    </div>
+    <div class="booking-step">
+      <span class="step-number">3</span>
+      <span class="step-label">Payment</span>
+    </div>
+    <div class="booking-step">
+      <span class="step-number">4</span>
+      <span class="step-label">Complete</span>
+    </div>
+    <div class="booking-step-line">
+      <div style="width: 25%;"></div> <!-- Adjust this width based on the current step -->
+    </div>
+  </div>
+</div>
 {% endblock %}
