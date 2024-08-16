@@ -37,10 +37,15 @@ li {
 header {
   display: flex;
   position: fixed;
-  width: 100%;
+  top: 0;
+  margin-left: 250px;
+  width: calc(100% - 250px);
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
+  z-index: 1000;
+  overflow: hidden;
+  background-color: #ffffff;
 }
 
 .header-menu {
@@ -114,6 +119,70 @@ header {
 }
 
 .header-icons {
-  width: 1.75rem;
+  width: 1.5rem;
   cursor: pointer;
+}
+
+/* Side Nav */
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  width: 250px;
+  padding: 15px;
+}
+
+.side-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.side-logo {
+  width: 55px;
+}
+
+.side-text > h2 {
+  font-weight: 800;
+}
+
+.side-text > p {
+  font-size: 0.6rem;
+  font-weight: 300;
+}
+
+.side-menu {
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.side-link {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-weight: 600;
+}
+
+.side-link > p {
+  color: #96a0af;
+}
+
+.side-link:hover p {
+  color: var(--secondary-text-color);
+}
+
+.side-icon {
+  width: 1.6rem;
+}
+
+main {
+  margin: 72px 0 0 250px;
+  padding: 40px 30px;
+  background-color: #f7f7f7;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }

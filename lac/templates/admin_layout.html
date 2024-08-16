@@ -15,23 +15,95 @@
   <body>
     <header>
       <div class="header-title">
-        <img src="{% static "images/icons/hamburger.png" %}" alt="menu" class="header-menu"
-        width="100" />
+        <img src="{% static "images/icons/hamburger.png" %}" alt="menu"
+        class="header-menu" width="100" />
         <h1>Dashboard</h1>
       </div>
       <div>
         <div class="search-input-container">
-          <input type="text" class="search-input" placeholder="Search..." />
-          <img src="{% static "images/icons/search.png" %}" alt="search" class="search-icon" width="100">
+          <input type="text" class="search-input" placeholder="Search..." id="search-input" name="search-input"/>
+          <img src="{% static "images/icons/search.png" %}" alt="search"
+          class="search-icon" width="100">
         </div>
       </div>
       <div class="header-icon-container">
-        <img src="{% static "images/icons/email-button.png" %}" alt="email" class="header-icons" width="100" />
-        <img src="{% static "images/icons/notification.png" %}" alt="notif" class="header-icons" width="100" />
-        <img src="{% static "images/icons/comment.png" %}" alt="message" class="header-icons" width="100" />
-        <img src="{% static "images/icons/user.png" %}" alt="profile" class="header-icons" width="100" />
+        <img 
+          src="{% static "images/icons/email-button.png" %}" 
+          alt="email"
+          class="header-icons" 
+          width="100" /> 
+        <img 
+          src="{% static "images/icons/notification.png" %}" 
+          alt="notif" class="header-icons"
+          width="100" 
+        /> 
+        <img 
+          src="{% static "images/icons/comment.png" %}"
+          alt="message" 
+          class="header-icons" 
+          width="100" 
+        /> 
+        <img 
+          src="{% static "images/icons/user.png" %}" 
+          alt="profile" 
+          class="header-icons"
+          width="100" 
+        />
       </div>
     </header>
+
+    <div class="side-nav">
+      <div class="side-title">
+        <img src="{% static "images/icons/logo1lac.png" %}" alt="lac"
+        class="side-logo" width="100">
+        <div class="side-text">
+          <h2>L.A.C</h2>
+          <p>Hotel Admin Dashboard</p>
+        </div>
+      </div>
+      <div class="side-menu">
+        <a href="#" class="side-link">
+          <img 
+            src="{% static "images/icons/dashboard.png" %}" 
+            alt="dashboard" 
+            class="side-icon"
+            width="100"
+          />
+          <p>Dashboard</p>
+        </a>
+        <a href="#" class="side-link">
+          <img 
+            src="{% static "images/icons/bed.png" %}" 
+            alt="room" 
+            class="side-icon"
+            width="100"
+          />
+          <p>Rooms</p>
+        </a>
+        <a href="#" class="side-link">
+          <img 
+            src="{% static "images/icons/appointment.png" %}" 
+            alt="booking" 
+            class="side-icon"
+            width="100"
+          />
+          <p>Booking</p>
+        </a>
+        <a href="#" class="side-link">
+          <img 
+            src="{% static "images/icons/guest.png" %}" 
+            alt="Guest" 
+            class="side-icon"
+            width="100"
+          />
+          <p>Guests</p>
+        </a>
+      </div>
+    </div>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
     <script>
       const searchInput = document.querySelector(".search-input");
@@ -44,7 +116,6 @@
           headerSearchText.classList.remove("hidden");
         }
       });
-
     </script>
   </body>
 </html>
