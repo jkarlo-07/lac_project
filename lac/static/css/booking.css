@@ -1,9 +1,8 @@
-
+/* Booking Steps */
 .booking_container {
     width: 80%;
     margin: 20px auto;
 }
-
 
 .booking-step-wrapper {
     display: flex;
@@ -11,9 +10,7 @@
     align-items: center;
     position: relative;
     padding-bottom: 20px;
-    border-bottom: 2px solid #ccc;
 }
-
 
 .booking-step {
     text-align: center;
@@ -24,14 +21,16 @@
 .booking-step .step-number {
     width: 40px;
     height: 40px;
-    background-color: #b3886b;
-    color: white;
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid rgb(182, 182, 182);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 10px;
-    font-weight: bold;
+    position: relative;
+    z-index: 1;
 }
 
 .booking-step .step-label {
@@ -39,34 +38,81 @@
     color: #555;
 }
 
-
 .booking-step.active .step-number {
     background-color: #b3886b;
     color: white;
 }
 
-
 .booking-step-line {
     position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background-color: #ccc;
-    z-index: -1;
-}
-
-.booking-step-line div {
-    height: 100%;
-    background-color: #b3886b;
+    top: 20px; 
+    left: 13%;
+    right: 13%;
+    height: 1px;
+    background-color: rgb(182, 182, 182);
+    z-index: 0;
 }
 
 
-.booking-step.completed .step-number {
-    background-color: #b3886b;
-    color: white;
+/* Booking Forms */
+
+.booking-form-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 5px;
+    height: 100px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 10px;
 }
 
-.booking-step.completed .step-label {
-    color: #333;
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    font-family: Arial, sans-serif;
 }
+
+.booking-form label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #3d3d3d;
+}
+
+.booking-form span {
+    font-size: 16px;
+    color: #6c757d;
+}
+
+
+.booking-form-button-wrapper {
+    flex: 1;
+    text-align: center;
+}
+
+.booking-form-button {
+    background-color: #b08d6f;
+    color: #fff;
+    border: none;
+    padding: 15px 40px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.booking-form-button:hover {
+    background-color: #a17b5e;
+}
+
+
+/* Room Information*/
+
+.room-container{
+    margin-top: 50px;
+    display: flex;
+}
+
+
