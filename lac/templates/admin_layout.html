@@ -15,106 +15,224 @@
   <body>
     <header>
       <div class="header-title">
-        <img src="{% static "images/icons/hamburger.png" %}" alt="menu"
-        class="header-menu" width="100" />
+        <img
+          src="{% static 'images/icons/hamburger.png' %}"
+          alt="menu"
+          class="header-menu"
+          width="100"
+        />
         <h1>Dashboard</h1>
       </div>
       <div>
         <div class="search-input-container">
-          <input type="text" class="search-input" placeholder="Search..." id="search-input" name="search-input"/>
-          <img src="{% static "images/icons/search.png" %}" alt="search"
-          class="search-icon" width="100">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search..."
+            id="search-input"
+            name="search-input"
+          />
+          <img
+            src="{% static 'images/icons/search.png' %}"
+            alt="search"
+            class="search-icon"
+            width="100"
+          />
         </div>
       </div>
       <div class="header-icon-container">
-        <img 
-          src="{% static "images/icons/email-button.png" %}" 
+        <img
+          src="{% static 'images/icons/email.png' %}"
           alt="email"
-          class="header-icons" 
-          width="100" /> 
-        <img 
-          src="{% static "images/icons/notification.png" %}" 
-          alt="notif" class="header-icons"
-          width="100" 
-        /> 
-        <img 
-          src="{% static "images/icons/comment.png" %}"
-          alt="message" 
-          class="header-icons" 
-          width="100" 
-        /> 
-        <img 
-          src="{% static "images/icons/user.png" %}" 
-          alt="profile" 
           class="header-icons"
-          width="100" 
+          width="100"
+        />
+        <img
+          src="{% static 'images/icons/bell.png' %}"
+          alt="notif"
+          class="header-icons"
+          width="100"
+        />
+        <img
+          src="{% static 'images/icons/comment.png' %}"
+          alt="message"
+          class="header-icons"
+          width="100"
+        />
+        <img
+          src="{% static 'images/icons/account.png' %}"
+          alt="profile"
+          class="header-icons"
+          width="100"
         />
       </div>
     </header>
 
     <div class="side-nav">
       <div class="side-title">
-        <img src="{% static "images/icons/logo1lac.png" %}" alt="lac"
-        class="side-logo" width="100">
+        <img
+          src="{% static 'images/icons/logo1lac.png' %}"
+          alt="lac"
+          class="side-logo"
+          width="100"
+        />
         <div class="side-text">
           <h2>L.A.C</h2>
           <p>Hotel Admin Dashboard</p>
         </div>
       </div>
       <div class="side-menu">
-        <a href="#" class="side-link">
-          <img 
-            src="{% static "images/icons/dashboard.png" %}" 
-            alt="dashboard" 
+        <a
+          href="{% url 'dashboard:dashboard' %}"
+          class="side-link {% if request.resolver_match.view_name == 'dashboard:dashboard' %}current-link{% endif %}"
+          id="link-dashboard"
+        >
+          <img
+            src="{% if request.resolver_match.view_name == 'dashboard:dashboard' %}
+            {% static 'images/icons/dashboard-active.png' %}
+          {% else %}
+            {% static 'images/icons/dashboard.png' %}
+          {% endif %}"
+            alt="dashboard"
             class="side-icon"
+            id="img-dashboard"
             width="100"
           />
-          <p>Dashboard</p>
+          <p
+            class="side-link-text {% if request.resolver_match.view_name == 'dashboard:dashboard' %}active-link{% endif %}"
+          >
+            Dashboard
+          </p>
         </a>
-        <a href="#" class="side-link">
-          <img 
-            src="{% static "images/icons/bed.png" %}" 
-            alt="room" 
+        <a
+          href="{% url 'dashboard:room' %}"
+          class="side-link {% if request.resolver_match.view_name == 'dashboard:room' %}current-link{% endif %}"
+          id="link-room"
+        >
+          <img
+            src="{% if request.resolver_match.view_name == 'dashboard:room' %}
+            {% static 'images/icons/bed-active.png' %}
+          {% else %}
+            {% static 'images/icons/bed.png' %}
+          {% endif %}"
+            alt="room"
             class="side-icon"
+            id="img-room"
             width="100"
           />
-          <p>Rooms</p>
+          <p
+            class="side-link-text {% if request.resolver_match.view_name == 'dashboard:room' %}active-link{% endif %}"
+          >
+            Rooms
+          </p>
         </a>
-        <a href="#" class="side-link">
-          <img 
-            src="{% static "images/icons/appointment.png" %}" 
-            alt="booking" 
+        <a
+          href="{% url 'dashboard:booking' %}"
+          class="side-link {% if request.resolver_match.view_name == 'dashboard:booking' %}current-link{% endif %}"
+          id="link-booking"
+        >
+          <img
+            src="{% if request.resolver_match.view_name == 'dashboard:booking' %}
+            {% static 'images/icons/appointment-active.png' %}
+          {% else %}
+            {% static 'images/icons/appointment.png' %}
+          {% endif %}"
+            alt="booking"
             class="side-icon"
+            id="img-booking"
             width="100"
           />
-          <p>Booking</p>
+          <p
+            class="side-link-text {% if request.resolver_match.view_name == 'dashboard:booking' %}active-link{% endif %}"
+          >
+            Booking
+          </p>
         </a>
-        <a href="#" class="side-link">
-          <img 
-            src="{% static "images/icons/guest.png" %}" 
-            alt="Guest" 
+        <a
+          href="{% url 'dashboard:guest' %}"
+          class="side-link {% if request.resolver_match.view_name == 'dashboard:guest' %}current-link{% endif %}"
+          id="link-guest"
+        >
+          <img
+            src="{% if request.resolver_match.view_name == 'dashboard:guest' %}
+            {% static 'images/icons/guest-active.png' %}
+          {% else %}
+            {% static 'images/icons/guest.png' %}
+          {% endif %}"
+            alt="guest"
             class="side-icon"
+            id="img-guest"
             width="100"
           />
-          <p>Guests</p>
+          <p
+            class="side-link-text {% if request.resolver_match.view_name == 'dashboard:guest' %}active-link{% endif %}"
+          >
+            Guest
+          </p>
         </a>
       </div>
     </div>
 
-    <main>
-      {% block content %}{% endblock %}
-    </main>
+    <main>{% block content %}{% endblock %}</main>
 
     <script>
-      const searchInput = document.querySelector(".search-input");
-      const headerSearchText = document.querySelector(".header-search-text");
+      document.addEventListener("DOMContentLoaded", function () {
+        function addHoverEffect(
+          linkElement,
+          imgElement,
+          defaultSrc,
+          activeSrc
+        ) {
+          if (!linkElement.classList.contains("current-link")) {
+            linkElement.addEventListener("mouseover", function () {
+              imgElement.src = activeSrc;
+            });
 
-      searchInput.addEventListener("input", function () {
-        if (searchInput.value.trim() !== "") {
-          headerSearchText.classList.add("hidden");
-        } else {
-          headerSearchText.classList.remove("hidden");
+            linkElement.addEventListener("mouseout", function () {
+              imgElement.src = defaultSrc;
+            });
+          }
         }
+
+        var linkDashboard = document.getElementById("link-dashboard");
+        var imgDashboard = document.getElementById("img-dashboard");
+
+        var linkRoom = document.getElementById("link-room");
+        var imgRoom = document.getElementById("img-room");
+
+        var linkBooking = document.getElementById("link-booking");
+        var imgBooking = document.getElementById("img-booking");
+
+        var linkGuest = document.getElementById("link-guest");
+        var imgGuest = document.getElementById("img-guest");
+
+        addHoverEffect(
+          linkDashboard,
+          imgDashboard,
+          "{% static 'images/icons/dashboard.png' %}",
+          "{% static 'images/icons/dashboard-active.png' %}"
+        );
+
+        addHoverEffect(
+          linkRoom,
+          imgRoom,
+          "{% static 'images/icons/bed.png' %}",
+          "{% static 'images/icons/bed-active.png' %}"
+        );
+
+        addHoverEffect(
+          linkBooking,
+          imgBooking,
+          "{% static 'images/icons/appointment.png' %}",
+          "{% static 'images/icons/appointment-active.png' %}"
+        );
+
+        addHoverEffect(
+          linkGuest,
+          imgGuest,
+          "{% static 'images/icons/guest.png' %}",
+          "{% static 'images/icons/guest-active.png' %}"
+        );
       });
     </script>
   </body>

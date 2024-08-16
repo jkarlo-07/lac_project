@@ -64,6 +64,7 @@ header {
   font-weight: 600;
 }
 
+
 .search-input-container {
   width: 300px;
   height: 2.5rem;
@@ -80,6 +81,10 @@ header {
   font-size: 0.75rem;
   font-weight: 500;
   border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-input::placeholder {
+  color: var(--input-color-text);
 }
 
 .search-input:focus {
@@ -152,6 +157,7 @@ header {
   font-weight: 300;
 }
 
+
 .side-menu {
   padding: 40px 20px;
   display: flex;
@@ -166,9 +172,14 @@ header {
   font-weight: 600;
 }
 
-.side-link > p {
+.side-link-text {
   color: #96a0af;
 }
+
+.active-link {
+  color: var(--secondary-text-color);
+}
+
 
 .side-link:hover p {
   color: var(--secondary-text-color);
@@ -185,4 +196,18 @@ main {
   min-height: 100vh;
   position: relative;
   z-index: 1;
+}
+
+@media screen and (max-width: 1265px) {
+
+
+
+}
+
+@media screen and (max-width: 1024px) {
+
+  .search-input-container {
+    width: 150px;
+}
+
 }
