@@ -110,9 +110,108 @@
 
 /* Room Information*/
 
-.room-container{
+.room-container {
     margin-top: 50px;
     display: flex;
+    align-items: flex-start;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 20px;
+    gap: 20px;
 }
+
+.room-image img {
+    width: 300px;
+    height: auto;
+    border-radius: 2px; 
+}
+
+.room-accomodation-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.room-accomodation-info h3 {
+    font-size: 1.5em;
+    margin: 0;
+    font-weight: 400;
+}
+
+.room-accomodation-info ul {
+    list-style: none;
+    display: block;
+    padding: 0;
+    margin: 10px 0 2px;
+    font-size: 1em;
+    color: #333;
+}
+
+.room-accomodation-info ul li{
+    margin-bottom: 5px;
+}
+
+
+.room-accomodation-info ul li span {
+    color: #757575;
+}
+
+.room-rate-section {
+    margin-top: 20px;
+}
+
+.room-rate-info {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.room-clearfix {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.room-clearfix.buttons {
+    justify-content: left;
+}
+
+.room-rate-info h3 {
+    margin: 0;
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.room-rate-info p {
+    color: #757575;
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.accomodation-select-room {
+    background-color: #c0a080;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.accomodation-select-room:hover {
+    background-color: #b08b6c;
+}
+
+.booking-view-details {
+    margin-left: 20px;
+    color: #757575;
+    text-decoration: none;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+.booking-view-details:hover {
+    color: #333;
+}
+
 
 
