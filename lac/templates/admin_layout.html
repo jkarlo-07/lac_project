@@ -233,7 +233,67 @@
           "{% static 'images/icons/guest.png' %}",
           "{% static 'images/icons/guest-active.png' %}"
         );
+        
       });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const isSideNavOpen = localStorage.getItem('sideNavState') === 'open';
+      
+        if (isSideNavOpen) {
+          openSideNav();
+        } else {
+          closeSideNav();
+        }
+      
+        document.querySelector('.header-menu').addEventListener('click', function() {
+          const sideNav = document.querySelector('.side-nav');
+          if (sideNav.style.width === '100px') {
+            closeSideNav();
+            localStorage.setItem('sideNavState', 'closed'); 
+            
+          } else {
+            openSideNav();
+            localStorage.setItem('sideNavState', 'open');
+            
+          }
+        });
+      
+        function openSideNav() {
+          document.querySelector('.side-nav').style.width = '100px';
+          document.querySelector('.side-menu').style.padding = '50px 0';
+          document.querySelectorAll('.side-text, .side-link-text').forEach(function(elem) {
+            elem.style.display = 'none';
+          });
+          document.querySelectorAll('.side-link, .side-title').forEach(function(elem) {
+            elem.style.justifyContent = 'center';
+          });
+          document.querySelector('main').style.marginLeft = '100px';
+          const header = document.querySelector('header');
+          header.style.marginLeft = '100px';
+          header.style.width = 'calc(100% - 100px)';
+          document.querySelector('.header-menu').src = "{% static 'images/icons/next.png' %}";
+        }
+      
+        function closeSideNav() {
+          document.querySelector('.side-nav').style.width = '250px';
+          document.querySelector('.side-menu').style.padding = '50px 20px';
+          document.querySelectorAll('.side-text, .side-link-text').forEach(function(elem) {
+            elem.style.display = 'flex';
+          });
+          
+          document.querySelectorAll('.side-link').forEach(function(elem) {
+            elem.style.justifyContent = 'start';
+          });
+          document.querySelector('.side-text').style.flexDirection = 'column';
+
+          document.querySelector('main').style.marginLeft = '250px';
+          const header = document.querySelector('header');
+          header.style.marginLeft = '250px';
+          header.style.width = 'calc(100% - 250px)';
+          document.querySelector('.header-menu').src = "{% static 'images/icons/hamburger.png' %}";
+        }
+      });
+      
     </script>
   </body>
 </html>
