@@ -1,8 +1,17 @@
 /* Booking Steps */
-.booking_container {
+
+.booking_container_main {
     width: 80%;
     margin: 20px auto;
+    flex: 3;
 }
+
+.booking-page-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; 
+}
+
 
 .booking-step-wrapper {
     display: flex;
@@ -53,10 +62,10 @@
     z-index: 0;
 }
 
-
 /* Booking Forms */
 
 .booking-form-wrapper {
+    margin-left: 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -120,6 +129,7 @@
 }
 
 .room-image img {
+    margin: 10px;
     width: 300px;
     height: auto;
     border-radius: 2px; 
@@ -212,6 +222,18 @@
 .booking-view-details:hover {
     color: #333;
 }
+
+/* Sidebar */
+
+.booking-page-sidebar {
+    flex: 1;
+    background-color: #fff; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    padding: 20px;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+}
+
 
 
 
