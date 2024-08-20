@@ -1,17 +1,19 @@
 /* Booking Steps */
 
-.booking_container_main {
-    width: 80%;
-    margin: 20px auto;
-    flex: 3;
-}
+
 
 .booking-page-wrapper {
+    margin: 30px;
     display: flex;
     justify-content: space-between;
     gap: 20px; 
 }
 
+.booking_container_main {
+    width: 80%;
+    margin: 20px auto;
+    flex: 3;
+}
 
 .booking-step-wrapper {
     display: flex;
@@ -65,7 +67,6 @@
 /* Booking Forms */
 
 .booking-form-wrapper {
-    margin-left: 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -227,12 +228,98 @@
 
 .booking-page-sidebar {
     flex: 1;
-    background-color: #fff; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    padding: 20px;
-    border-radius: 4px;
-    font-family: Arial, sans-serif;
+    background-color: #fff;
+    font-family: 'Arial', sans-serif;
 }
+
+.booking-stay-wrapper{
+    border-radius: 2px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 15px 10px 15px 10px;
+    margin-bottom: 20px;
+}
+
+.booking-stay-wrapper h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.booking-total h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 5px 0;
+}
+
+.booking-stay-wrapper ul{
+    list-style: none;
+    display: block;
+    padding: 0;
+    margin: 2px 0 2px;
+    font-size: 1em;
+    color: #333;
+}
+
+
+.booking-stay-wrapper ul li {
+    font-size: 14px;
+    color: #666;
+}
+
+.booking-stay-wrapper ul li span {
+    margin-bottom: 5px;
+    font-weight: 400;
+    color: #333;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 10px 0;
+}
+
+.bar-yellow{
+    background-color: #a17b5e;
+    display: block;
+    width: 50px;
+    height: 3px;
+    margin-bottom: 10px;
+}
+
+.booking-total {
+    display: flex;
+    justify-content: space-between;
+}
+
+.booking-contact {
+    border-radius: 2px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 15px 10px 15px 10px;
+}
+
+.booking-contact p{
+    color: #656A70;
+    margin-bottom: 10px;
+}
+
+.booking-contact h3{
+    margin-bottom: 10px;
+}
+
+.contact-info{
+    list-style: none;
+    display: block;
+    padding: 0;
+    margin: 10px 0 10px;
+    font-size: 1em;
+}
+
+.contact-info a{
+    color: #333;
+}
+
+
+
 
 
 
