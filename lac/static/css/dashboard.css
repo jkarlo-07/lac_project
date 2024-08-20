@@ -247,13 +247,43 @@ main {
   .header-menu {
     display: none;
   }
-
-
-.side-nav {
-  transition: width 0.3s ease;
-}
 }
 
 @media screen and (max-width: 767px) {
-  
+  .side-menu {
+    display: none;
+  }
+
+  main {
+    margin-left: 0;
+  }
+
+  .header-title {
+    display: none;
+  }
+
+  .side-text {
+    display: none;
+  }
+
+  .search-input-container {
+    display: none;
+  }
+
+  .side-nav {
+    height: 56px;
+    width: 65px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .side-text {
+    display: none;
+  }
+
+  .side-logo {
+    width: 40px;
+    object-fit: cover;
+  }
+
 }
