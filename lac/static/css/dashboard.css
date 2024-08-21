@@ -143,6 +143,8 @@ header {
   width: 250px;
   padding: 15px;
   transition: width 0.3s ease;
+  background-color: #ffffff;
+  z-index: 1000;
 }
 
 .side-title {
@@ -258,10 +260,6 @@ main {
     margin-left: 0;
   }
 
-  .header-title {
-    display: none;
-  }
-
   .side-text {
     display: none;
   }
@@ -286,4 +284,20 @@ main {
     object-fit: cover;
   }
 
+  .header-menu {
+    display: block;
+  }
+
+  .header-text {
+    display: none;
+  }
+
+  header {
+    padding: 0;
+    height: 56px;
+    width: calc(100vw - 60px);
+    margin-left: 60px;
+    padding-right: 20px;
+  }
+  
 }
