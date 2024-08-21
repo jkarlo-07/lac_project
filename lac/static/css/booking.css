@@ -319,6 +319,18 @@
 }
 
 
+/* Booking Step 2 */
+
+
+.room-select-wrapper{
+    border-radius: 2px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 15px 10px 15px 10px;
+}
+
+
+
+
 
 
 

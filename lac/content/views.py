@@ -63,3 +63,6 @@ def about_view(request):
 
 def book_view1(request):
     return render(request, "content/booking.html")
+
+def book_view2(request):
+    return render(request, "content/book_step2.html")
