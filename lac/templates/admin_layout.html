@@ -268,7 +268,7 @@
       const isSideNavOpen = localStorage.getItem("sideNavState") === "open";
 
       function smallerPhone() {
-        
+        console.log("using smaller phone");
         const sideText = document.querySelector(".side-text");
         const mainPage = document.querySelector("main");
         const sideNav = document.querySelector(".side-nav");
@@ -276,17 +276,20 @@
         const headerTitle = document.querySelector(".header-title");
         const headerMenu = document.querySelector(".header-menu");
         const headerText = document.querySelector(".header-text");
+        const sideMenu = document.querySelector(".side-menu");
 
         sideText.style.display = "none";
         mainPage.style.marginLeft = "0";
         mainPage.style.marginTop = "60px";
         sideNav.style.width = "60px";
+        sideNav.style.height = "56px";
         header.style.marginLeft = "60px";
         header.style.width = "calc(100vw - 60px)";
         sideText.style.display = "none";
         headerMenu.style.display = "block";
         headerTitle.style.display = "block";
         headerText.style.display = "none";
+        sideMenu.style.display = "none";
       }
 
       function handleResize() {
@@ -294,6 +297,7 @@
           const sideText = document.querySelector(".side-text");
 
           if (window.innerWidth < 767) {
+            console.log("line 300");
             smallerPhone();
           } else if (window.innerWidth < 1024) {
             sideText.style.display = "flex";
@@ -307,33 +311,80 @@
 
       if (isSideNavOpen) {
         if (window.innerWidth < 767) {
+          console.log("line 314");
           smallerPhone()
         } else {
           openSideNav();
         }
       } else {
         if (window.innerWidth < 767) {
+          console.log("line 321");
           smallerPhone()
         } else {
           closeSideNav();
         }
       }
 
-      document.querySelector(".header-menu")
-        .addEventListener("click", function () {
-          const sideNav = document.querySelector(".side-nav");
-          if (sideNav.style.width === "100px") {
-            closeSideNav();
+      document.querySelector(".header-menu").addEventListener("click", function () {
+        const sideNav = document.querySelector(".side-nav");
+        const main = document.querySelector("main");
+        
+        if (window.innerWidth <= 767) {
+          if (main.style.marginLeft === "60px") {
+            console.log("line 334");
+            smallerPhone();
             localStorage.setItem("sideNavState", "closed");
           } else {
-            openSideNav();
+            openNavPhone();
             localStorage.setItem("sideNavState", "open");
           }
-        });
+          return; // Exit the function after handling the mobile logic
+        }
+        
+        // Code for screen sizes greater than 767px
+        if (sideNav.style.width === "100px") {
+          console.log("line 346");
+          closeSideNav();
+          localStorage.setItem("sideNavState", "closed");
+        } else {
+          openSideNav();
+          localStorage.setItem("sideNavState", "open");
+        }
+      });
+      
+      function openNavPhone() {
+        console.log("using openNavPhone");
+        document
+          .querySelectorAll(".side-link-text")
+          .forEach(function (elem) {
+            elem.style.display = "none";
+          });
+        const sideMenu = document.querySelector(".side-menu");
+        const sideNav = document.querySelector(".side-nav");
+        const sideTitle = document.querySelector(".side-title");
+        const headerMenu = document.querySelector(".header-menu");
+        const main = document.querySelector("main");
+        main.style.marginLeft = "60px";
+        main.style.padding = "20px";
+        sideMenu.style.display = "flex";
+        sideMenu.style.padding = "20px 0";
+        sideNav.style.height = "100vh";
+        sideNav.style.justifyContent = "start";
+        sideTitle.style.height = "56px";
+      }
+
+      function closeNavPhone() {
+        console.log("closing side nav with phone");
+        
+      }
+      
 
       function openSideNav() {
+        console.log("using open sidenav");
+        const sideMenu = document.querySelector(".side-menu");
         document.querySelector(".side-nav").style.width = "100px";
-        document.querySelector(".side-menu").style.padding = "50px 0";
+        sideMenu.style.padding = "50px 0";
+        sideMenu.style.display = "flex";
         document
           .querySelectorAll(".side-text, .side-link-text")
           .forEach(function (elem) {
@@ -353,7 +404,9 @@
       }
 
       function closeSideNav() {
+        console.log("using close sidenav");
         document.querySelector(".side-nav").style.width = "250px";
+        document.querySelector(".side-menu").style.display = "flex";
         document.querySelector(".side-menu").style.padding = "50px 20px";
         document
           .querySelectorAll(".side-text, .side-link-text")
