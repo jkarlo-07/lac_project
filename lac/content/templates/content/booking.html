@@ -7,6 +7,8 @@
 
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+  <link rel="stylesheet" href="{% static 'css/booking1.css' %}">
+  <script src="{% static "js/level.js" %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -47,7 +49,7 @@
                 <span class="guests-display">4 Guest(s)</span>
             </div>
             <div class="booking-form-button-wrapper">
-                <input type="submit" value="Search" class="booking-form-button">
+                <input type="submit" value="Search" class="booking-button-step1">
             </div>
         </div>
         <div class="room-container">
@@ -129,7 +131,7 @@
             </div>
           </div>
     </div>
-    <div class="booking-page-sidebar">
+    <div class="booking-page-sidebar atWrapper">
         <div class="booking-stay-wrapper">
             <h3>Your Stay</h3>
             <hr class="bar-yellow">

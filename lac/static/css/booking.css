@@ -104,7 +104,7 @@
     text-align: center;
 }
 
-.booking-form-button {
+.booking-button-step1 {
     background-color: #b08d6f;
     color: #fff;
     border: none;
@@ -113,7 +113,7 @@
     cursor: pointer;
 }
 
-.booking-form-button:hover {
+.booking-button-step1:hover {
     background-color: #a17b5e;
 }
 
