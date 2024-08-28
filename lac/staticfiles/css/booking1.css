@@ -1,0 +1,50 @@
+@media screen and (max-width: 1024px) {
+
+    .booking-page-wrapper {
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .booking_container_main{
+        width: 100%;
+    }
+
+    .booking-contact{
+        display: none;
+    }
+
+    .booking-form-wrapper{
+        flex-direction: column;
+        height: auto;
+        align-items: start;
+    }
+
+    .booking-form{
+        width: 100%;
+        align-items: start;
+        padding: 10px;
+        border-bottom: 1px solid rgba(116, 114, 114, 0.29)
+    }
+
+    .booking-form label{
+        font-size: 15px;
+    }
+
+    .booking-form-button-wrapper{
+        width: 100%;
+    }
+
+    .booking-button-step1{
+        width: 100%;
+    }
+
+
+}
+
+@media screen and (max-width: 900px) {
+
+}
+
+
+@media screen and (max-width: 767px) {
+}
