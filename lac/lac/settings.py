@@ -87,14 +87,15 @@ WSGI_APPLICATION = 'lac.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.mysql",
         "NAME": "lac_db",
-        "USER": "postgres",
-        "PASSWORD": "password",
-        "HOST": "localhost",  
-        "PORT": "5432",   
+        "USER": "root",  # Replace with your MySQL username
+        "PASSWORD": "password",  # Replace with your MySQL password
+        "HOST": "localhost",  # Or your MySQL server address
+        "PORT": "3306",  # Default MySQL port
     }
 }
+
 
 
 # Password validation
