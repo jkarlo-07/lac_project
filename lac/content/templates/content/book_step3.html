@@ -1,0 +1,109 @@
+{% extends "layout.html" %} {% load static %} 
+
+{% block title %} Booking {%endblock %} 
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/booking.css' %}" />
+{% endblock %} 
+
+{% block content %}
+<div class="booking3-wrapper">
+  <div class="booking3-container">
+    <div class="booking-step-wrapper clearfix">
+      <div class="booking-step active">
+        <a class="step-number">1</a>
+        <a class="step-label">Rooms</a>
+      </div>
+      <div class="booking-step active">
+        <a class="step-number">2</a>
+        <a class="step-label">Add-Ons</a>
+      </div>
+      <div class="booking-step active">
+        <a class="step-number">3</a>
+        <a class="step-label">Payment</a>
+      </div>
+      <div class="booking-step">
+        <a class="step-number">4</a>
+        <a class="step-label">Complete</a>
+      </div>
+      <div class="booking-step-line">
+        <div style="width: 25%"></div>
+      </div>
+    </div>
+    <div class="book3-form">
+      <h2 class="book3-heading">Billing Details</h2>
+      <div class="book3-twofields">
+        <div class="book3-field">
+          <label for="book3-fname">First Name:</label>
+          <input type="text" id="book3-fname" />
+        </div>
+        <div class="book3-field">
+          <label for="book3-lname">Last Name:</label>
+          <input type="text" id="book3-lname" />
+        </div>
+      </div>
+      <div class="book3-twofields">
+        <div class="book3-field">
+          <label for="book3-city">City:</label>
+          <input type="text" id="book3-city" />
+        </div>
+        <div class="book3-field">
+          <label for="book3-zipcode">Zip Code:</label>
+          <input type="text" id="book3-zipcode" />
+        </div>
+      </div>
+      <div class="book3-twofields">
+        <div class="book3-field">
+          <label for="book3-phone">Phone:</label>
+          <input type="text" id="book3-phone" />
+        </div>
+        <div class="book3-field">
+          <label for="book3-phone">Email:</label>
+          <input type="text" id="book3-email" />
+        </div>
+      </div>
+    </div>
+    <div class="book3-pay-summ">
+      <h2 class="book3-heading">Payment Summary</h2>
+      <div class="book3-totals">
+        <div class="book3-totals-row">
+          <p class="brown-bg white-fg">Payment</p>
+          <p class="brown-bg white-fg">Subtotal</p>
+        </div>
+        <div class="book3-totals-row">
+          <p>Reservation</p>
+          <p class="white-border">$1999</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="brown-bg white-fg  white-border-bottom">SubTotal</p>
+          <p class="white-border">$1000</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="brown-bg white-fg">Total</p>
+          <p class="white-border-bottom">$9000</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="book3-book-btn">Book Now</p>
+  </div>
+  <div class="booking3-aside">
+    <div class="book3-aside-info">
+      <h2>Room 1 of 1</h2>
+      <p>---</p>
+      <p>Dates: Jan 11, 2024 - Jan 12, 2024</p>
+      <p>Guests: 2 Adults, 2 Children</p>
+      <div>
+        <img src="#" alt="room" />
+        <div>
+          <p>Deluxe Queen Room</p>
+          <p>Full Board</p>
+          <p>Full Nights</p>
+        </div>
+        <p>$1000</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
