@@ -33,7 +33,7 @@ EMAIL_HOST_USER = 'lacresort1@gmail.com'
 EMAIL_HOST_PASSWORD = 'himx eulu imah xuxn'  
 DEFAULT_FROM_EMAIL = 'lacresort1@gmail.com'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 
 
 # Application definition
