@@ -51,6 +51,7 @@
             </div>
           </div>
           <a href="#" class="expand-button-hidden">Read More</a>
+          <hr class="divider">
           <form class="room-form">
             <div class="room-input">
               <label for="room-people">People</label>
@@ -62,7 +63,7 @@
             </div>
             <div class="room-input">
               <label for="room-checkin">Time</label>
-              <div>
+              <div class="time-box">
                 <input type="text" class="room-checkin" id="room-checkin">
                 <input type="text" class="room-checkout" id="room-checkout">
               </div>
@@ -81,26 +82,30 @@
     </div>
     <div class="booking-aside-step2">
       <div class="step2-roominfo">
-          <h2>Room 1 of 1</h2>
-        <p>-</p>
-        <p>Aug 28, 2024 - Sep 17, 2024</p>
-        <p>2 Adults, 2 Children</p>
-        <div>
-          <img src="" alt="image">
-          <div>
+          <h3>Room 1 of 1</h3>
+          <hr class="bar-yellow">
+        <ul>
+          <li><span>Dates: </span>Aug 28, 2024 - Sep 17, 2024</li>
+          <li><span>Guest: </span>2 Adults, 2 Children </li>
+        </ul>
+        <div class="step2-info">
+          <img src="{% static 'images/photos/ehouse-room.jpg' %}" alt="image">
+          <div class="info-text">
             <p>Deluxe Queen Room</p>
-            <p>Full Board</p>
-            <p>20 Nights</p>
+            <p style="font-style: italic">Full Board</p>
+            <p style="text-decoration: underline">20 Nights</p>
           </div>
           <p>P6000</p>
-          <p>-</p>
-          <div>
+        </div>
+        <hr class="divider">
+          <div class="info-total"> 
             <p>Total</p>
             <p>P250</p>
           </div>
-          <p>Continue</p>
-          <p>Add a Room?</p>
-        </div>
+          <div class="continue-add">
+            <a class="with-color" href="#">Continue</a>
+            <a class = "without-color" href="">Add a Room?</a>
+          </div>  
       </div>
       
     </div>
