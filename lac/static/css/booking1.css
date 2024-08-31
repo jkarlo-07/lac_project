@@ -1,3 +1,56 @@
+
+/* Booking Step 4*/
+.booking-page4-wrapper{
+    margin: 100px;
+}
+
+.booking-complete-wrapper h3{
+    font-size: 35px;
+    font-weight: normal;
+    text-align: center;
+    margin: 20px;
+}
+
+.booking-notification-wrapper{
+    margin-bottom: 40px;
+    padding: 25px 20px;
+    border-radius: 2px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+
+}
+
+.lac-hotel-title{
+    margin-bottom: 40px;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.bar-yellow.space{
+    margin-top: 10px;
+}
+
+.booking-confirmation-message{
+    margin-bottom: 40px;
+    color: #656A70;
+}
+
+.booking-checkin-checkout{
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.hotel-contact-details-list{
+    display: flex;
+    flex-direction: column;
+}
+
+.hotel-contact-details-list li{
+    margin-bottom: 20px;
+}
+
+
+
 /*CSS for Step 2 Booking */
 
 .time-box{
@@ -98,6 +151,13 @@
     background-color: none;
 }
 
+@media screen and (max-width: 1265px) {
+        /* Step 4 */
+        .booking-page4-wrapper{
+            margin: 100px 40px;
+        }
+}
+
 /*CSS for Step 1 Booking */
 
 @media screen and (max-width: 1024px) {
@@ -140,6 +200,11 @@
         width: 100%;
     }
 
+    .booking-page4-wrapper{
+        margin: 100px 20px;
+    }
+
+
 
 }
 
@@ -156,6 +221,10 @@
 
     .room-image img{
         width: 95vw;
+    }
+
+    .booking-page4-wrapper{
+        margin: 50px 10px   ;
     }
 }
 
