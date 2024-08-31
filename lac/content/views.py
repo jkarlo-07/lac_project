@@ -69,3 +69,6 @@ def book_view2(request):
 
 def book_view3(request):
     return render(request, "content/book_step3.html")
+
+def book_view4(request):
+    return render(request, "content/book_step4.html")
