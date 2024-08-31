@@ -38,16 +38,24 @@
         <div class="booking-form-wrapper">
             <div class="booking-form">
                 <img src="{% static 'images/icons/calendar-1.png' %}" alt="">
-                <label>Check In</label>
-                <span class="checkin-display">01/01/2024</span>
+                <div>
+                    <label>Check In</label>
+                    <span class="checkin-display">01/01/2024</span>
+                </div>  
             </div>
             <div class="booking-form">
-                <label>Check Out</label>
-                <span class="checkout-display">01/01/2024</span>
+                <img src="{% static 'images/icons/calendar-1.png' %}" alt="">
+                <div>
+                    <label>Check Out</label>
+                    <span class="checkout-display">01/01/2024</span>
+                </div>
             </div>
             <div class="booking-form">
-                <label>Guests</label>
-                <span class="guests-display">4 Guest(s)</span>
+                <img id="user-3"src="{% static 'images/icons/cake-1.png' %}" alt="">
+                <div>
+                    <label>Guests</label>
+                    <span class="guests-display">4 Guest(s)</span>
+                </div>
             </div>
             <div class="booking-form-button-wrapper">
                 <input type="submit" value="Search" class="booking-button-step1">
@@ -153,9 +161,9 @@
             <hr class="bar-yellow">
             <p>Our dedicated reservations team is ready to help you around the clock.</p>
             <ul class="contact-info">
-                <li><a href="#">55 Columbus Circle, New York, NY</a></li>
-                <li><a href="#">1111-2222-3333</a></li>
-                <li><a href="#">hello@quitenicestuff.com</a></li>
+                <li class="contact-list"><img class="contact-icon-image" src="{% static 'images/icons/location-pin-1.png' %}" alt=""><a href="#">55 Columbus Circle, New York, NY</a></li>
+                <li class="contact-list"><img class="contact-icon-image" src="{% static 'images/icons/phone-1.png' %}" alt=""><a href="#">1111-2222-3333</a></li>
+                <li class="contact-list"><img class="contact-icon-image" src="{% static 'images/icons/email-1.png' %}" alt=""><a href="#">hello@quitenicestuff.com</a></li>
             </ul>
         </div>
     </div>

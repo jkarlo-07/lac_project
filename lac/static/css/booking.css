@@ -1,5 +1,8 @@
 /* Booking Steps */
 
+:root{
+    --box-property: 0px 0px 12px 5px rgba(0, 0, 0, 0.1);
+}
 
 
 .booking-page-wrapper {
@@ -72,17 +75,28 @@
     border-radius: 5px;
     height: 100px;
     background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    padding: 10px;
+    box-shadow: var(--box-property);
+    padding: 20px;
+    margin-top: 30px;
 }
 
 .booking-form {
     display: flex;
-    flex-direction: column;
     align-items: center;
     text-align: center;
     flex: 1;
     font-family: Arial, sans-serif;
+    gap: 10px;
+}
+
+.booking-form div{
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-form img{
+    width: 20px;
+    height: 20px;
 }
 
 .booking-form label {
@@ -97,9 +111,13 @@
     color: #6c757d;
 }
 
+#user-3{
+    width: 30px;
+    height: auto;
+}
+
 
 .booking-form-button-wrapper {
-    flex: 1;
     text-align: center;
 }
 
@@ -234,8 +252,8 @@
 
 .booking-stay-wrapper{
     border-radius: 2px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    padding: 15px 10px 15px 10px;
+    box-shadow: var(--box-property);
+    padding: 30px;
     margin-bottom: 20px;
 }
 
@@ -293,8 +311,8 @@
 
 .booking-contact {
     border-radius: 2px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    padding: 15px 10px 15px 10px;
+    box-shadow: var(--box-property);
+    padding: 30px;
 }
 
 .booking-contact p{
@@ -308,7 +326,9 @@
 
 .contact-info{
     list-style: none;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     padding: 0;
     margin: 10px 0 10px;
     font-size: 1em;
@@ -316,6 +336,17 @@
 
 .contact-info a{
     color: #333;
+}
+
+.contact-icon-image{
+    width: 20px;
+    height: auto;
+}
+
+.contact-list{
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 
@@ -544,6 +575,10 @@
     .book3-bed-info {
         display: flex;
         flex-direction: column;
+    }
+
+    .booking-stay-wrapper{
+        margin-top: 40px;
     }
 
 
