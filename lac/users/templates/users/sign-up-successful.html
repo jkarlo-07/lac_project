@@ -1,0 +1,17 @@
+{% extends "layout.html" %} 
+{% load static %} 
+
+{% block title %} 
+  Sign up Success
+{%endblock%}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h1><span class="signup-succesful">Signup succesful.</span> <span style="color: rgb(7, 4,19)">Please check your email to activate you account</span></h1>
+    </div>
+
+{% endblock %}

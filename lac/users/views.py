@@ -16,3 +16,6 @@ def signup_view(request):
         form = UserCreationForm()
     
     return render(request, "users/signup.html", {"form": form})
+
+def signupsuc_view(request):
+    return render(request, "users/sign-up-successful.html")

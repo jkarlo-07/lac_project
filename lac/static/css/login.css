@@ -1,3 +1,11 @@
+
+/* Sign-up Sucessfully*/
+
+.signup-succesful{
+  color: rgb(181, 138, 96);
+  font-style: italic;
+}
+
 a {
     text-decoration: none;
 }
@@ -101,6 +109,8 @@ li {
     #login-form{
       padding: 60px;
     }
+
+    
     
   }
 
