@@ -60,3 +60,6 @@ def signup_view(request):
 
 def signupsuc_view(request):
     return render(request, "users/sign-up-successful.html")
+
+def forgot_view(request):
+    return render(request, "users/forgot-password.html")
