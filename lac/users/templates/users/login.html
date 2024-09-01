@@ -1,61 +1,64 @@
-{% extends "layout.html" %} 
-{% load static %} 
+{% extends 'layout.html' %}
+{% load static %}
 
-{% block title %} 
+{% block title %}
   Log In
-{%endblock%}
+{% endblock %}
 
 {% block extra_head %}
-  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/users.css' %}" />
 {% endblock %}
 
 {% block content %}
-<div class="main-container">
-  <img src="{% static 'images/photos/lac1.jpg' %}" alt="cover-page" id="cover-page">
+  <div class="main-container">
+    <img src="{% static 'images/photos/lac1.jpg' %}" alt="cover-page" id="cover-page" />
 
-  <form method="post" id="login-form" novalidate>
-      <h1 class="brown-fg">Login</h1>
-      <div>
-          <label for="email">Email</label><br>
-          <input type="email" name="email" id="email">
-      </div>
+    <form method="post" id="login-form" novalidate>
+      {% csrf_token %}
 
-      <div>
-          <label for="password">Password</label><br>
-          <div id="password-container">
-              <input type="password" name="password" id="password">
-              <img src="{% static 'images/icons/hidden.png' %}" alt="" id="password-toggle">
+      {% if messages %}
+        <div>
+          <h1 class="brown-fg">Login</h1>
+          <div class="messages">
+            {% for message in messages %}
+              <p class="message {{ message.tags }} ">{{ message }}</p>
+            {% endfor %}
           </div>
-      </div>
-
-      <button>Log in</button>
+        </div>
+      {% endif %}
       <div>
-          <a href="forgot-password.php" class="gray-fg">
-              <p>Forgot Password?</p>
-          </a><br>
-          <p class="gray-fg">Don't have an account?</p>
-          <a href="{% url 'users:signup' %}">
-              <p id="signup-href">Create account</p>
-          </a>
+        <label for="username">Username</label><br />
+        <input type="text" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}" />
+        {% for error in form.username.errors %}
+          <p class="error">{{ error }}</p>
+        {% endfor %}
       </div>
-  </form>
-</div>
 
+      <div>
+        <label for="password">Password</label><br />
+        <div id="password-container">
+          <input type="password" name="password" id="password" />
+          <img src="{% static 'images/icons/hidden.png' %}" alt="" id="password-toggle" />
+        </div>
+        {% for error in form.password.errors %}
+          <p class="error">{{ error }}</p>
+        {% endfor %}
+      </div>
 
+      <button type="submit">Log in</button>
+
+      <div>
+        <a href="forgot-password.php" class="gray-fg"><p>Forgot Password?</p></a><br />
+        <p class="gray-fg">Don't have an account?</p>
+        <a href="{% url 'users:signup' %}"><p id="signup-href">Create account</p></a>
+      </div>
+    </form>
+  </div>
 {% endblock %}
 
 {% block extra_script %}
-  var passwordImg = document.getElementById('password-toggle');
-  var passwordInput = document.getElementById('password');
+  var passwordImg = document.getElementById('password-toggle'); var passwordInput = document.getElementById('password');
 
-  passwordImg.addEventListener('click', function() {
-      if (passwordInput.type == 'password') {
-          passwordInput.type = 'text';
-          passwordImg.src = "{% static 'images/icons/view.png' %}"
-      }else{
-          passwordInput.type = 'password';
-          passwordImg.src = "{% static 'images/icons/hidden.png' %}";
-      }
-  });
-
+  passwordImg.addEventListener('click', function() { if (passwordInput.type == 'password') { passwordInput.type = 'text'; passwordImg.src = "{% static 'images/icons/view.png' %}" } else { passwordInput.type = 'password'; passwordImg.src = "{% static 'images/icons/hidden.png' %}"; } });
 {% endblock %}
