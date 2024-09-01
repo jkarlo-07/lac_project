@@ -1,3 +1,54 @@
+/* Forgot Password */
+
+.forgot-container{
+  margin: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forgot-text{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.forgot-container h1{
+  color: rgb(181, 138, 96);
+}
+
+.forgot-container input{
+  height: 30px;
+  width: 500px;
+  border: 1px solid #969696;
+  padding-left: 5px;
+}
+
+.forgot-container input:focus,
+.forgot-container input:active {
+  outline: none;  
+}
+
+.forgot-container button{
+  height: 30px;
+  width: 60px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(181, 138, 96);
+  color: white;
+}
+
+
+
+.forgot-container button:hover{
+  background-color: #b37a4f;
+}
+
+.forgot-container > *{
+  margin-bottom: 10px;
+}
+
 
 /* Sign-up Sucessfully*/
 
@@ -12,7 +63,7 @@
   font-style: italic;
 }
 
-.signup-suc-container h1, h2, h3{
+.signup-suc-container > *{
   margin-bottom: 20px;
 }
 
@@ -125,10 +176,7 @@ li {
     #login-form{
       padding: 60px;
     }
-
-    
-    
-  }
+}
 
 
 
@@ -137,12 +185,44 @@ li {
     width: 75vw;
     padding: 50px;
    }
-  }
+
+   .forgot-container{
+    margin: 40px;
+    }
+
+    .forgot-container input{
+      width: 80vw;
+    }
+
+    .signup-suc-container h1{
+      font-size: 40px;
+    }
+
+    .signup-suc-container h2{
+      font-size: 18px;
+    }
+
+    .signup-suc-container h3{
+      font-size: 13px;
+    }
+}
 
 @media screen and (max-width: 568px) {
   #login-form{
     width: 95vw;
     padding: 35px;
    }
+
+   .forgot-container{
+    margin: 20px;
+    }
+
+    .forgot-container h1{
+      font-size: 25px;
+    }
+
+    .signup-suc-container h1{
+      font-size: 30px;
+    }
   
   }
