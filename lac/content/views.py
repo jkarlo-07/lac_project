@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.decorators import login_required
 from .models import RoomType
 
 def index(request):
@@ -61,6 +61,7 @@ def contact_view(request):
 def about_view(request):
     return render(request, "content/about.html")
 
+@login_required(login_url="users:login")
 def book_view1(request):
     return render(request, "content/booking.html")
 

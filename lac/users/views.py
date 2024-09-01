@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django import forms
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -24,7 +24,6 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError("Please enter a valid email address.")
         return email
 
-
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -34,7 +33,15 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('content:book_1')  
+                
+                next_url = request.GET.get('next') or request.POST.get('next')
+                if next_url:
+                    return redirect(next_url)
+                
+                if user.is_staff:
+                    return redirect("dashboard:dashboard")
+                else:
+                    return redirect('content:book_1')  
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -63,3 +70,8 @@ def signupsuc_view(request):
 
 def forgot_view(request):
     return render(request, "users/forgot-password.html")
+
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect("content:index")

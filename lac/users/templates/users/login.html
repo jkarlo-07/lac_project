@@ -16,7 +16,9 @@
 
     <form method="post" id="login-form" novalidate>
       {% csrf_token %}
-
+      {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}" />
+      {% endif %}
       <div>
         <h1 class="brown-fg">Login</h1>
         {% if messages %}

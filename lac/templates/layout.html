@@ -90,7 +90,11 @@
               <a href="" class="nav-link book-now-mobile-btn">BOOK NOW</a>
             </li>
           </ul>
-          <a href=""><button class="header-book-btn">BOOK NOW</button></a>
+          <form action="{% url 'users:logout' %}" method="post">
+            {% csrf_token %}
+            <button class="header-book-btn">BOOK NOW</button>
+          </form>
+          
         </nav>
       </div>
     </header>
