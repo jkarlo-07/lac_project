@@ -1,87 +1,84 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 {% load static %}
 
-{% block title %} 
-  Sign Up 
+{% block title %}
+  Sign Up
 {% endblock %}
 
 {% block extra_head %}
-  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
-  <link rel="stylesheet" href="{% static 'css/users.css' %}">
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/users.css' %}" />
 {% endblock %}
 
 {% block content %}
-<div class="main-container">
-  <img src="{% static 'images/photos/lac1.jpg' %}" alt="cover-page" id="cover-page">
-  <form action="" method="post" id="signup" novalidate>
+  <div class="main-container">
+    <img src="{% static 'images/photos/lac1.jpg' %}" alt="cover-page" id="cover-page" />
+    <form action="" method="post" id="signup" novalidate>
       {% csrf_token %}
       <h1 class="brown-fg">Sign up</h1>
 
       <div>
-          <label for="username">Username</label><br>
-          <input type="text" id="username" name="username" value="{{ form.username.value|default_if_none:'' }}">
-          {% for error in form.username.errors %}
+        <label for="username">Username</label><br />
+        <input type="text" id="username" name="username" value="{{ form.username.value|default_if_none:'' }}" />
+        {% for error in form.username.errors %}
           <p class="error">{{ error }}</p>
-          {% endfor %}
+        {% endfor %}
       </div>
 
       <div>
-          <label for="email">Email</label><br>
-          <input type="email" id="email" name="email" value="{{ form.email.value|default_if_none:'' }}">
-          {% for error in form.email.errors %}
+        <label for="email">Email</label><br />
+        <input type="email" id="email" name="email" value="{{ form.email.value|default_if_none:'' }}" />
+        {% for error in form.email.errors %}
           <p class="error">{{ error }}</p>
-          {% endfor %}
+        {% endfor %}
       </div>
 
       <div>
-          <label for="password1">Password</label><br>
-          <div class="password-container">
-              <input type="password" id="password1" name="password1" class="password" value="{{ form.password1.value|default_if_none:'' }}">
-              <img src="{% static 'images/icons/hidden.png' %}" alt="" class="password-toggle">
-          </div>
-          {% for error in form.password1.errors %}
+        <label for="password1">Password</label><br />
+        <div class="password-container">
+          <input type="password" id="password1" name="password1" class="password" value="{{ form.password1.value|default_if_none:'' }}" />
+          <img src="{% static 'images/icons/hidden.png' %}" alt="" class="password-toggle" />
+        </div>
+        {% for error in form.password1.errors %}
           <p class="error">{{ error }}</p>
-          {% endfor %}
+        {% endfor %}
       </div>
 
       <div>
-          <label for="password2">Repeat password</label><br>
-          <div class="password-container">
-              <input type="password" id="password2" name="password2" class="password" value="{{ form.password2.value|default_if_none:'' }}">
-              <img src="{% static 'images/icons/hidden.png' %}" alt="" class="password-toggle">
-          </div>
-          {% for error in form.password2.errors %}
+        <label for="password2">Repeat password</label><br />
+        <div class="password-container">
+          <input type="password" id="password2" name="password2" class="password" value="{{ form.password2.value|default_if_none:'' }}" />
+          <img src="{% static 'images/icons/hidden.png' %}" alt="" class="password-toggle" />
+        </div>
+        {% for error in form.password2.errors %}
           <p class="error">{{ error }}</p>
-          {% endfor %}
+        {% endfor %}
       </div>
 
       <button type="submit">Sign up</button>
       <div>
-          <p class="gray-fg">Have an account?</p>
-          <a href="{% url 'users:login' %}">
-              <p id="login-href">Log In</p>
-          </a>
+        <p class="gray-fg">Have an account?</p>
+        <a href="{% url 'users:login' %}"><p id="login-href">Log In</p></a>
       </div>
-
-  </form>
-</div>
+    </form>
+  </div>
 {% endblock %}
 
 {% block add_script %}
-<script>
-  var passwordToggles = document.querySelectorAll('.password-toggle');
-  var passwordInputs = document.querySelectorAll('.password');
-
-  passwordToggles.forEach(function(toggle, index) {
-      toggle.addEventListener('click', function() {
-          if (passwordInputs[index].type === 'password') {
-              passwordInputs[index].type = 'text';
-              toggle.src = '{% static "images/icons/view.png" %}';
-          } else {
-              passwordInputs[index].type = 'password';
-              toggle.src = '{% static "images/icons/hidden.png" %}'; 
-          }
-      });
-  });
-</script>
+  <script>
+    var passwordToggles = document.querySelectorAll('.password-toggle')
+    var passwordInputs = document.querySelectorAll('.password')
+    
+    passwordToggles.forEach(function (toggle, index) {
+      toggle.addEventListener('click', function () {
+        if (passwordInputs[index].type === 'password') {
+          passwordInputs[index].type = 'text'
+          toggle.src = '{% static "images/icons/view.png" %}'
+        } else {
+          passwordInputs[index].type = 'password'
+          toggle.src = '{% static "images/icons/hidden.png" %}'
+        }
+      })
+    })
+  </script>
 {% endblock %}
