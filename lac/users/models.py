@@ -1,3 +1,5 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+class CustomUser(AbstractUser):
+    email_confirm_code = models.CharField(max_length=4, blank=True, null=True)
