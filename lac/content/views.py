@@ -1,7 +1,5 @@
-from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import BadHeaderError
 from django.shortcuts import render
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
