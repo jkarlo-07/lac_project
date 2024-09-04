@@ -1,0 +1,25 @@
+{% extends "layout.html" %} 
+{% load static %} 
+
+{% block title %} 
+  Forgot Password Pin
+{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="newpass-container">
+        <h1>New Password</h1>
+        <div class="newpass-form">
+            <h2>Enter New Password</h2>
+            <input type="text">
+            <h2>Confirm Password</h2>
+            <input type="Password">
+            <button type="button">CONFIRM</button>
+        </div>
+    </div>
+
+{% endblock %}

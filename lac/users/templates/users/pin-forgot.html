@@ -1,0 +1,25 @@
+{% extends "layout.html" %} 
+{% load static %} 
+
+{% block title %} 
+  Forgot Password Pin
+{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="pin-forgot-container">
+        <h1>Verification</h1>
+        <div class="pin-form">
+            <h2>Enter Verification Code</h2>
+            <input type="text">
+            <p>if you didn't receive a code. <a href="#">Resend</a></p>
+            <button type="button">Send</button>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,3 +1,102 @@
+/* New Password */
+
+.newpass-container{
+  margin: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.newpass-container input:focus,
+.newpass-container input:active {
+  outline: none;  
+}
+
+.newpass-container h1{
+  color: #b58a60;
+}
+
+.newpass-form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.newpass-form h2{
+  font-weight: normal;
+  font-size: 20px;
+}
+
+.newpass-form input,
+.newpass-form button{
+  width: 500px;
+  height: 30px;
+  border-radius: 20px;
+  border: 1px solid #969696;
+}
+
+.newpass-form input{
+  padding-left: 5px;
+}
+
+.newpass-form button{
+  background-color: #b58a60;
+  color: #fff;
+  border: none;
+}
+
+.newpass-form button:hover{
+  background-color: #b37a4f;
+}
+
+/* Pin Forgot Password */
+
+.pin-forgot-container{
+  margin: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pin-forgot-container h1{
+  color: #b58a60;
+}
+
+.pin-form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pin-form h2{
+  font-weight: normal;
+  font-size: 20px;
+}
+
+.pin-form input,
+.pin-form button{
+  width: 500px;
+  height: 30px;
+  border: 1px solid #969696;
+  border-radius: 20px;
+
+}
+
+.pin-form button{
+  background-color: rgb(181, 138, 96);
+  color: #fff;
+  border: none;
+}
+
+.pin-forgot-container input:focus,
+.pin-forgot-container input:active {
+  outline: none;  
+}
+
+.pin-form input{
+  padding-left: 5px;
+}
+
 /* Forgot Password */
 
 .forgot-container{
@@ -7,47 +106,49 @@
   align-items: center;
 }
 
+.forgot-container h1{
+  color: rgb(181, 138, 96);
+}
+
 .forgot-text{
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.forgot-container h1{
-  color: rgb(181, 138, 96);
+.forgot-text p{
+  font-size: 20px;
 }
 
-.forgot-container input{
-  height: 30px;
-  width: 500px;
-  border: 1px solid #969696;
+.forgot-text input{
   padding-left: 5px;
+  border: 1px solid #969696;
+  border-radius: 20px;
 }
 
-.forgot-container input:focus,
-.forgot-container input:active {
-  outline: none;  
-}
-
-.forgot-container button{
-  height: 30px;
-  width: 60px;
-  cursor: pointer;
+.forgot-text button{
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   background-color: rgb(181, 138, 96);
   color: white;
 }
 
-
-
-.forgot-container button:hover{
-  background-color: #b37a4f;
+.forgot-text button:hover{
+  background-color: #b37a4f
 }
 
-.forgot-container > *{
-  margin-bottom: 10px;
+.forgot-text input,
+.forgot-text button{
+  height: 30px;
+  width: 500px;
 }
+
+.forgot-text input:focus,
+.forgot-text input:active {
+  outline: none;  
+}
+
+
 
 
 /* Sign-up Sucessfully*/
@@ -176,6 +277,7 @@ li {
     #login-form{
       padding: 60px;
     }
+
 }
 
 
@@ -190,7 +292,8 @@ li {
     margin: 40px;
     }
 
-    .forgot-container input{
+    .forgot-text input,
+    .forgot-text button{
       width: 80vw;
     }
 
@@ -205,6 +308,38 @@ li {
     .signup-suc-container h3{
       font-size: 13px;
     }
+
+    .pin-forgot-container{
+      margin: 40px;
+    }
+
+    .pin-form h2{
+      font-size: 18px;
+    }
+
+    .pin-form p{
+      font-size: 14px;
+    }
+
+    .pin-form input,
+    .pin-form button{
+      width: 80vw;
+    }
+
+    .newpass-container{
+      margin: 40px;
+    }
+
+    .newpass-form h2{
+      font-size: 15px;
+    }
+
+    .newpass-form input, 
+    .newpass-form button{
+      width: 80vw;
+    }
+
+
 }
 
 @media screen and (max-width: 568px) {

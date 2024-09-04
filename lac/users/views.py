@@ -79,6 +79,12 @@ def forgot_view(request):
                 messages.error(request, "No user found within this email")
     return render(request, "users/forgot-password.html")
 
+def pin_view(request):
+    return render(request, "users/pin-forgot.html")
+
+def newpass_view(request):
+    return render(request, "users/newpass.html")
+
 def logout_view(request):
     if request.method == "POST":
         logout(request)
