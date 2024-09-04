@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import RoomType
+from lac.utils.email_utils import send_email_contact
 
 def index(request):
     return render(request, "content/index.html")
@@ -27,26 +28,12 @@ def contact_view(request):
         
         if name and email and subject and message:
             try:
-                html_message = render_to_string('content/email_template.html', {
-                    'name': name,
-                    'email': email,
-                    'subject': subject,
-                    'message': message
-                })
+                result = send_email_contact(name, email, subject, message, 'lacresortfarm@gmail.com', 'content/email_template.html')
                 
-                plain_message = strip_tags(html_message)
-                
-                send_mail(
-                    subject,
-                    plain_message,  
-                    email,  
-                    ['lacresortfarm@gmail.com'], 
-                    html_message=html_message,  
-                    fail_silently=False,
-                )
-                
-                return JsonResponse({'message': 'Message has been sent!'})
-            
+                if result['success']:
+                    return JsonResponse({"message": result['message']}) 
+                else:
+                     return JsonResponse({'error': result['error']}, status=500)             
             except BadHeaderError:
                 return JsonResponse({'error': 'Invalid header found.'}, status=400)
             
