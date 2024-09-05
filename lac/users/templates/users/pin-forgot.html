@@ -13,12 +13,20 @@
 {% block content %}
     <div class="pin-forgot-container">
         <h1>Verification</h1>
-        <div class="pin-form">
+        <form class="pin-form" method="post" action="{% url 'users:pin' %}">
+            {% csrf_token %}
             <h2>Enter Verification Code</h2>
-            <input type="text">
-            <p>if you didn't receive a code. <a href="#">Resend</a></p>
-            <button type="button">Send</button>
-        </div>
+            <input type="text" name="code">
+            {% if messages %}
+              <div class="messages">
+                {% for message in messages %}
+                  <p class="message {{ message.tags }} ">{{ message }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <p>If you didn't receive a code. <a href="#">Resend</a></p>
+            <button type="submit">Send</button>
+        </form>
     </div>
 
 

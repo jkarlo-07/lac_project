@@ -1,13 +1,16 @@
+from django.contrib import messages
+from django.contrib.auth import (authenticate, login, logout, update_session_auth_hash)
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import BadHeaderError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from .forms import CustomUserCreationForm
+
+import random
+
+from .forms import CustomUserCreationForm, NewPasswordForm
 from .models import CustomUser
 from lac.utils.email_utils import send_email_contact
-import random
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -67,7 +70,8 @@ def forgot_view(request):
                     result = send_email_contact(username, email, "Password Account Recovery", random_code, email, 'users/user_forgot_email.html')
                     
                     if result['success']:
-                        return redirect("users:login")
+                        request.session['reset_user_id'] = user.id
+                        return redirect("users:pin")
                     else:
                         return JsonResponse({'error': result['error']}, status=500)             
                 except BadHeaderError:
@@ -80,10 +84,45 @@ def forgot_view(request):
     return render(request, "users/forgot-password.html")
 
 def pin_view(request):
+    user_id = request.session.get('reset_user_id')
+    if not user_id:
+        return redirect("users:forgot")
+    
+    user = CustomUser.objects.get(id=user_id)
+    user_code = str(user.email_confirm_code) 
+    if request.method == "POST":
+        input_code = request.POST.get("code")   
+        if input_code:
+            if input_code == user_code:
+                return redirect("users:newpass")
+            else:
+                messages.error(request, "The code you entered is incorrect.")
+        else:
+            messages.error(request, "Please enter a valid code.")
+        return redirect("users:pin") 
+    
     return render(request, "users/pin-forgot.html")
 
+
 def newpass_view(request):
-    return render(request, "users/newpass.html")
+    user_id = request.session.get('reset_user_id')
+    if not user_id:
+        return redirect("users:forgot")
+
+    user = CustomUser.objects.get(id=user_id)
+
+    if request.method == "POST":
+        form = NewPasswordForm(request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data.get('new_password')
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            return redirect("users:login")
+    else:
+        form = NewPasswordForm()
+
+    return render(request, "users/newpass.html", {'form': form})
 
 def logout_view(request):
     if request.method == "POST":
