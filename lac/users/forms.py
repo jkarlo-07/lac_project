@@ -7,7 +7,11 @@ from django.core.exceptions import ValidationError
 import re
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.CharField(required=True, validators=[EmailValidator(message="Please enter a valid email address")])
+    email = forms.CharField(
+        required=True,
+        validators=[EmailValidator(message="Please enter a valid email address")],
+        widget=forms.EmailInput(attrs={'placeholder': 'Email'})
+    )
 
     class Meta:
         model = CustomUser
@@ -15,9 +19,9 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-
         if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("This email address is already in use.")
+        return email
     
 class NewPasswordForm(forms.Form):
     new_password = forms.CharField(
