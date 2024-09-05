@@ -37,10 +37,32 @@
   border: 1px solid #969696;
 }
 
+.new-password-container {
+  position: relative;
+}
+
 .newpass-form input{
   padding: 5px 10px;
   position: relative;
   
+}
+
+#password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  height: 30px;
+  cursor: pointer;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    height: 30px;
+    cursor: pointer;
 }
 
 .newpass-form button{

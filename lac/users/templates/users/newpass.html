@@ -18,15 +18,17 @@
       <div class="form-group">
         <label for="id_new_password">Enter New Password</label><br>
         <div class="new-password-container">
-          <input type="password" name="new_password" id="id_new_password" />
-          <img src="{% static 'images/icons/hidden.png' %}" alt="" id="password-toggle" />
+          <input type="password" name="new_password" id="id_new_password" class="password" />
+          <img src="{% static 'images/icons/hidden.png' %}" alt="" class="password-toggle" />
         </div>
       </div>
 
       <div class="form-group">
         <label for="id_confirm_password">Confirm Password</label><br>
-        <input type="password" name="confirm_password" id="id_confirm_password" />
-        <img src="{% static 'images/icons/hidden.png' %}" alt="" id="password-toggle" />
+        <div class="new-password-container">
+          <input type="password" name="confirm_password" id="id_confirm_password" class="password" />
+          <img src="{% static 'images/icons/hidden.png' %}" alt="" class="password-toggle" />
+        </div>
       </div>
       {% if form.errors %}
         <div class="form-errors">
@@ -48,4 +50,23 @@
       <button type="submit">CONFIRM</button>
     </form>
   </div>
+{% endblock %}
+
+{% block add_script %}
+  <script>
+    var passwordToggles = document.querySelectorAll('.password-toggle')
+    var passwordInputs = document.querySelectorAll('.password')
+    
+    passwordToggles.forEach(function (toggle, index) {
+      toggle.addEventListener('click', function () {
+        if (passwordInputs[index].type === 'password') {
+          passwordInputs[index].type = 'text'
+          toggle.src = '{% static "images/icons/view.png" %}'
+        } else {
+          passwordInputs[index].type = 'password'
+          toggle.src = '{% static "images/icons/hidden.png" %}'
+        }
+      })
+    })
+  </script>
 {% endblock %}

@@ -23,6 +23,8 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError("This email address is already in use.")
         return email
     
+
+    
 class NewPasswordForm(forms.Form):
     new_password = forms.CharField(
         widget=forms.PasswordInput(attrs={'placeholder': 'Enter new password'}),
