@@ -1,5 +1,7 @@
 /* New Password */
 
+
+
 .newpass-container{
   margin: 100px;
   display: flex;
@@ -36,13 +38,16 @@
 }
 
 .newpass-form input{
-  padding-left: 5px;
+  padding: 5px 10px;
+  position: relative;
+  
 }
 
 .newpass-form button{
   background-color: #b58a60;
   color: #fff;
   border: none;
+  cursor: pointer;
 }
 
 .newpass-form button:hover{
@@ -86,6 +91,7 @@
   background-color: rgb(181, 138, 96);
   color: #fff;
   border: none;
+  cursor: pointer;
 }
 
 .pin-forgot-container input:focus,
@@ -94,7 +100,7 @@
 }
 
 .pin-form input{
-  padding-left: 5px;
+  padding: 5px 10px;
 }
 
 /* Forgot Password */
@@ -121,13 +127,14 @@
 }
 
 .forgot-text input{
-  padding-left: 5px;
+  padding: 5px 10px;
   border: 1px solid #969696;
   border-radius: 20px;
 }
 
 .forgot-text button{
   border: none;
+  cursor: pointer;
   border-radius: 20px;
   background-color: rgb(181, 138, 96);
   color: white;
