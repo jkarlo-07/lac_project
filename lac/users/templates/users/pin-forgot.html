@@ -24,7 +24,7 @@
                 {% endfor %}
               </div>
             {% endif %}
-            <p>If you didn't receive a code. <a href="#">Resend</a></p>
+            <p>If you didn't receive a code. <a href="{% url "users:resend" %}">Resend</a></p>
             <button type="submit">Send</button>
         </form>
     </div>

@@ -10,4 +10,5 @@ urlpatterns = [
     path('users/pin', views.pin_view, name='pin'),
     path('users/newpass', views.newpass_view, name='newpass'),
     path('users/logout', views.logout_view, name='logout'),
+    path('users/resend', views.resend_pin_view, name='resend'),
 ]

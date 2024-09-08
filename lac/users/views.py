@@ -103,7 +103,6 @@ def pin_view(request):
     
     return render(request, "users/pin-forgot.html")
 
-
 def newpass_view(request):
     user_id = request.session.get('reset_user_id')
     if not user_id:
@@ -116,8 +115,10 @@ def newpass_view(request):
         if form.is_valid():
             new_password = form.cleaned_data.get('new_password')
             user.set_password(new_password)
+            user.email_confirm_code = None
             user.save()
             update_session_auth_hash(request, user)
+            request.session.flush()
             return redirect("users:login")
     else:
         form = NewPasswordForm()
@@ -128,4 +129,31 @@ def logout_view(request):
     if request.method == "POST":
         logout(request)
         return redirect("users:login")
+    
+def resend_pin_view(request):
+    user_id = request.session.get('reset_user_id')
+    if not user_id:
+        return redirect("users:forgot")
+    user = CustomUser.objects.get(id=user_id)
+    email = user.email
+    username = user.username
+    random_code = random.randint(1000, 9999)
+    user.email_confirm_code = random_code
+    user.save()
+    try:
+        result = send_email_contact(username, email, "Password Account Recovery", random_code, email, 'users/user_forgot_email.html')
+                    
+        if result['success']:
+            request.session['reset_user_id'] = user.id
+            return redirect("users:pin")
+        else:
+            return JsonResponse({'error': result['error']}, status=500)             
+    except BadHeaderError:
+        return JsonResponse({'error': 'Invalid header found.'}, status=400)
+                
+    except Exception as e:
+        return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
+    except CustomUser.DoesNotExist:
+        messages.error(request, "No user found within this email")
+    
     
