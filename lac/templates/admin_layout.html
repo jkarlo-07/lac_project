@@ -11,6 +11,7 @@
     />
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
     <link rel="icon" href="{% static 'images/icons/laclogo.ico' %}" />
+    {% block extra_head %}{% endblock %}
   </head>
   <body>
     <header>
@@ -429,4 +430,5 @@
       }
     </script>
   </body>
+  {% block extra_script %}{% endblock %}
 </html>
