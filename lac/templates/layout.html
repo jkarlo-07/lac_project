@@ -91,7 +91,7 @@
                         <button class="header-book-btn">LOG OUT</button>
                     </form>
                 {% else %}
-                    <button class="header-book-btn">BOOK NOW</button>
+                    <a class="header-book-btn" href="{% url "users:login" %}">BOOK NOW</a>
                 {% endif %}
             </nav>
         </div>

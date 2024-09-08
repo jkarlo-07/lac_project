@@ -135,8 +135,7 @@ li {
   background-color: var(--secondary-text-color);
   color: var(--main-text-color);
   font-weight: 800;
-  height: 40px;
-  width: 150px;
+  padding: 10px 30px;
   border: none;
   border-radius: 5px;
   cursor: pointer;

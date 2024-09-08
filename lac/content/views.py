@@ -48,7 +48,8 @@ def about_view(request):
 
 @login_required(login_url="users:login")
 def book_view1(request):
-    return render(request, "content/booking.html")
+    roomtypes = RoomType.objects.all()
+    return render(request, "content/booking.html", { 'roomtypes':roomtypes } )
 
 def book_view2(request):
     return render(request, "content/book_step2.html")
