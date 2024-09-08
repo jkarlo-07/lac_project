@@ -62,28 +62,33 @@
             </div>
         </div>
         {% for roomtype in roomtypes  %}
-        <div class="booking-room-container">
-          <div class="room-image">
-              <a href="#"><img src="{{ roomtype.picture.url }}" alt="Room Image"></a>
-          </div>
-          <div class="room-accomodation-wrapper">
-              <div class="room-accomodation-info">
-                  <h3>{{roomtype.room_type}}</h3>
-                  <ul>
-                      <li><span>Capacity:</span> {{ roomtype.capacity }}pax</li>
-                      <li><span>Size:</span> 35sqm</li>
-                      <li><span>Price:</span> ₱ {{ roomtype.price|floatformat:2|intcomma }}</li>
-                      <li> <h>Description:</h4></li>
-                      <li><p> {{roomtype.description}} </p></li>
-                  </ul>
-              </div>
-              <div class="room-rate-section">
-                  <div class="room-rate-info">
-                      <div class="room-clearfix buttons">
-                          <input type="submit" value="Select Room" class="accomodation-select-room">
-                      </div>
-                  </div>
-              </div>
+				<form action="{% url 'content:book_3' %}" method="GET">
+					<div class="booking-room-container">
+						<div class="room-image">
+								<a href="#"><img src="{{ roomtype.picture.url }}" alt="Room Image"></a>
+						</div>
+						<div class="room-accomodation-wrapper">
+								<div class="room-accomodation-info">
+										<h3>{{roomtype.room_type}}</h3>
+										<ul>
+												<li><span>Capacity:</span> {{ roomtype.capacity }}pax</li>
+												<li><span>Size:</span> 35sqm</li>
+												<li><span>Price:</span> ₱ {{ roomtype.price|floatformat:2|intcomma }}</li>
+												<li> <h>Description:</h4></li>
+												<li><p> {{roomtype.description}} </p></li>
+										</ul>
+								</div>
+								<div class="room-rate-section">
+										<div class="room-rate-info">
+												<div class="room-clearfix buttons">
+														<input type="hidden" name="roomtype" value="{{ roomtype.id }}">
+														<input type="hidden" name="check_in" value="">
+														<input type="hidden" name="check_out" value="">
+														<input type="submit" value="Select Room" class="accomodation-select-room">
+												</div>
+										</div>
+								</div>
+							</form>
           </div>
         </div>
         {% endfor %}
@@ -116,7 +121,34 @@
             </ul>
         </div>
     </div>
-    
-    
 </div>
 {% endblock %}
+
+{% block add_script %}
+	<script>
+		const urlParams = new URLSearchParams(window.location.search);
+
+		// Extract the check_in and check_out parameters
+		const checkInDate = urlParams.get('check_in');
+		const checkOutDate = urlParams.get('check_out');
+
+		const checkInDisplay = document.querySelector(".checkin-display");
+		checkInDisplay.textContent =checkInDate;
+		const checkOutDisplay = document.querySelector(".checkout-display");
+		checkOutDisplay.textContent = checkOutDate;
+
+		document.querySelectorAll(".accomodation-select-room").forEach(button => {
+			button.addEventListener("click", function(event) {
+				event.preventDefault();
+
+				const form = this.closest("form");
+	
+				form.querySelector('input[name="check_in"]').value = checkInDate;
+				form.querySelector('input[name="check_out"]').value = checkOutDate;
+	
+
+				form.submit();
+			});
+		});
+	</script>
+{% endblock  %}

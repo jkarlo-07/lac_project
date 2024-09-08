@@ -1,10 +1,14 @@
 from django.core.mail import BadHeaderError
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import RoomType
 from lac.utils.email_utils import send_email_contact
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 def index(request):
     return render(request, "content/index.html")
@@ -55,7 +59,25 @@ def book_view2(request):
     return render(request, "content/book_step2.html")
 
 def book_view3(request):
-    return render(request, "content/book_step3.html")
+    check_in = request.GET.get('check_in')
+    check_out = request.GET.get('check_out')
+    room_id = request.GET.get('roomtype')
+
+    room = get_object_or_404(RoomType, id=room_id)
+    email = request.user.email
+    
+    context = {
+        'check_in': check_in,
+        'check_out': check_out,
+        'room': room,
+        'email': email,
+    }
+    return render(request, 'content/book_step3.html', context)
 
 def book_view4(request):
     return render(request, "content/book_step4.html")
+
+def calendar_view(request):
+    return render(request, "content/calendar.html")
+
+

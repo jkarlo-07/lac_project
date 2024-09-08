@@ -1,0 +1,62 @@
+{% extends "layout.html" %} 
+{% load static %}
+{% load humanize %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/booking.css' %}">
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      contentHeight: 'auto',
+      aspectRatio: 1.8,
+      selectable: true,
+      select: function(info) {
+        if (!window.checkInDate) {
+          window.checkInDate = info.startStr;
+          console.log('Check-in Date:', window.checkInDate); 
+          info.view.calendar.addEvent({
+            title: 'Check-in',
+            start: info.startStr,
+            allDay: true,
+            color: 'blue'
+          });
+        } else {
+          var checkOutDate = new Date(info.end);
+          checkOutDate.setDate(checkOutDate.getDate());
+          window.checkOutDate = checkOutDate.toISOString().split('T')[0]; 
+
+          console.log('Check-out Date:', window.checkOutDate); 
+          info.view.calendar.addEvent({
+            title: 'Check-out',
+            start: window.checkInDate,
+            end: info.endStr,
+            allDay: true,
+            color: 'red'
+          });
+
+          if (window.checkInDate && window.checkOutDate) {
+            console.log('Final Check-out Date:', window.checkOutDate);
+            window.location.href = '{% url "content:book_1" %}?check_in=' + encodeURIComponent(window.checkInDate) + '&check_out=' + encodeURIComponent(window.checkOutDate);
+          }
+          window.checkInDate = null;
+          window.checkOutDate = null;
+        }
+      },
+    });
+    calendar.render();
+  });
+</script>
+{% endblock %}
+
+{% block title %}
+    Rooms 
+{% endblock %} 
+
+{% block content %}
+  <div class="calendar-container">
+    <div id="calendar"></div>
+  </div>
+{% endblock %}

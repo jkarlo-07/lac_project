@@ -1,4 +1,6 @@
-{% extends 'layout.html' %} {% load static %}
+{% extends 'layout.html' %}
+{% load static %}
+{% load humanize %}
 
 {% block title %}
   Booking
@@ -61,7 +63,7 @@
           </div>
           <div class="book3-field">
             <label for="book3-phone">Email:</label>
-            <input type="text" id="book3-email" />
+            <input type="text" id="book3-email" value="{{ email }}" readonly/>
           </div>
         </div>
       </div>
@@ -95,22 +97,22 @@
         <div class="brown-spacer"></div>
         <div class="date-guest-info">
           <p>
-            Dates: <span class="gray-fg">Jan 11, 2024 - Jan 12, 2024</span>
-          </p>
-          <p>
-            Guests: <span class="gray-fg">2 Adults, 2 Children</span>
+            Dates: <span class="gray-fg">{{ check_in }} - {{ check_out }}</span>
           </p>
         </div>
         <div class="book3-room-price-info">
-          <div class="book3-room-info">
             <img src="{% static 'images/photos/lac2.jpg' %}" alt="room" width="100" class="room-aside-photo" />
-            <div class="book3-bed-info">
-              <p>Deluxe Queen Room</p>
-              <p class="gray-fg">Full Board</p>
-              <p>Full Nights</p>
+            <div class="book3-purchase-info">
+             <div class="book3-bed-info">
+                  <p class="gray-fg">Room:</p>
+                  <p class="gray-fg">Total:</p>
+                </div>
+              <div class="book3-info-container">
+                <p class="book3-info">{{room.room_type}}</p>
+                <p class="book3-info"> ₱ {{ room.price|floatformat:2|intcomma }}</p>
+              </div>
             </div>
-          </div>
-          <p class="book3-bed-price">$1000</p>
+           
         </div>
         <p class="book3-remove">Remove</p>
       </div>

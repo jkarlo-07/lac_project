@@ -350,6 +350,15 @@
     gap: 5px;
 }
 
+/* for calendar */
+
+.calendar-container {
+    margin: 40px 200px;
+    overflow: hidden;
+    padding: 0;
+}
+
+
 
 /* Booking Step 2 */
 
@@ -387,6 +396,15 @@
 
 
 /* Booking Step 2 */
+
+.book3-info-container {
+    flex-direction: column;
+}
+
+.book3-purchase-info {
+    display: flex;
+    gap: 5px;
+}
 
 .booking3-wrapper {
     margin: 100px;
@@ -542,8 +560,7 @@
 
 .room-aside-photo {
     object-fit: cover;
-    width: 30%;
-    aspect-ratio: 1 / 1;
+    width: 60%;
 }
 
 .book3-remove {
