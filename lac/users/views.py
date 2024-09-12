@@ -29,7 +29,7 @@ def login_view(request):
                 if user.is_staff:
                     return redirect("dashboard:dashboard")
                 else:
-                    return redirect('content:book_1')  
+                    return redirect('content:calendar')  
             else:
                 messages.error(request, "Invalid username or password.")
         else:
