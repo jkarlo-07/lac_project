@@ -8,8 +8,7 @@ VSCODE TERMINAL
 - `py -m venv .venv`
 - `source .venv/Scripts/activate`
 - `py -m pip install Django`
-- `pip install "psycopg[binary]"`
-- `pip install pillow`
+- `pip install -r requirements.txt`
 - `cd lac/`
 - `py manage.py createsuperuser`
 - `py manage.py makemigrations`
