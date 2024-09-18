@@ -1,5 +1,5 @@
 from django.db import models
-
+from users.models import CustomUser
 # Create your models here.
 
 class RoomType(models.Model):
@@ -18,4 +18,16 @@ class Room(models.Model):
 
     def __str__(self):
         return self.room_number
+    
+class Booking(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    @property
+    def room_number(self):
+        return self.room.room_number
+    
     

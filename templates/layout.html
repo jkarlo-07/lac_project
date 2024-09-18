@@ -82,7 +82,7 @@
                         >ABOUT</a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link book-now-mobile-btn">BOOK NOW</a>
+                        <a href="{% url "users:login" %}" class="nav-link book-now-mobile-btn">BOOK NOW</a>
                     </li>
                 </ul>
                 {% if user.is_authenticated %}
