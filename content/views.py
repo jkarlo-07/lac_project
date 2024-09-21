@@ -60,7 +60,6 @@ def book_view2(request):
 
 def book_view3(request):
     check_in = request.GET.get('check_in')
-    check_out = request.GET.get('check_out')
     room_id = request.GET.get('roomtype')
 
     room = get_object_or_404(RoomType, id=room_id)
@@ -68,7 +67,6 @@ def book_view3(request):
     
     context = {
         'check_in': check_in,
-        'check_out': check_out,
         'room': room,
         'email': email,
     }
@@ -79,5 +77,8 @@ def book_view4(request):
 
 def calendar_view(request):
     return render(request, "content/calendar.html")
+
+def submit_booking(request):
+    return render(request, "content/book_step2.html")
 
 

@@ -35,3 +35,13 @@ class Booking(models.Model):
         return self.room.room_number
     
     
+class Guest(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=75)
+    last_name = models.CharField(max_length=75)
+    address = models.CharField(max_length=200)
+    date_of_birth = models.DateField()
+    phone = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.user

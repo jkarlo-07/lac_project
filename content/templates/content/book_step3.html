@@ -1,17 +1,16 @@
-{% extends 'layout.html' %}
-{% load static %}
-{% load humanize %}
-
-{% block title %}
-  Booking
-{% endblock %}
+{% extends 'layout.html' %} 
+{% load static %} 
+{% load humanize %} 
+{% block title%} Booking {% endblock %} 
 
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'css/booking.css' %}" />
-{% endblock %}
+{% endblock %} 
 
 {% block content %}
+<form action="{% url 'content:submit_booking' %}" method="POST">
   <div class="booking3-wrapper">
+    {% csrf_token %}
     <div class="booking3-container">
       <div class="booking-step-wrapper clearfix">
         <div class="booking-step active">
@@ -39,31 +38,31 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-fname">First Name:</label>
-            <input type="text" id="book3-fname" />
+            <input type="text" id="book3-fname" name="first-name" />
           </div>
           <div class="book3-field">
             <label for="book3-lname">Last Name:</label>
-            <input type="text" id="book3-lname" />
+            <input type="text" id="book3-lname" name="last-name" />
           </div>
         </div>
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-address">Address:</label>
-            <input type="text" id="book3-address" />
+            <input type="text" id="book3-address" name="address" />
           </div>
           <div class="book3-field">
             <label for="book3-dob">Date of Birth:</label>
-            <input type="text" id="book3-dob" />
+            <input type="text" id="book3-dob" name="date-of-birth" />
           </div>
         </div>
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-phone">Phone:</label>
-            <input type="text" id="book3-phone" />
+            <input type="text" id="book3-phone" name="phone" />
           </div>
           <div class="book3-field">
             <label for="book3-phone">Email:</label>
-            <input type="text" id="book3-email" value="{{ email }}" readonly/>
+            <input type="text" id="book3-email" value="{{ email }}" readonly />
           </div>
         </div>
       </div>
@@ -89,8 +88,9 @@
         </div>
       </div>
 
-      <p class="book3-book-btn">Book Now</p>
+      <button>SUBMIT</button>
     </div>
+
     <div class="booking3-aside atWrapper">
       <div class="book3-aside-info">
         <h2 class="book3-aside-title">Room 1 of 1</h2>
@@ -101,73 +101,84 @@
           </p>
         </div>
         <div class="book3-room-price-info">
-            <img src="{% static 'images/photos/lac2.jpg' %}" alt="room" width="100" class="room-aside-photo" />
-            <div class="book3-purchase-info">
-             <div class="book3-bed-info">
-                  <p class="gray-fg">Room:</p>
-                  <p class="gray-fg">Total:</p>
-                </div>
-              <div class="book3-info-container">
-                <p class="book3-info">{{room.room_type}}</p>
-                <p class="book3-info"> ₱ {{ room.price|floatformat:2|intcomma }}</p>
-              </div>
+          <img
+            src="{% static 'images/photos/lac2.jpg' %}"
+            alt="room"
+            width="100"
+            class="room-aside-photo"
+          />
+          <div class="book3-purchase-info">
+            <div class="book3-bed-info">
+              <p class="gray-fg">Room:</p>
+              <p class="gray-fg">Total:</p>
             </div>
-           
+            <div class="book3-info-container">
+              <p class="book3-info">{{room.room_type}}</p>
+              <p class="book3-info">
+                ₱ {{ room.price|floatformat:2|intcomma }}
+              </p>
+            </div>
+          </div>
         </div>
         <p class="book3-remove">Remove</p>
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block add_script %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      function handleResize() {
-        window.addEventListener('resize', function () {
-          const sidebar = document.querySelector('.booking3-aside')
-          const bookingContainer = document.querySelector('.booking3-container')
-          const bookingWrapper = document.querySelector('.booking3-wrapper')
-          if (window.innerWidth < 1024 && sidebar.classList.contains('atWrapper')) {
-            putAbove()
-          } else if (window.innerWidth > 1024 && sidebar.classList.contains('atContainer')) {
-            putBelow()
-          }
-        })
-      }
-    
-      function putAbove() {
-        const sidebar = document.querySelector('.booking3-aside')
-        const bookingContainer = document.querySelector('.booking3-container')
-        const bookingWrapper = document.querySelector('.booking3-wrapper')
-        console.log('less than 1024')
-        sidebar.classList.add('atContainer')
-        sidebar.classList.remove('atWrapper')
-        bookingWrapper.removeChild(sidebar)
-        bookingContainer.appendChild(sidebar)
-        bookingContainer.insertBefore(sidebar, bookingContainer.children[1])
-      }
-    
-      function putBelow() {
-        const sidebar = document.querySelector('.booking3-aside')
-        const bookingContainer = document.querySelector('.booking3-container')
-        const bookingWrapper = document.querySelector('.booking3-wrapper')
-        console.log('less than 1024')
-        sidebar.classList.add('atWrapper')
-        sidebar.classList.remove('atContainer')
-        bookingContainer.removeChild(sidebar)
-        bookingWrapper.appendChild(sidebar)
-      }
-    
-      function initialLoading() {
-        const sidebar = document.querySelector('.booking3-aside')
-        if (window.innerWidth < 1024 && sidebar.classList.contains('atWrapper')) {
-          putAbove()
+</form>
+{% endblock %} {% block add_script %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    function handleResize() {
+      window.addEventListener("resize", function () {
+        const sidebar = document.querySelector(".booking3-aside");
+        const bookingContainer = document.querySelector(".booking3-container");
+        const bookingWrapper = document.querySelector(".booking3-wrapper");
+        if (
+          window.innerWidth < 1024 &&
+          sidebar.classList.contains("atWrapper")
+        ) {
+          putAbove();
+        } else if (
+          window.innerWidth > 1024 &&
+          sidebar.classList.contains("atContainer")
+        ) {
+          putBelow();
         }
+      });
+    }
+
+    function putAbove() {
+      const sidebar = document.querySelector(".booking3-aside");
+      const bookingContainer = document.querySelector(".booking3-container");
+      const bookingWrapper = document.querySelector(".booking3-wrapper");
+      console.log("less than 1024");
+      sidebar.classList.add("atContainer");
+      sidebar.classList.remove("atWrapper");
+      bookingWrapper.removeChild(sidebar);
+      bookingContainer.appendChild(sidebar);
+      bookingContainer.insertBefore(sidebar, bookingContainer.children[1]);
+    }
+
+    function putBelow() {
+      const sidebar = document.querySelector(".booking3-aside");
+      const bookingContainer = document.querySelector(".booking3-container");
+      const bookingWrapper = document.querySelector(".booking3-wrapper");
+      console.log("less than 1024");
+      sidebar.classList.add("atWrapper");
+      sidebar.classList.remove("atContainer");
+      bookingContainer.removeChild(sidebar);
+      bookingWrapper.appendChild(sidebar);
+    }
+
+    function initialLoading() {
+      const sidebar = document.querySelector(".booking3-aside");
+      if (window.innerWidth < 1024 && sidebar.classList.contains("atWrapper")) {
+        putAbove();
       }
-      
-      initialLoading()
-      handleResize()
-    })
-  </script>
+    }
+
+    initialLoading();
+    handleResize();
+  });
+</script>
 {% endblock %}

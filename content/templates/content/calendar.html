@@ -23,27 +23,11 @@
             allDay: true,
             color: 'blue'
           });
-        } else {
-          var checkOutDate = new Date(info.end);
-          checkOutDate.setDate(checkOutDate.getDate());
-          window.checkOutDate = checkOutDate.toISOString().split('T')[0]; 
-
-          console.log('Check-out Date:', window.checkOutDate); 
-          info.view.calendar.addEvent({
-            title: 'Check-out',
-            start: window.checkInDate,
-            end: info.endStr,
-            allDay: true,
-            color: 'red'
-          });
-
-          if (window.checkInDate && window.checkOutDate) {
-            console.log('Final Check-out Date:', window.checkOutDate);
-            window.location.href = '{% url "content:book_1" %}?check_in=' + encodeURIComponent(window.checkInDate) + '&check_out=' + encodeURIComponent(window.checkOutDate);
+        } 
+          if (window.checkInDate) {
+            window.location.href = '{% url "content:book_1" %}?check_in=' + encodeURIComponent(window.checkInDate);
           }
           window.checkInDate = null;
-          window.checkOutDate = null;
-        }
       },
     });
     calendar.render();

@@ -83,7 +83,6 @@
 												<div class="room-clearfix buttons">
 														<input type="hidden" name="roomtype" value="{{ roomtype.id }}">
 														<input type="hidden" name="check_in" value="">
-														<input type="hidden" name="check_out" value="">
 														<input type="submit" value="Select Room" class="accomodation-select-room">
 												</div>
 										</div>
@@ -130,12 +129,9 @@
 
 		// Extract the check_in and check_out parameters
 		const checkInDate = urlParams.get('check_in');
-		const checkOutDate = urlParams.get('check_out');
 
 		const checkInDisplay = document.querySelector(".checkin-display");
 		checkInDisplay.textContent =checkInDate;
-		const checkOutDisplay = document.querySelector(".checkout-display");
-		checkOutDisplay.textContent = checkOutDate;
 
 		document.querySelectorAll(".accomodation-select-room").forEach(button => {
 			button.addEventListener("click", function(event) {
@@ -144,7 +140,6 @@
 				const form = this.closest("form");
 	
 				form.querySelector('input[name="check_in"]').value = checkInDate;
-				form.querySelector('input[name="check_out"]').value = checkOutDate;
 	
 
 				form.submit();
