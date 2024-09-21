@@ -40,8 +40,8 @@ class Guest(models.Model):
     first_name = models.CharField(max_length=75)
     last_name = models.CharField(max_length=75)
     address = models.CharField(max_length=200)
-    date_of_birth = models.DateField()
     phone = models.CharField(max_length=30)
-
+    date_of_birth = models.DateField(default="2002-01-01")
+    
     def __str__(self):
         return self.user
