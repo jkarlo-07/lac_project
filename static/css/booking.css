@@ -68,6 +68,11 @@
 
 /* Booking Forms */
 
+.error-msg{
+    color: red;
+    font-size: 0.8rem;
+}
+
 .booking-form-wrapper {
     display: flex;
     justify-content: space-around;

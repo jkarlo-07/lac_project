@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import CustomUser
+from datetime import timedelta, time
 # Create your models here.
 
 class RoomType(models.Model):
@@ -24,6 +25,9 @@ class Booking(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     check_in_date = models.DateField()
     check_out_date = models.DateField()
+    start_time = models.TimeField(default=time(8, 0))
+    end_time = models.TimeField(default=time(20, 0))
+    duration = models.DurationField(default=timedelta(hours=12)) 
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
     @property
@@ -31,3 +35,13 @@ class Booking(models.Model):
         return self.room.room_number
     
     
+class Guest(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=75)
+    last_name = models.CharField(max_length=75)
+    address = models.CharField(max_length=200)
+    phone = models.CharField(max_length=30)
+    date_of_birth = models.DateField(default="2002-01-01")
+    
+    def __str__(self):
+        return self.user
