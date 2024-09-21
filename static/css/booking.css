@@ -139,6 +139,23 @@
     background-color: #a17b5e;
 }
 
+.button-sub-3{
+    padding: 10px 30px;
+    width: fit-content;
+    border-radius: 5px;
+    font-weight: 600;
+    align-self: flex-end;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    background-color: var(--secondary-text-color);
+}
+
+.button-sub-3:hover{
+    background: #a17b5e;
+}
+
+
 
 /* Room Information*/
 
