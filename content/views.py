@@ -1,7 +1,7 @@
 from django.core.mail import BadHeaderError
 from django.shortcuts import render, get_object_or_404, redirect
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import RoomType
@@ -133,5 +133,25 @@ def book_view4(request):
 def calendar_view(request):
     return render(request, "content/calendar.html")
 
+def search_room(request):
+    if request.method == 'GET':
+        check_in_date = request.GET.get('check_in_date')
+        capacity = request.GET.get("capacity")
+        duration = request.GET.get("duration")
+        checkin_time = request.GET.get("checkin_time")
+        
+        rooms = Room.objects.all()
+        rooms = Room.objects.filter(room_type__capacity__gte=capacity)
+        response_content = "<h1>Room List</h1><ul>"
+     
+        
+        context = {
+            'rooms' : rooms,
+            'capacity': capacity,
+            'check_in_date': check_in_date,
+            'duration': duration,
+            'checkin_time': checkin_time
+        }
 
+        return render(request, 'content/booking.html', context)
 
