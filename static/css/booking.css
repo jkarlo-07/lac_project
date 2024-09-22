@@ -5,6 +5,34 @@
 }
 
 
+.input-capacity{
+    width: 100px;
+}
+
+.img-search-btn{
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+}
+
+#book-checkin-time, #book-duration{
+    height: auto;
+    color: #6c757d;
+    width: 100px;
+}
+
+.booking-form label{
+    align-self: flex-start;
+}
+
+.booking-form select, .booking-form input{
+    padding: 5px 10px;
+}
+
+.booking-form-button-wrapper p{
+    font-size: 0.8rem;
+}
+
 .booking-page-wrapper {
     margin: 100px;
     display: flex;
@@ -792,9 +820,10 @@
 
     .booking-form {
         width: 100%;
-        align-items: start;
+        align-items: center;
         padding: 10px;
-        border-bottom: 1px solid rgba(116, 114, 114, 0.29)
+        border-bottom: 1px solid rgba(116, 114, 114, 0.29);
+        gap: 10px;
     }
 
     .booking-form label {
@@ -803,6 +832,7 @@
 
     .booking-form-button-wrapper {
         width: 100%;
+        margin-top: 20px;
     }
 
     .booking-button-step1 {

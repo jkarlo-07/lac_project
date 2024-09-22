@@ -44,21 +44,48 @@
                 </div>  
             </div>
             <div class="booking-form">
-                <img src="{% static 'images/icons/calendar-1.png' %}" alt="">
-                <div>
-                    <label>Check Out</label>
-                    <span class="checkout-display">01/01/2024</span>
+                <img src="{% static 'images/icons/hourglass-1.png' %}" alt="">
+                <div >
+                    <label>Duration</label>
+                    <select name="duration" id="book-duration">
+                        <option value="12hrs">12hrs</option>
+                        <option value="24hrs">24hrs</option>
+                    </select>
                 </div>
             </div>
             <div class="booking-form">
-                <img id="user-3"src="{% static 'images/icons/cake-1.png' %}" alt="">
+                <img src="{% static 'images/icons/back-in-time - 1.png' %}" alt="">
                 <div>
-                    <label>Guests</label>
-                    <span class="guests-display">4 Guest(s)</span>
+                    <label>Check-In Time</label>
+                    <select name="checkin_time" id="book-checkin-time">
+                        <option value="8:00am">8:00 am</option>
+                        <option value="8:00am">9:00 am</option>
+                        <option value="9:00am">10:00 am</option>
+                        <option value="10:00am">11:00 am</option>
+                        <option value="11:00am">12:00 pm</option>
+                        <option value="12:00am">1:00 pm</option>
+                        <option value="1:00am">2:00 pm</option>
+                        <option value="2:00am">3:00 pm</option>
+                        <option value="3:00am">4:00 pm</option>
+                        <option value="4:00am">5:00 pm</option>
+                        <option value="5:00am">6:00 pm</option>
+                        <option value="5:00am">7:00 pm</option>
+                        <option value="5:00am">8:00 pm</option>
+                        <option value="5:00am">9:00 pm</option>
+                        <option value="5:00am">10:00 pm</option>
+                    </select>
+                </div>
+            </div>
+            <div class="booking-form">
+                <img src="{% static 'images/icons/user-1.png' %}" alt="">
+                <div>
+                    <label>Capacity</label>
+                    <input name="capacity" class="input-capacity" type="text">
                 </div>
             </div>
             <div class="booking-form-button-wrapper">
-                <input type="submit" value="Search" class="booking-button-step1">
+                <img class = "img-search-btn"src="{% static 'images/icons/search-2.png' %}" alt="Search">
+                <p>Search</p>
             </div>
         </div>
         {% for roomtype in roomtypes  %}
