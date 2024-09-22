@@ -8,7 +8,9 @@ from .models import RoomType
 from lac.utils.email_utils import send_email_contact
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .forms import GuestForm
+from .forms import GuestForm, BookingForm
+from datetime import timedelta, time
+from .models import Room
 
 def index(request):
     return render(request, "content/index.html")
@@ -77,7 +79,6 @@ def book_view3(request):
             guest.date_of_birth = form.cleaned_data.get('date_of_birth')
             guest.save()
             
-            return redirect('users:login')
         else:
             print(form.errors)  
             return render(request, "content/book_step3.html", {
@@ -86,6 +87,30 @@ def book_view3(request):
                 "room": room,
                 "email": email,
             })
+        
+        form2 = BookingForm(request.POST)
+        if form2.is_valid():
+            booking = form2.save(commit=False)
+            booking.user = request.user
+            booking.check_in_date = request.POST.get('check_in_date')
+            booking.check_out_date = "2002-01-01"
+            booking.total_amount = "1000"
+            room = get_object_or_404(Room, id=1)  # Get the room with ID 1
+            booking.room = room
+            booking.duration = timedelta(hours=12)
+            booking.start_time = time(8, 0)
+            booking.end_time = time(20,0)
+            booking.save()
+            return redirect("users:login")
+        else:
+            print(form2.errors)  
+            return render(request, "content/book_step3.html", {
+                "form": form,
+                "check_in": check_in,
+                "room": room,
+                "email": email,
+            })
+
 
     else:
         check_in = request.GET.get('check_in')
@@ -108,25 +133,5 @@ def book_view4(request):
 def calendar_view(request):
     return render(request, "content/calendar.html")
 
-def submit_booking(request):
-    if request.method == 'POST':
-        form = GuestForm(request.POST)
-        if form.is_valid():
-            guest = form.save(commit=False)  
-            guest.user = request.user    
-            guest.first_name = form.cleaned_data.get('first_name')
-            guest.last_name = form.cleaned_data.get('last_name')
-            guest.address = form.cleaned_data.get('address')
-            guest.phone = form.cleaned_data.get('phone')
-            
-            guest.save() 
-            return redirect('users:login')  
-        else:
-            print(form.errors)  
-            return render(request, "content/book_step3.html", {"form": form})
 
-    else:
-        form = GuestForm()  
-
-    return render(request, "content/book_step1.html", {"form": form})
 

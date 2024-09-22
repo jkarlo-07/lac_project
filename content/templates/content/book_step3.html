@@ -38,7 +38,7 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-fname">First Name:</label>
-            <input type="text" id="book3-fname" name="first_name" value="{{ form.first_name.value }}" />
+            <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}">
             {% if form.first_name.errors %}
               <ul class="errorlist">
                 {% for error in form.first_name.errors %}
@@ -49,7 +49,7 @@
           </div>
           <div class="book3-field">
             <label for="book3-lname">Last Name:</label>
-            <input type="text" id="book3-lname" name="last_name" value="{{ form.last_name.value }}"/>
+            <input type="text" id="book3-lname" name="last_name" value="{{ form.last_name.value|default:'' }}"/>
             {% if form.last_name.errors %}
               <ul class="errorlist">
                 {% for error in form.last_name.errors %}
@@ -62,7 +62,7 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-address">Address:</label>
-            <input type="text" id="book3-address" name="address" value="{{ form.address.value }}"/>
+            <input type="text" id="book3-address" name="address" value="{{ form.address.value|default:'' }}"/>
             {% if form.address.errors %}
               <ul class="errorlist">
                 {% for error in form.address.errors %}
@@ -73,7 +73,7 @@
           </div>
           <div class="book3-field">
             <label for="book3-dob">Date of Birth:</label>
-            <input type="text" id="book3-dob" name="date_of_birth" value="{{ form.date_of_birth.value}}"/>
+            <input type="text" id="book3-dob" name="date_of_birth" value="{{ form.date_of_birth.value |default:'' }}"/>
             {% if form.date_of_birth.errors %}
               <ul class="errorlist">
                 {% for error in form.date_of_birth.errors %}
@@ -86,7 +86,7 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-phone">Phone:</label>
-            <input type="text" id="book3-phone" name="phone" value="{{ form.phone.value }}"/>
+            <input type="text" id="book3-phone" name="phone" value="{{ form.phone.value |default:''}}"/>
             {% if form.phone.errors %}
               <ul class="errorlist">
                 {% for error in form.phone.errors %}
@@ -122,8 +122,9 @@
           </div>
         </div>
       </div>
-      <input type="hidden" name="check_in" value="{{ check_in }}">
+      <input type="hidden" name="check_in_date" value="{{ check_in }}">
       <input type="hidden" name="room_id" value="{{ room.id }}">
+      <input type="hidden" name="total_amount" value="{{ room.price|floatformat:2|intcomma }}">
       <button class="button-sub-3">SUBMIT</button>
     </div>
 
