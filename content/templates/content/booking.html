@@ -94,23 +94,23 @@
 				<form action="{% url 'content:book_3' %}" method="GET">
 					<div class="booking-room-container">
 						<div class="room-image">
-								<a href="#"><img src="{{ roomtype.picture.url }}" alt="Room Image"></a>
+								<a href="#"><img src="{{ room.room_type.picture.url }}" alt="Room Image"></a>
 						</div>
 						<div class="room-accomodation-wrapper">
 								<div class="room-accomodation-info">
-										<h3>{{roomtype.room_type}}</h3>
+										<h3>{{room.room_type.room_type}}</h3>
 										<ul>
 												<li><span>Capacity:</span> {{ room.room_type.capacity }}pax</li>
 												<li><span>Size:</span> 35sqm</li>
-												<li><span>Price:</span> ₱ {{ roomtype.price|floatformat:2|intcomma }}</li>
+												<li><span>Price:</span> ₱ {{ room.room_type.price|floatformat:2|intcomma }}</li>
 												<li> <h>Description:</h4></li>
-												<li><p> {{roomtype.description}} </p></li>
+												<li><p> {{room.room_type.description}} </p></li>
 										</ul>
 								</div>
 								<div class="room-rate-section">
 										<div class="room-rate-info">
 												<div class="room-clearfix buttons">
-														<input type="hidden" name="roomtype" value="{{ roomtype.id }}">
+														<input type="hidden" name="roomtype" value="{{ room.room_type.id }}">
 														<input type="hidden" name="check_in" value="">
 														<input type="submit" value="Select Room" class="accomodation-select-room">
 												</div>

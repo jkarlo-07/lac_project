@@ -142,7 +142,6 @@ def search_room(request):
         
         rooms = Room.objects.all()
         rooms = Room.objects.filter(room_type__capacity__gte=capacity)
-        response_content = "<h1>Room List</h1><ul>"
      
         
         context = {
