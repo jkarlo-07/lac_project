@@ -44,4 +44,4 @@ class Guest(models.Model):
     date_of_birth = models.DateField(default="2002-01-01")
     
     def __str__(self):
-        return self.user
+        return self.first_name

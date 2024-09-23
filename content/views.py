@@ -9,7 +9,7 @@ from lac.utils.email_utils import send_email_contact
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import GuestForm, BookingForm
-from datetime import timedelta, time
+from datetime import timedelta, time, datetime
 from .models import Room
 
 def index(request):
@@ -133,24 +133,66 @@ def book_view4(request):
 def calendar_view(request):
     return render(request, "content/calendar.html")
 
+
+from datetime import datetime, timedelta
+from django.db.models import Q
+
 def search_room(request):
     if request.method == 'GET':
-        check_in_date = request.GET.get('check_in_date')
+        check_in_unformat = request.GET.get('check_in_date')
+        # Parse the string into a datetime object
+        date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
+        check_in_date = date_object.strftime('%Y-%m-%d')
         capacity = request.GET.get("capacity")
-        duration = request.GET.get("duration")
-        checkin_time = request.GET.get("checkin_time")
-        
-        rooms = Room.objects.all()
+        checkin_time = request.GET.get("checkin_time", "12:00") 
+        duration = request.GET.get("duration", 8)  
+
+        # Convert check_in_date to a date object
+        check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d').date() if check_in_date else None
+
+        # Convert duration to integer
+        duration = int(duration) if isinstance(duration, str) and duration.isdigit() else 8
+
+        # Filter rooms by capacity
         rooms = Room.objects.filter(room_type__capacity__gte=capacity)
-     
-        
+
+        # Exclude rooms that are booked during the requested time range
+        if check_in_date and checkin_time:
+            start_time = datetime.strptime(checkin_time, '%H:%M').time()  # 24-hour format
+            start_datetime = datetime.combine(check_in_date, start_time)
+            end_datetime = start_datetime + timedelta(hours=duration)
+
+            # Test each exclusion condition step by step
+            # Step 1: Exclude based on the same day bookings
+            excluded_rooms = rooms.exclude(
+                Q(booking__check_in_date=check_in_date) & (
+                    Q(booking__start_time__lt=end_datetime.time(), booking__end_time__gt=start_time) |  
+                    Q(booking__start_time__lt=start_datetime.time(), booking__end_time__gt=start_datetime.time())
+                )
+            )
+            print("Excluded rooms after Step 1:", excluded_rooms)
+
+            # Step 2: Add the condition for the next day bookings
+            # Check if the booking overlaps into the next day
+            if end_datetime.date() > check_in_date:  # Check if end time is tomorrow
+                excluded_rooms = excluded_rooms.exclude(
+                    Q(booking__check_in_date=check_in_date + timedelta(days=1)) & 
+                    Q(booking__start_time__lt=end_datetime.time())
+            )
+            print("Excluded rooms after Step 2:", excluded_rooms)
+
+
+            # Finalize the available rooms
+            rooms = excluded_rooms
+
+        check_in_date_str = date_object.strftime('%b. %d, %Y')  
+
         context = {
-            'rooms' : rooms,
+            'rooms': rooms,
             'capacity': capacity,
-            'check_in_date': check_in_date,
+            'check_in_date': check_in_date_str,
             'duration': duration,
             'checkin_time': checkin_time
         }
 
         return render(request, 'content/booking.html', context)
-
