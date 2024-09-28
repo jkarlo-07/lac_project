@@ -172,54 +172,10 @@ def search_room(request):
             start_datetime = datetime.combine(check_in_date, start_time)
             end_datetime = start_datetime + timedelta(hours=duration)
 
-            # Test each exclusion condition step by step
-            # Step 1: Exclude based on the same day bookings
-            excluded_rooms = rooms.exclude(
-                Q(booking__check_in_date=check_in_date) & (
-                    Q(booking__start_time__lt=end_datetime.time(), booking__end_time__gt=start_time) |  
-                    Q(booking__start_time__lt=start_datetime.time(), booking__end_time__gt=start_datetime.time())
-                )
+            
+            rooms = rooms.exclude(
+                Q(booking__check_in__lt=end_datetime) & Q(booking__check_out__gt=start_datetime)
             )
-            print("Excluded rooms after Step 1:", excluded_rooms)
-
-            # Step 2: Add the condition for the next day bookings
-            # Check if the booking overlaps into the next day
-            if end_datetime.date() > check_in_date:  # Check if end time is tomorrow
-                excluded_rooms = excluded_rooms.exclude(
-                    Q(booking__check_in_date=check_in_date + timedelta(days=1)) & 
-                    Q(booking__start_time__lt=end_datetime.time())
-            )
-            print("Excluded rooms after Step 2:", excluded_rooms)
-
-
-            excluded_rooms = excluded_rooms.exclude(
-                Q(booking__check_in_date=check_in_date) & (
-                    Q(booking__start_time__lte=start_time) & Q(booking__end_time__gte=start_time) |  # Booking starts before or at check-in and ends after or at check-in
-                    Q(booking__start_time__gte=start_time) & Q(booking__start_time__lt=end_datetime.time())  # Booking starts during the check-in period
-                )
-            )
-            print("Excluded rooms after Step 3:", excluded_rooms)
-
-            excluded_rooms = excluded_rooms.exclude(
-                Q(booking__check_in_date=check_in_date) & (
-                    Q(booking__start_time__lte=start_time) & Q(booking__end_time__gte=start_time) |  # Booking starts before or at check-in and ends after or at check-in
-                    Q(booking__start_time__gte=start_time) & Q(booking__start_time__lt=end_datetime.time())  # Booking starts during the check-in period
-                )
-            )
-            print("Excluded rooms after Step 3:", excluded_rooms)
-
-            excluded_rooms = excluded_rooms.exclude(
-                Q(booking__check_in_date=check_in_date) & (
-                    Q(booking__start_time__lt=end_datetime.time()) & Q(booking__end_time__gt=start_datetime.time())  # Booking overlaps the duration
-                ) | Q(booking__check_in_date=check_in_date - timedelta(days=1)) & (  # Check previous day's bookings
-                    Q(booking__end_time__gt=start_time)  # Ends after requested start time
-                )
-            )
-            print("Excluded rooms after Step 4:", excluded_rooms)
-
-
-            # Finalize the available rooms
-            rooms = excluded_rooms
 
         check_in_date_str = date_object.strftime('%b. %d, %Y')  
 

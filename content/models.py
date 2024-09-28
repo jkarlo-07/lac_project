@@ -23,10 +23,8 @@ class Room(models.Model):
 class Booking(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    check_in_date = models.DateField()
-    check_out_date = models.DateField()
-    start_time = models.TimeField(default=time(8, 0))
-    end_time = models.TimeField(default=time(20, 0))
+    check_in = models.DateTimeField()
+    check_out = models.DateTimeField()
     duration = models.DurationField(default=timedelta(hours=12)) 
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
