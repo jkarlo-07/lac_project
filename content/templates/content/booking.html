@@ -58,23 +58,22 @@
                 <div>
                     <label>Check-In Time</label>
                     <select name="checkin_time" id="book-checkin-time">
-											<option value="">Select a time</option>
-											<option value="8:00" {% if checkin_time == "8:00am" %}selected{% endif %}>8:00 am</option>
-											<option value="9:00" {% if checkin_time == "9:00am" %}selected{% endif %}>9:00 am</option>
-											<option value="10:00" {% if checkin_time == "10:00am" %}selected{% endif %}>10:00 am</option>
-											<option value="11:00" {% if checkin_time == "11:00am" %}selected{% endif %}>11:00 am</option>
-											<option value="12:00" {% if checkin_time == "12:00pm" %}selected{% endif %}>12:00 pm</option>
-											<option value="13:00" {% if checkin_time == "1:00pm" %}selected{% endif %}>1:00 pm</option>
-											<option value="14:00" {% if checkin_time == "2:00pm" %}selected{% endif %}>2:00 pm</option>
-											<option value="15:00" {% if checkin_time == "3:00pm" %}selected{% endif %}>3:00 pm</option>
-											<option value="16:00" {% if checkin_time == "4:00pm" %}selected{% endif %}>4:00 pm</option>
-											<option value="17:00" {% if checkin_time == "5:00pm" %}selected{% endif %}>5:00 pm</option>
-											<option value="18:00" {% if checkin_time == "6:00pm" %}selected{% endif %}>6:00 pm</option>
-											<option value="19:00" {% if checkin_time == "7:00pm" %}selected{% endif %}>7:00 pm</option>
-											<option value="20:00" {% if checkin_time == "8:00pm" %}selected{% endif %}>8:00 pm</option>
-											<option value="21:00" {% if checkin_time == "9:00pm" %}selected{% endif %}>9:00 pm</option>
-											<option value="22:00" {% if checkin_time == "10:00pm" %}selected{% endif %}>10:00 pm</option>
-									</select>									
+                        <option value="8:00" {% if checkin_time == "8:00am" %}selected{% endif %}>8:00 am</option>
+						<option value="9:00" {% if checkin_time == "9:00am" %}selected{% endif %}>9:00 am</option>
+						<option value="10:00" {% if checkin_time == "10:00am" %}selected{% endif %}>10:00 am</option>
+						<option value="11:00" {% if checkin_time == "11:00am" %}selected{% endif %}>11:00 am</option>
+						<option value="12:00" {% if checkin_time == "12:00pm" %}selected{% endif %}>12:00 pm</option>
+						<option value="13:00" {% if checkin_time == "1:00pm" %}selected{% endif %}>1:00 pm</option>
+						<option value="14:00" {% if checkin_time == "2:00pm" %}selected{% endif %}>2:00 pm</option>
+						<option value="15:00" {% if checkin_time == "3:00pm" %}selected{% endif %}>3:00 pm</option>
+						<option value="16:00" {% if checkin_time == "4:00pm" %}selected{% endif %}>4:00 pm</option>
+						<option value="17:00" {% if checkin_time == "5:00pm" %}selected{% endif %}>5:00 pm</option>
+						<option value="18:00" {% if checkin_time == "6:00pm" %}selected{% endif %}>6:00 pm</option>
+						<option value="19:00" {% if checkin_time == "7:00pm" %}selected{% endif %}>7:00 pm</option>
+						<option value="20:00" {% if checkin_time == "8:00pm" %}selected{% endif %}>8:00 pm</option>
+						<option value="21:00" {% if checkin_time == "9:00pm" %}selected{% endif %}>9:00 pm</option>
+						<option value="22:00" {% if checkin_time == "10:00pm" %}selected{% endif %}>10:00 pm</option>
+					</select>									
                 </div>
             </div>
             <div class="booking-form">
@@ -111,7 +110,9 @@
 										<div class="room-rate-info">
 												<div class="room-clearfix buttons">
 														<input type="hidden" name="roomtype" value="{{ room.room_type.id }}">
-														<input type="hidden" name="check_in" value="">
+														<input type="hidden" name="book_check_in_date" id="book_check_in_date">
+                                                        <input type="hidden" name="book_duration" id="book_duration">
+                                                        <input type="hidden" name="book_check_in_time" id="book_check_in_time">
 														<input type="submit" value="Select Room" class="accomodation-select-room">
 												</div>
 										</div>
@@ -168,9 +169,9 @@
 		const checkInDate = urlParams.get('check_in');
 
         let formattedCheckInDate = '';
-if (checkInDate) {
-    formattedCheckInDate = formatDate(checkInDate);
-}
+    if (checkInDate) {
+        formattedCheckInDate = formatDate(checkInDate);
+    }
 		
     const checkInInput = document.querySelector("#check_in_date")
     if (checkInInput.value.trim() === "") {
@@ -181,8 +182,22 @@ if (checkInDate) {
 		if (checkInDisplay.textContent.trim() === "") {
 			checkInDisplay.textContent = formattedCheckInDate;
 	}
+
+
+
+    const durationInput = document.getElementById("book_duration")
+    const checkInTimeInput = document.getElementById("book_check_in_time")
+    const checkInDateInput = document.getElementById("book_check_in_date")
+
+    const checkInDateText = document.querySelector(".checkin-display").textContent
+    const duration = document.getElementById("book-duration").value
+    const checkInTime = document.getElementById("book-checkin-time").value
+
+    durationInput.value = duration
+    checkInTimeInput.value = checkInTime
+    checkInDateInput.value = checkInDateText
 		
-		
+    console.log(checkInDateInput)
 
 		document.querySelectorAll(".accomodation-select-room").forEach(button => {
 			button.addEventListener("click", function(event) {
@@ -190,7 +205,6 @@ if (checkInDate) {
 
 				const form = this.closest("form");
 	
-				form.querySelector('input[name="check_in"]').value = checkInDate;
 	
 
 				form.submit();

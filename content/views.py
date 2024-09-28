@@ -1,7 +1,7 @@
 from django.core.mail import BadHeaderError
 from django.shortcuts import render, get_object_or_404, redirect
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import RoomType
@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import GuestForm, BookingForm
 from datetime import timedelta, time, datetime
 from .models import Room
+from .controllers import create_payment_link
 
 def index(request):
     return render(request, "content/index.html")
@@ -64,7 +65,10 @@ def book_view3(request):
     if request.method == 'POST':
         check_in = request.POST.get('check_in')
         room_id = request.POST.get('room_id')
-        
+        check_in_unformat = request.POST.get('check_in_date')
+        date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
+        check_in_date = date_object.strftime('%Y-%m-%d')
+
         room = get_object_or_404(RoomType, id=room_id)
         email = request.user.email
         
@@ -92,12 +96,16 @@ def book_view3(request):
         if form2.is_valid():
             booking = form2.save(commit=False)
             booking.user = request.user
-            booking.check_in_date = request.POST.get('check_in_date')
+            booking.check_in_date = check_in_date
             booking.check_out_date = "2002-01-01"
             booking.total_amount = "1000"
-            room = get_object_or_404(Room, id=1)  # Get the room with ID 1
+            room_id = request.POST.get('room_id')
+            room = get_object_or_404(Room, id=room_id) 
             booking.room = room
-            booking.duration = timedelta(hours=12)
+
+            duration = request.POST.get('duration')
+            duration = int(duration)
+            booking.duration = timedelta(hours=duration)
             booking.start_time = time(8, 0)
             booking.end_time = time(20,0)
             booking.save()
@@ -113,15 +121,17 @@ def book_view3(request):
 
 
     else:
-        check_in = request.GET.get('check_in')
+        check_in_date = request.GET.get('book_check_in_date')
         room_id = request.GET.get('roomtype')
+        duration = request.GET.get('book_duration')
         room = get_object_or_404(RoomType, id=room_id)
         email = request.user.email
         
         form = GuestForm()  
         context = {
             'form': form,
-            'check_in': check_in,
+            'duration': duration,
+            'check_in_date': check_in_date,
             'room': room,
             'email': email,
         }
@@ -182,6 +192,32 @@ def search_room(request):
             print("Excluded rooms after Step 2:", excluded_rooms)
 
 
+            excluded_rooms = excluded_rooms.exclude(
+                Q(booking__check_in_date=check_in_date) & (
+                    Q(booking__start_time__lte=start_time) & Q(booking__end_time__gte=start_time) |  # Booking starts before or at check-in and ends after or at check-in
+                    Q(booking__start_time__gte=start_time) & Q(booking__start_time__lt=end_datetime.time())  # Booking starts during the check-in period
+                )
+            )
+            print("Excluded rooms after Step 3:", excluded_rooms)
+
+            excluded_rooms = excluded_rooms.exclude(
+                Q(booking__check_in_date=check_in_date) & (
+                    Q(booking__start_time__lte=start_time) & Q(booking__end_time__gte=start_time) |  # Booking starts before or at check-in and ends after or at check-in
+                    Q(booking__start_time__gte=start_time) & Q(booking__start_time__lt=end_datetime.time())  # Booking starts during the check-in period
+                )
+            )
+            print("Excluded rooms after Step 3:", excluded_rooms)
+
+            excluded_rooms = excluded_rooms.exclude(
+                Q(booking__check_in_date=check_in_date) & (
+                    Q(booking__start_time__lt=end_datetime.time()) & Q(booking__end_time__gt=start_datetime.time())  # Booking overlaps the duration
+                ) | Q(booking__check_in_date=check_in_date - timedelta(days=1)) & (  # Check previous day's bookings
+                    Q(booking__end_time__gt=start_time)  # Ends after requested start time
+                )
+            )
+            print("Excluded rooms after Step 4:", excluded_rooms)
+
+
             # Finalize the available rooms
             rooms = excluded_rooms
 
@@ -196,3 +232,17 @@ def search_room(request):
         }
 
         return render(request, 'content/booking.html', context)
+
+
+def payment(request):
+    amount = 10000
+    description = "Lac resort"
+    remarks = "Please check your email for booking details"
+
+    payment_link = create_payment_link(amount, description, remarks)
+    checkout_url = payment_link['data']['attributes']['checkout_url']
+
+    return HttpResponseRedirect(checkout_url)
+
+def test_payment(request):
+    return render(request, 'content/test_payment.html')

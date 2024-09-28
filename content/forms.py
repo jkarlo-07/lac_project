@@ -12,5 +12,5 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
 
-        exclude = ['check_out_date', 'total_amount', 'duration', 'start_time', 'end_time', 'user', 'room']
+        exclude = ['check_out_date', 'total_amount', 'duration', 'start_time', 'end_time', 'user', 'room', 'check_in_date']
 

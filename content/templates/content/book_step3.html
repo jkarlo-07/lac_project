@@ -122,9 +122,11 @@
           </div>
         </div>
       </div>
-      <input type="hidden" name="check_in_date" value="{{ check_in }}">
+      <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
       <input type="hidden" name="room_id" value="{{ room.id }}">
       <input type="hidden" name="total_amount" value="{{ room.price|floatformat:2|intcomma }}">
+      <input type="hidden" name="duration" value="{{ duration }}">
+      <input type="hidden" name="check_in_time" value="{{ check_in_time }}">
       <button class="button-sub-3">SUBMIT</button>
     </div>
 
@@ -134,7 +136,7 @@
         <div class="brown-spacer"></div>
         <div class="date-guest-info">
           <p>
-            Dates: <span class="gray-fg">{{ check_in }} - {{ check_out }}</span>
+            Dates: <span class="gray-fg">{{ check_in_date }} - {{ check_out }}</span>
           </p>
         </div>
         <div class="book3-room-price-info">
