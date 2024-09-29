@@ -65,9 +65,24 @@ def book_view3(request):
     if request.method == 'POST':
         check_in = request.POST.get('check_in')
         room_id = request.POST.get('room_id')
+        check_in_time = request.POST.get('check_in_time')
         check_in_unformat = request.POST.get('check_in_date')
-        date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
+        duration = request.POST.get('duration')
+        duration = int(duration)
+
+        if check_in_unformat.startswith("Sept"):
+            formatted_check_in_date = check_in_unformat.replace("Sept", "Sep")
+        else:
+            formatted_check_in_date = check_in_unformat
+        date_object = datetime.strptime(formatted_check_in_date, '%b. %d, %Y')
+
+        check_in_time = check_in_time.replace('.', '')
+
         check_in_date = date_object.strftime('%Y-%m-%d')
+        check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d')
+        check_in_time = datetime.strptime(check_in_time, '%I %p').time()
+        check_in = datetime.combine(check_in_date, check_in_time)
+        check_out = check_in + timedelta(hours=duration)
 
         room = get_object_or_404(RoomType, id=room_id)
         email = request.user.email
@@ -96,18 +111,16 @@ def book_view3(request):
         if form2.is_valid():
             booking = form2.save(commit=False)
             booking.user = request.user
-            booking.check_in_date = check_in_date
-            booking.check_out_date = "2002-01-01"
-            booking.total_amount = "1000"
+            booking.check_in = check_in
+            booking.check_out = check_out
             room_id = request.POST.get('room_id')
             room = get_object_or_404(Room, id=room_id) 
             booking.room = room
+            booking.total_amount = room.room_type.price
 
             duration = request.POST.get('duration')
             duration = int(duration)
             booking.duration = timedelta(hours=duration)
-            booking.start_time = time(8, 0)
-            booking.end_time = time(20,0)
             booking.save()
             return redirect("users:login")
         else:
@@ -121,9 +134,25 @@ def book_view3(request):
 
 
     else:
-        check_in_date = request.GET.get('book_check_in_date')
-        room_id = request.GET.get('roomtype')
+        check_in_unformat = request.GET.get('book_check_in_date')
+        check_in_time = request.GET.get("book_check_in_time")
         duration = request.GET.get('book_duration')
+        duration = int(duration)
+
+        date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
+        check_in_date = date_object.strftime('%Y-%m-%d')
+        check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d').date() if check_in_date else None
+
+
+        start_time = datetime.strptime(check_in_time, '%H:%M').time() 
+        start_datetime = datetime.combine(check_in_date, start_time)
+        end_datetime = start_datetime + timedelta(hours=duration)
+
+        check_out_date = end_datetime.date()
+        check_out_time = end_datetime.time()
+        check_in_time = start_datetime.time()
+
+        room_id = request.GET.get('roomtype')
         room = get_object_or_404(RoomType, id=room_id)
         email = request.user.email
         
@@ -132,6 +161,9 @@ def book_view3(request):
             'form': form,
             'duration': duration,
             'check_in_date': check_in_date,
+            'check_out_date': check_out_date,
+            'check_in_time': check_in_time,
+            'check_out_time': check_out_time,
             'room': room,
             'email': email,
         }
