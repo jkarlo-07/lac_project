@@ -1276,8 +1276,16 @@ footer {
     flex-direction: column;
   }
 
+  .header-location-info{
+    display: none;
+  }
+
+  .header-time-info{
+    display: none;
+  }
+
   .top-header > * {
-    padding: 20px;
+    padding: 0;
   }
 
   .header-logo-container {
