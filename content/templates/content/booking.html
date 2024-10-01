@@ -109,10 +109,10 @@
 								<div class="room-rate-section">
 										<div class="room-rate-info">
 												<div class="room-clearfix buttons">
-														<input type="hidden" name="roomtype" value="{{ room.room_type.id }}">
-														<input type="hidden" name="book_check_in_date" id="book_check_in_date">
-                                                        <input type="hidden" name="book_duration" id="book_duration">
-                                                        <input type="hidden" name="book_check_in_time" id="book_check_in_time">
+														<input type="hidden" name="roomtype" value="{{ room.id }}">
+														<input type="hidden" name="book_check_in_date" id="book_check_in_date" value="{{ check_in_date }}">
+														<input type="hidden" name="book_duration" id="book_duration" value="{{ duration }}">
+                            <input type="hidden" name="book_check_in_time" id="book_check_in_time" value="{{ checkin_time }}">
 														<input type="submit" value="Select Room" class="accomodation-select-room">
 												</div>
 										</div>
@@ -187,7 +187,6 @@
 
     const durationInput = document.getElementById("book_duration")
     const checkInTimeInput = document.getElementById("book_check_in_time")
-    const checkInDateInput = document.getElementById("book_check_in_date")
 
     const checkInDateText = document.querySelector(".checkin-display").textContent
     const duration = document.getElementById("book-duration").value
@@ -195,7 +194,6 @@
 
     durationInput.value = duration
     checkInTimeInput.value = checkInTime
-    checkInDateInput.value = checkInDateText
 		
     console.log(checkInDateInput)
 
