@@ -32,6 +32,24 @@ li {
   list-style-type: none;
 }
 
+/*Booking Forms*/
+.booking-forms-walkin{
+  background-color: #cccfd3;
+  width: 400px;
+  padding: 20px;
+}
+
+.booking-forms-walkin input{
+  width: 170px;
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+#address-form, #dob-form{
+  width: 344px;
+  height: 30px;
+}
+
 /* Header styles */
 
 header {
