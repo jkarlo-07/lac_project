@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<section class="welcome-section">
+<section class="welcome-section atAbove">
   <img
     src="{% static 'images/photos/main-cover.jpg' %}"
     alt="cover-page"
@@ -46,11 +46,11 @@
       />
     </a>
   </form>
-  <div class="welcome-text">
-    <p class="welcome-small-text">Welcome to</p>
-    <h1>L.A.C Resort</h1>
-    <p class="welcome-xsmall-text">A place to experience and enjoy the life.</p>
-  </div>
+    <div class="welcome-text">
+      <p class="welcome-small-text">Welcome to</p>
+      <h1>L.A.C Resort</h1>
+      <p class="welcome-xsmall-text">A place to experience and enjoy the life.</p>
+    </div>
 </section>
 <section class="index-room">
   <div class="index-room__text">
@@ -191,3 +191,58 @@
 </section>
 
 {% endblock %}
+
+{% block add_script %}
+<script>
+  console.log("sdlf")
+  function handleResize() {
+    window.addEventListener("resize", function () {
+      const section = document.querySelector(".welcome-section");
+      const bookingContainer = document.querySelector(".welcome-form-container");
+      const welcomeText = document.querySelector(".welcome-text");
+      if (
+        window.innerWidth < 767 &&
+        section.classList.contains("atBelow")
+      ) {
+        putAbove();
+      } else if (
+        window.innerWidth > 767 &&
+        section.classList.contains("atAbove")
+      ) {
+        putBelow();
+      }
+    });
+  }
+
+  function putBelow() {
+    console.log("putbelow")
+    const section = document.querySelector(".welcome-section");
+    const bookingContainer = document.querySelector(".welcome-form-container");
+    const welcomeText = document.querySelector(".welcome-text");
+    section.classList.add("atBelow");
+    section.classList.remove("atAbove");
+    section.removeChild(bookingContainer);
+    section.removeChild(welcomeText);
+    section.appendChild(bookingContainer);
+    section.appendChild(welcomeText)
+  }
+
+  function putAbove() {
+    console.log("putAbove")
+    const section = document.querySelector(".welcome-section");
+    const bookingContainer = document.querySelector(".welcome-form-container");
+    const welcomeText = document.querySelector(".welcome-text");
+    welcomeText.style.margin = "80px auto";
+    section.classList.add("atAbove");
+    section.classList.remove("atBelow");
+    section.removeChild(bookingContainer);
+    section.removeChild(welcomeText);
+    section.appendChild(welcomeText);
+    section.appendChild(bookingContainer)
+  }
+
+  handleResize()
+
+</script>
+
+{% endblock add_script %}
