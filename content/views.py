@@ -97,7 +97,6 @@ def book_view3(request):
             guest.phone = form.cleaned_data.get('phone')
             guest.date_of_birth = form.cleaned_data.get('date_of_birth')
             guest.save()
-            
         else:
             print(form.errors)  
             return render(request, "content/book_step3.html", {
@@ -110,7 +109,7 @@ def book_view3(request):
         form2 = BookingForm(request.POST)
         if form2.is_valid():
             booking = form2.save(commit=False)
-            booking.user = request.user
+            booking.guest = guest
             booking.check_in = check_in
             booking.check_out = check_out
             room_id = request.POST.get('room_id')
@@ -118,8 +117,6 @@ def book_view3(request):
             booking.room = room
             booking.total_amount = room.room_type.price
 
-            duration = request.POST.get('duration')
-            duration = int(duration)
             booking.duration = timedelta(hours=duration)
             booking.save()
             return render(request, "content/book_step4.html", {
@@ -136,7 +133,6 @@ def book_view3(request):
                 "email": email,
             })
 
-
     else:
         check_in_unformat = request.GET.get('book_check_in_date')
         check_in_time = request.GET.get("book_check_in_time")
@@ -146,7 +142,6 @@ def book_view3(request):
         date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
         check_in_date = date_object.strftime('%Y-%m-%d')
         check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d').date() if check_in_date else None
-
 
         start_time = datetime.strptime(check_in_time, '%H:%M').time() 
         start_datetime = datetime.combine(check_in_date, start_time)
@@ -172,6 +167,7 @@ def book_view3(request):
             'email': email,
         }
         return render(request, 'content/book_step3.html', context)
+
 
 def book_view4(request):
     email = request.user.email

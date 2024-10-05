@@ -771,15 +771,16 @@ html.dark .dt-container .dt-paging .dt-paging-button:active {
 }
 
 .table.dataTable thead > tr > th.dt-orderable-asc, table.dataTable thead > tr > th.dt-orderable-desc, table.dataTable thead > tr > td.dt-orderable-asc, table.dataTable thead > tr > td.dt-orderable-desc{
-  background-color: #A3AFC9;
+  background-color: #b58a60;
+  color: #fff;
 }
 
 tr:nth-child(even) {
-  background-color: #F4F6F8 !important; /* Light gray background for even rows */
+  background-color: #FFF !important; /* Light gray background for even rows */
 }
 
 tr:nth-child(odd) {
-  background-color: #FFFFFF !important; /* White background for odd rows */
+  background-color: #FFF8E8 !important; /* White background for odd rows */
 }
 
 tr:hover {

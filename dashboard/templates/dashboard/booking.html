@@ -16,74 +16,25 @@
   <table id="myTable" class="display">
     <thead>
         <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
+            <th>ID</th>
+            <th>Room</th>
+            <th>Check_in</th>
+            <th>Check_out</th>
+            <th>Guest</th>
+            <th>Total Amount</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        
-        
+            {% for book in booking %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.room.room_type }}</td>
+                <td>{{ book.check_in|date:"m-d-Y" }}, {{ book.check_in|time:"g:i A" }}</td>
+                <td>{{ book.check_out|date:"m-d-Y" }}, {{ book.check_out|time:"g:i A" }}</td>
+                <td>{{ book.guest.first_name|add:" "|add:book.guest.last_name }}</td>
+                <td>{{ book.total_amount }}</td>
+            </tr>
+            {% endfor %}
     </tbody>
 {% endblock %}
 {% block extra_script  %}
@@ -93,8 +44,11 @@
 
     <script>
         $(document).ready(function () {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                "order": [[2, "desc"]] 
+            });
         });
     </script>
+    
 
 {% endblock  %}

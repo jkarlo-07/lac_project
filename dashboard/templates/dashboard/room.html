@@ -17,74 +17,23 @@
   <table id="myTable" class="display">
     <thead>
         <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
+            <th>Room Number</th>
+            <th>Room Type</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Capacity</th>
         </tr>
     </thead>
     <tbody>
+        {% for room in rooms %}
         <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
+            <td>{{room.room_number}}</td>
+            <td>{{room.room_type.room_type}}</td>
+            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim veritatis molestiae officiis non. Amet adipisci dolorem, molestiae, quae aperiam optio vitae sequi natus nulla reiciendis at iusto, non tenetur minima!</td>
+            <td>{{room.room_type.price}}</td>
+            <td>{{room.room_type.capacity}}</td>
         </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        
-        
+        {% endfor %}
     </tbody>
 </table>    
 {% endblock %}
