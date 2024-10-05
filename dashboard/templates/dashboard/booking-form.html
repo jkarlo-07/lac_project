@@ -8,7 +8,9 @@
 
 {% block content %}
     <form action="" class="booking-forms-walkin">
-        <h1>Booking Form</h1>
+      <h1>Booking Form</h1>
+      <div class="guest-info">
+        <h2>Guest Information</h2>
         <input type="text" name="fname" id="f-name-form" placeholder="First Name">
         <input type="text" name="lnane" id="l-name-form" placeholder="Last Name">
         <br>
@@ -18,22 +20,35 @@
         <br>
         <input type="text" name="phone" id="phone-from" placeholder="Phone">
         <input type="text" name="email" id="email-form" placeholder="Email">
-
-        <h1>Rooms</h1>
+      </div>
+        
+      <div class="room-info">
+        <h2>Rooms</h2>
         <p>Check-in Date</p>
-        <input type="text" name="" id="" placeholder="Check-In Date">
+        <input type="text" name="" id="">
         <p>Duration</p>
         <select id="duration-form-walkin">
             <option value="12">12hrs</option>
             <option value="24">24hrs</option>
         </select>
-        <select id="duration-form-walkin">
-            <option value="12"></option>
-            <option value="24">24hrs</option>
+        <p>Check-In Time</p>
+        <select id="time-form-walkin">
+            <option value="8:00am">8:00am</option>
+            <option value="9:00am">9:00am</option>
+            <option value="10:00am">10:00am</option>
+            <option value="11:00am">11:00am</option>
+            <option value="12:00pm">12:00pm</option>
+            <option value="1:00am">1:00pm</option>
+            <option value="2:00am">2:00pm</option>
+            <option value="3:00am">3:00pm</option>
+            <option value="4:00am">4:00pm</option>
+            <option value="5:00am">5:00pm</option>
           </select>
         <br>
         <input type="text" name="" id="" placeholder="Capacity"><br>
-        <button type="button">Submit</button>
+      </div>
+      <button type="button">Submit</button>
+        
     </form>
 
 {% endblock %}
