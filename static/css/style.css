@@ -1274,6 +1274,7 @@ footer {
 @media screen and (max-width: 767px) {
   .top-header {
     flex-direction: column;
+    display: none;
   }
 
   .header-location-info{
