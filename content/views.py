@@ -122,7 +122,11 @@ def book_view3(request):
             duration = int(duration)
             booking.duration = timedelta(hours=duration)
             booking.save()
-            return redirect("users:login")
+            return render(request, "content/book_step4.html", {
+                "check_in": check_in,
+                "check_out": check_out,
+                "email": email,
+            })
         else:
             print(form2.errors)  
             return render(request, "content/book_step3.html", {
@@ -170,7 +174,11 @@ def book_view3(request):
         return render(request, 'content/book_step3.html', context)
 
 def book_view4(request):
-    return render(request, "content/book_step4.html")
+    email = request.user.email
+    context = {
+        "email":email,
+    }
+    return render(request, "content/book_step4.html", context)
 
 def calendar_view(request):
     return render(request, "content/calendar.html")

@@ -16,7 +16,7 @@
             <h3>{{ first_name }}</h3>
         </div>
         <div class="booking-notification-wrapper">
-            <p>A confirmation email has been sent to sample@gmail.com</p>
+            <p>A confirmation email has been sent to {{ email }} </p>
         </div>
         <h3 class="lac-hotel-title">
             Thank You
@@ -30,20 +30,20 @@
             <hr class="bar-yellow space">
         </h3>
         <ul class="booking-checkin-checkout">
-            <li><span>Check In:</span> 31/08/2024 at 4:00pm</li>
+            <li><span>Check In:</span> {{ check_in }}</li>
             <hr class="divider">
-            <li><span>Check Out:</span> 01/09/2024 at 11:00am</li>
+            <li><span>Check Out:</span>{{ check_out }}</li>
         </ul>
         <h3 class="lac-hotel-title">
             Find Us
             <hr class="bar-yellow space">
         </h3>
         <ul class="hotel-contact-details-list">
-            <li>Soho Hotel Resort & Spa, 55 Columbus Circle, New York, NY</li>
+            <li>LAC Resort</li>
             <hr class="divider">
-            <li>1111-2222-3333</li>
+            <li>0939-819-4499</li>
             <hr class="divider">
-            <li>hello@quitenicestuff.com</li>
+            <li>lacresortandfarm@gmail.com</li>
         </ul>
     </div>
 {% endblock %}
