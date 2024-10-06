@@ -34,71 +34,111 @@ li {
 
 /*Booking Forms*/
 .booking-forms-walkin{
+  position: fixed;
   background-color: #e4e7eb;
-  width: 400px;
   padding: 20px;
-  text-align: center;
-  font-weight: 700;
+  font-weight: 500;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90%;
+}
+
+.booking-forms-walkin h1{
+  text-align: center  ;
 }
 
 
 .booking-forms-walkin button{
-  width: 344px;
-  height: 30px;
-  background-color: rgb(75, 143, 6);
+  background-color: #b58a60;
+  padding: 10px 20px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  font-size: 16px;
 }
 
 .booking-forms-walkin button:hover{
-  background-color: rgb(93, 179, 7);
+  background-color: #795b3c;
 }
 
-.guest-info, .room-info{
-  text-align: center;
-  font-weight: 300;  
-}
-
-.guest-info h2, .room-info h2{
-  text-align: start;
-  font-weight: 500;
-}
-
-.room-info p{
-  text-align: start;
-  font-weight: 300;
-}
-
-.guest-info input{
-  width: 170px;
-  height: 30px;
-  margin-bottom: 10px;
-  align-items: center;
-  padding-left: 5px;
-}
-
-#address-form, #dob-form{
-  width: 344px;
-  height: 30px;
-}
-
-
-.room-info input{
-  width: 344px;
-  height: 30px;
+.guest-info{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 10px;
 }
 
-.room-info p{
+.input-group{
+  display: flex;
+  gap: 10px;
+}
+
+.input-group input{
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.room-info{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.room-info input, .room-info select{
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+
+}
+
+.select-group select{
+  width: 50%;
+}
+
+.room-type-info{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inprice input, .indesc textarea, .incap input{
+  width: 100%;
+}
+
+.indesc textarea{
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.file-group{
+  display: flex;
+  font-size: 15px;
+  font-weight: 400;
+  flex-direction: column;
+}
+
+.file-group p{
+  line-height: 1;
   margin-bottom: 10px;
 }
 
-#time-form-walkin, #duration-form-walkin{
-  width: 344px;
-  height: 30px;
-  margin-bottom: 10px;
+/*Add Room CSS*/
+.rnum input, .rtselect select{
+  width: 100%;
+  padding: 10px;
 }
+
+.addroom-form{
+  width: 400px;
+}
+
+
 
 /* Header styles */
 

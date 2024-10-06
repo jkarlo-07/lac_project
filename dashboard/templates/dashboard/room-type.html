@@ -1,0 +1,33 @@
+{% extends "admin_layout.html" %}
+
+{% load static %}
+
+{% block title %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+<form action="" class="booking-forms-walkin">
+    <h1>Add Room Type</h1>
+    <div class="room-type-info">
+      <div class="input-group">
+        <input type="text" name="fname" id="f-name-form" placeholder="Room Type">
+        <input type="text" name="lnane" id="l-name-form" placeholder="Room Number">
+      </div>
+      <div class="input-group inprice">
+        <input type="text" name="address" id="address-form" placeholder="Price">
+      </div>
+      <div class="input-group indesc">
+        <textarea name="" id="" placeholder="Description"></textarea>
+      </div>
+      <div class="input-group incap">
+        <input type="text" name="address" id="address-form" placeholder="Capacity">
+      </div>    
+      <div class="file-group">
+        <p>Picture</p>
+        <input type="file" name="dob" id="dob-form">
+      </div>
+      <button type="button">Submit</button>
+    </div>
+</form>
+{% endblock %}

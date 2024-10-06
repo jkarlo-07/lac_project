@@ -11,28 +11,34 @@
       <h1>Booking Form</h1>
       <div class="guest-info">
         <h2>Guest Information</h2>
-        <input type="text" name="fname" id="f-name-form" placeholder="First Name">
-        <input type="text" name="lnane" id="l-name-form" placeholder="Last Name">
-        <br>
-        <input type="text" name="address" id="address-form" placeholder="Address">
-        <br>
-        <input type="text" name="dob" id="dob-form" placeholder="DOB" >
-        <br>
-        <input type="text" name="phone" id="phone-from" placeholder="Phone">
-        <input type="text" name="email" id="email-form" placeholder="Email">
+        <div class="input-group">
+          <input type="text" name="fname" id="f-name-form" placeholder="First Name">
+          <input type="text" name="lnane" id="l-name-form" placeholder="Last Name">
+        </div>
+        <div class="input-group">
+          <input type="text" name="address" id="address-form" placeholder="Address">
+          <input type="text" name="dob" id="dob-form" placeholder="DOB" >
+        </div>
+        <div class="input-group">
+          <input type="text" name="phone" id="phone-from" placeholder="Phone">
+          <input type="text" name="email" id="email-form" placeholder="Email">
+        </div>
+        
       </div>
         
       <div class="room-info">
         <h2>Rooms</h2>
         <p>Check-in Date</p>
         <input type="text" name="" id="">
-        <p>Duration</p>
-        <select id="duration-form-walkin">
+        <div class="input-group select-group">
+          <select id="duration-form-walkin">
+            <option value="">Duration</option>
             <option value="12">12hrs</option>
             <option value="24">24hrs</option>
-        </select>
-        <p>Check-In Time</p>
-        <select id="time-form-walkin">
+          </select>
+  
+          <select id="time-form-walkin">
+            <option value="">Check-in Time</option>
             <option value="8:00am">8:00am</option>
             <option value="9:00am">9:00am</option>
             <option value="10:00am">10:00am</option>
@@ -44,10 +50,10 @@
             <option value="4:00am">4:00pm</option>
             <option value="5:00am">5:00pm</option>
           </select>
-        <br>
-        <input type="text" name="" id="" placeholder="Capacity"><br>
-      </div>
+        </div>
+      <input type="text" name="" id="" placeholder="Capacity">
       <button type="button">Submit</button>
+      </div>
         
     </form>
 

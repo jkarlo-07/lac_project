@@ -1,0 +1,31 @@
+{% extends "admin_layout.html" %}
+
+{% load static %}
+
+{% block title %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+    <form action="" class="booking-forms-walkin addroom-form">
+        <h1>Add Room</h1>
+        <div class="room-type-info">
+            <label for="">Room Number</label>
+            <div class="input-group rnum">
+                <input type="text" name="fname" id="f-name-form">
+            </div>
+            <label for="">Room Type</label>
+            <div class="input-group rtselect">
+                <select id="Room-type-select">
+                    <option value="">-------</option>
+                    <option value="12">Standard</option>
+                    <option value="24">Executie</option>
+                    <option value="24">Deluxe</option>
+                    <option value="24">E-house</option>
+                </select>
+            </div>
+            <button type="button">Submit</button>
+        </div>
+    </form>
+
+{% endblock %}
