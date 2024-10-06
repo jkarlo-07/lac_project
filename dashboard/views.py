@@ -33,3 +33,13 @@ def booking_view(request):
 def book_form_view(request):
     return render(request, "dashboard/booking-form.html")
 
+@login_required(login_url="users:login")
+@user_passes_test(is_staff, login_url="content:index") 
+def room_type_view(request):
+    return render(request, "dashboard/room-type.html")
+
+@login_required(login_url="users:login")
+@user_passes_test(is_staff, login_url="content:index") 
+def add_room_view(request):
+    return render(request, "dashboard/add-room.html")
+
