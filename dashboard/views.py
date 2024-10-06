@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from content.models import Booking, Room
+from content.models import Booking, Room, Guest
 
 def is_staff(user):
     return user.is_staff
@@ -13,7 +13,8 @@ def dashboard_view(request):
 @login_required(login_url="users:login")
 @user_passes_test(is_staff, login_url="content:index") 
 def guest_view(request):
-    return render(request, "dashboard/guest.html")
+    guests = Guest.objects.all()
+    return render(request, "dashboard/guest.html", {'guests' : guests})
 
 @login_required(login_url="users:login")
 @user_passes_test(is_staff, login_url="content:index") 

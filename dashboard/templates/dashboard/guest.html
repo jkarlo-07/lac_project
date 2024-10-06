@@ -1,6 +1,7 @@
 {% extends "admin_layout.html" %}
 
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}
   Guest
@@ -13,78 +14,26 @@
 
 {% block content %}
   <h1>Guests</h1>
-  <h1>Booking</h1>
   <table id="myTable" class="display">
     <thead>
         <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
+            <th>Guest ID</th>
+            <th>Full Name</th>
+            <th>Age</th>
+            <th>Address</th>
+            <th>Phone Number</th>
         </tr>
     </thead>
     <tbody>
+        {% for guest in guests %}
         <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
+            <td>{{guest.id}}</td>
+            <td>{{ guest.first_name }} {{ guest.last_name }}</td>
+            <td>{{ guest.date_of_birth|age }}</td>
+            <td>{{ guest.address }}</td>
+            <td>{{guest.phone}}</td>
         </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        
-        
+        {% endfor %}
     </tbody>
 {% endblock %}
 

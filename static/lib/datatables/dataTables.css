@@ -267,7 +267,7 @@ table.dataTable td.dt-empty {
 table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date,
 table.dataTable td.dt-type-numeric,
 table.dataTable td.dt-type-date {
-  text-align: right;
+  text-align: center;
 }
 table.dataTable thead th,
 table.dataTable thead td,

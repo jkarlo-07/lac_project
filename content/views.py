@@ -83,10 +83,10 @@ def book_view3(request):
         check_in_time = datetime.strptime(check_in_time, '%I %p').time()
         check_in = datetime.combine(check_in_date, check_in_time)
         check_out = check_in + timedelta(hours=duration)
-
+        check_out_date = check_out.date() 
         room = get_object_or_404(RoomType, id=room_id)
         email = request.user.email
-        
+        in_time = "haha"
         form = GuestForm(request.POST)
         if form.is_valid():
             guest = form.save(commit=False)
@@ -98,12 +98,19 @@ def book_view3(request):
             guest.date_of_birth = form.cleaned_data.get('date_of_birth')
             guest.save()
         else:
+            check_in_date = check_in_date.date()
+            check_out_time = check_out.time()
             print(form.errors)  
             return render(request, "content/book_step3.html", {
                 "form": form,
                 "check_in": check_in,
                 "room": room,
                 "email": email,
+                'check_in_date': check_in_date,
+                'check_out_date': check_out_date,
+                'check_in_time': check_in_time,
+                'check_out_time': check_out_time,
+                'duration': duration
             })
         
         form2 = BookingForm(request.POST)
