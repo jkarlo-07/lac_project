@@ -608,9 +608,10 @@
     gap: 10px;
 }
 
-.room-aside-photo {
+.room-aside-photo {    
     object-fit: cover;
-    width: 60%;
+    width: 40%;
+    aspect-ratio: 1;
 }
 
 .book3-remove {

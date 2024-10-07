@@ -145,7 +145,6 @@ def book_view3(request):
         check_in_time = request.GET.get("book_check_in_time")
         duration = request.GET.get('book_duration')
         duration = int(duration)
-
         date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
         check_in_date = date_object.strftime('%Y-%m-%d')
         check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d').date() if check_in_date else None
