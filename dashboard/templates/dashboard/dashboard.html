@@ -8,4 +8,98 @@
 
 {% block content %}
   <h1>Dashboard</h1>
+  <div class="chart-container">
+    <div class="chart-wrapper">
+        <h3 class="chart-title">Room Bookings</h3>
+        <canvas id="myBarChart" width="400" height="200"></canvas>
+    </div>
+    <div class="chart-wrapper">
+        <h3 class="chart-title">Monthly Sales</h3>
+        <canvas id="myLineChart" width="400" height="200"></canvas> 
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+      const barCtx = document.getElementById('myBarChart').getContext('2d');
+      const lineCtx = document.getElementById('myLineChart').getContext('2d');
+      let barChart, lineChart;
+
+      function fetchChartData() {
+          fetch("{% url 'dashboard:sample_sales_data' %}")
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  console.log(data);  
+                  
+                  if (barChart) {
+                      barChart.data.labels = data.room_labels;
+                      barChart.data.datasets[0].data = data.room_bookings;
+                      barChart.update(); 
+                  } else {
+                      barChart = new Chart(barCtx, {
+                          type: 'bar',
+                          data: {
+                              labels: data.room_labels,
+                              datasets: [{
+                                  label: 'Room',
+                                  data: data.room_bookings,
+                                  backgroundColor: 'rgba(75, 192, 192)',
+                                  borderColor: 'rgba(75, 192, 192, 1)',
+                                  borderWidth: 1
+                              }]
+                          },
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          }
+                      });
+                  }
+
+                  const lineData = {
+                      labels: data.sales_months,
+                      datasets: [{
+                          label: 'Month',
+                          data: data.sales_amounts, 
+                          backgroundColor: 'rgba(255, 99, 132, 1)',
+                          borderColor: 'rgba(255, 99, 132, 1)',
+                          tension: 0.1
+                      }]
+                  };
+
+                  if (lineChart) {
+                      lineChart.data.labels = lineData.labels;
+                      lineChart.data.datasets[0].data = lineData.datasets[0].data;
+                      lineChart.update();
+                  } else {
+                      lineChart = new Chart(lineCtx, {
+                          type: 'line',
+                          data: lineData,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          }
+                      });
+                  }
+              })
+              .catch(error => console.error('Error fetching sales data:', error)); 
+      }
+
+      fetchChartData();
+
+      setInterval(fetchChartData, 5000);
+  </script>
 {% endblock %}

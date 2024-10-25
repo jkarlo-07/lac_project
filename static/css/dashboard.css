@@ -128,6 +128,36 @@ li {
   margin-bottom: 10px;
 }
 
+/* Dashboard CSS */
+
+.chart-container {
+  display: flex;                     
+  width: 100%;                     
+  justify-content: space-between;   
+}
+
+.chart-wrapper {
+  flex: 1;                          
+  min-width: 300px;                  
+  margin: 5px;                   
+  text-align: center;            
+}
+
+canvas {
+  width: 100%;                      
+  height: auto;                     
+  aspect-ratio: 16 / 9;            
+}
+
+.chart-title {
+  font-size: 1.5rem;              
+  margin-bottom: 10px;             
+}
+
+
+
+
+
 /*Add Room CSS*/
 .rnum input, .rtselect select{
   width: 100%;
