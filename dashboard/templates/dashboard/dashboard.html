@@ -7,16 +7,57 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Dashboard</h1>
-  <div class="chart-container">
-    <div class="chart-wrapper">
-        <h3 class="chart-title">Room Bookings</h3>
-        <canvas id="myBarChart" width="400" height="200"></canvas>
-    </div>
-    <div class="chart-wrapper">
-        <h3 class="chart-title">Monthly Sales</h3>
-        <canvas id="myLineChart" width="400" height="200"></canvas> 
-    </div>
+<div class="metric-container">
+	<div class="metric-wrapper">
+		<div class="metric-icon-container">
+			<div class="metric-background"></div>
+			<img src="{% static "images/icons/check-in.png" %}" alt="metric icon" class="metric-icon">
+		</div>
+		<div class="metric-info">
+			<p class="metric-value">8,461</p>
+			<p class="metric-title">New Booking</p>
+		</div>
+	</div>
+	<div class="metric-wrapper">
+		<div class="metric-icon-container">
+			<div class="metric-background"></div>
+			<img src="{% static "images/icons/check-in.png" %}" alt="metric icon" class="metric-icon">
+		</div>
+		<div class="metric-info">
+			<p class="metric-value">8,461</p>
+			<p class="metric-title">New Booking</p>
+		</div>
+	</div>
+	<div class="metric-wrapper">
+		<div class="metric-icon-container">
+			<div class="metric-background"></div>
+			<img src="{% static "images/icons/check-in.png" %}" alt="metric icon" class="metric-icon">
+		</div>
+		<div class="metric-info">
+			<p class="metric-value">8,461</p>
+			<p class="metric-title">New Booking</p>
+		</div>
+	</div>
+	<div class="metric-wrapper">
+		<div class="metric-icon-container">
+			<div class="metric-background"></div>
+			<img src="{% static "images/icons/check-in.png" %}" alt="metric icon" class="metric-icon">
+		</div>
+		<div class="metric-info">
+			<p class="metric-value">8,461</p>
+			<p class="metric-title">New Booking</p>
+		</div>
+	</div>
+</div>
+<div class="chart-container">
+  <div class="chart-wrapper">
+    <h3 class="chart-title">Room Bookings</h3>
+    <canvas id="myBarChart" width="400" height="200"></canvas>
+  </div>
+  <div class="chart-wrapper">
+    <h3 class="chart-title">Monthly Sales</h3>
+    <canvas id="myLineChart" width="400" height="200"></canvas> 
+  </div>
 </div>
 
 {% endblock %}
@@ -49,7 +90,7 @@
                           data: {
                               labels: data.room_labels,
                               datasets: [{
-                                  label: 'Room',
+                                  label: 'Book Count',
                                   data: data.room_bookings,
                                   backgroundColor: 'rgba(75, 192, 192)',
                                   borderColor: 'rgba(75, 192, 192, 1)',
@@ -69,7 +110,7 @@
                   const lineData = {
                       labels: data.sales_months,
                       datasets: [{
-                          label: 'Month',
+                          label: 'Sales',
                           data: data.sales_amounts, 
                           backgroundColor: 'rgba(255, 99, 132, 1)',
                           borderColor: 'rgba(255, 99, 132, 1)',

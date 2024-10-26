@@ -609,6 +609,7 @@
 }
 
 .room-aside-photo {    
+    
     object-fit: cover;
     width: 40%;
     aspect-ratio: 1;
