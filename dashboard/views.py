@@ -237,7 +237,6 @@ def add_existing_room(request):
             room.room_number = form.cleaned_data.get('room_number')
             room.room_type = form.cleaned_data.get('room_type')
             room.save()
-            messages.success(request, "Room added successfully!")
 
 
             return render(request, "dashboard/room.html", {
@@ -247,7 +246,6 @@ def add_existing_room(request):
                 'show_form': True  
             })
         else:
-            messages.error(request, "There was an error adding the room. Please check the details.")
             return render(request, "dashboard/room.html", {
                 'rooms': rooms,
                 'roomtypes': roomtypes,
