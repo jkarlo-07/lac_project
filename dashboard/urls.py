@@ -11,4 +11,5 @@ urlpatterns = [
     path('roomt_form', views.room_type_view, name='roomt_form'),
     path('addroom_form', views.add_room_view, name='addroom_form'),
     path('sample-sales-data/', views.sample_sales_data, name='sample_sales_data'),
+    path('option_room', views.option_room_view, name='option_room'),
 ]

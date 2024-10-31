@@ -91,3 +91,9 @@ def sample_sales_data(request):
     }
     
     return JsonResponse(data)
+
+
+@login_required(login_url="users:login")
+@user_passes_test(is_staff, login_url="content:index") 
+def option_room_view(request):
+    return render(request, "dashboard/option-room.html")
