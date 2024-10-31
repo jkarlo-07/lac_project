@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from content.models import Booking, Room, Guest, RoomType
 from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from .forms import ExistingRoomForm
+from django.contrib import messages
+
 
 def is_staff(user):
     return user.is_staff
@@ -24,7 +27,8 @@ def guest_view(request):
 @user_passes_test(is_staff, login_url="content:index") 
 def room_view(request):
     rooms = Room.objects.all()
-    return render(request, "dashboard/room.html", {'rooms': rooms})
+    roomtypes = RoomType.objects.all()
+    return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })
 
 @login_required(login_url="users:login")
 @user_passes_test(is_staff, login_url="content:index") 
@@ -76,52 +80,45 @@ def booking_count_per_month():
     today = datetime.now()
 
     last_six_months = []
-    booking_counts = [0] * 6  # Initialize booking counts with zeros for each of the last six months
+    booking_counts = [0] * 6  
 
-    # Get the last six months from today, adding each month name to the list
     for i in range(6):
         month_date = today - timedelta(days=30 * i)
         last_six_months.append(month_date.strftime('%B'))
 
-    # Reverse last_six_months to display in chronological order
     last_six_months.reverse()
     booking_counts.reverse()
 
-    # Filter bookings within the last six months
     bookings = Booking.objects.filter(check_in__gte=today - timedelta(days=180))
 
-    # Count bookings for each month
     for booking in bookings:
         month = booking.check_in.strftime('%B')
         if month in last_six_months:
             index = last_six_months.index(month)
-            booking_counts[index] += 1  # Increment count for the month
+            booking_counts[index] += 1  
 
     return last_six_months, booking_counts
 
 def booking_count_per_month_past():
     today = datetime.now()
 
-    # Generate labels for the last six months (from last year)
     last_six_months = []
     booking_counts = [0] * 6
 
-    for i in range(5, -1, -1):  # Start from the oldest month and move to the most recent
+    for i in range(5, -1, -1):  
         month_date = today.replace(year=today.year - 1) - relativedelta(months=i)
         last_six_months.append(month_date.strftime('%B %Y'))
 
-    # Filter bookings for the last six months of last year
     bookings = Booking.objects.filter(
         check_in__year=today.year - 1,
         check_in__month__in=[datetime.strptime(month, '%B %Y').month for month in last_six_months]
     )
 
-    # Count bookings per month
     for booking in bookings:
         month_year = booking.check_in.strftime('%B %Y')
         if month_year in last_six_months:
             index = last_six_months.index(month_year)
-            booking_counts[index] += 1  # Increment count for the corresponding month
+            booking_counts[index] += 1 
 
     return booking_counts
 
@@ -129,8 +126,6 @@ def booking_count_per_month_past():
 from django.db.models import Q
 from datetime import datetime, timedelta
 
-from django.db.models import Q
-from datetime import datetime, timedelta
 
 def count_available_rooms():
     available_rooms_12h = set()  
@@ -164,10 +159,17 @@ def sample_sales_data(request):
 
     room_labels = []
     room_bookings = []
+    room_sales = []
+
+    room_types_with_bookings = RoomType.objects.annotate(
+    booking_count=Count('room__booking'),
+    total_sales=Sum('room__booking__total_amount')
+    )
 
     for room_type in room_types_with_bookings:
         room_labels.append(room_type.room_type)
         room_bookings.append(room_type.booking_count)
+        room_sales.append(room_type.total_sales if room_type.total_sales else 0)
 
     sales_months, sales_amounts = total_amount_per_month()
     bookCountperMonth = booking_count_per_month()
@@ -211,6 +213,7 @@ def sample_sales_data(request):
         'sales_past_amounts': sales_pastyearamounts,
         'sales_labels': sales_labels,
         'bookCountperMonth':bookCountperMonth,
+        'room_sales':room_sales,
     }
     
     return JsonResponse(data)
@@ -220,3 +223,42 @@ def sample_sales_data(request):
 @user_passes_test(is_staff, login_url="content:index") 
 def option_room_view(request):
     return render(request, "dashboard/option-room.html")
+
+
+def add_existing_room(request):
+    rooms = Room.objects.all()
+    roomtypes = RoomType.objects.all()
+
+    if request.method == "POST":
+        form = ExistingRoomForm(request.POST)
+
+        if form.is_valid():
+            room = form.save(commit=False)
+            room.room_number = form.cleaned_data.get('room_number')
+            room.room_type = form.cleaned_data.get('room_type')
+            room.save()
+            messages.success(request, "Room added successfully!")
+
+
+            return render(request, "dashboard/room.html", {
+                'rooms': rooms,
+                'roomtypes': roomtypes,
+                'form': ExistingRoomForm(),  
+                'show_form': True  
+            })
+        else:
+            messages.error(request, "There was an error adding the room. Please check the details.")
+            return render(request, "dashboard/room.html", {
+                'rooms': rooms,
+                'roomtypes': roomtypes,
+                'form': form,
+                'show_form': False  
+            })
+    else:
+        form = ExistingRoomForm()
+        return render(request, "dashboard/room.html", {
+            'rooms': rooms,
+            'roomtypes': roomtypes,
+            'form': form,
+            'show_form': True  
+        })

@@ -36,7 +36,7 @@ li {
 .booking-forms-walkin{
   position: fixed;
   background-color: #e4e7eb;
-  padding: 20px;
+  padding: 60px 30px;
   font-weight: 500;
   top: 50%;
   left: 50%;
@@ -238,6 +238,67 @@ canvas {
 
 .addroom-form{
   width: 400px;
+  z-index: 2000;
+  display: none;
+}
+
+.dashboard-add-room {
+  padding: 0.5rem 1rem;
+  background-color: #b58a60;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 15px;
+  float: right;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.option_room_form{
+  position: fixed;
+  background-color: #e4e7eb;
+  padding: 50px;
+  font-weight: 500;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90%;
+  z-index: 1000;
+  display: none;
+}
+
+.option-header{
+  display: flex;
+  padding:  5px 30px;
+}
+
+.option-header img{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.option-container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-container button{
+  background-color: #b58a60;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  font-size: 16px;    
+}
+
+.option-container button:hover{
+  background-color: #795b3c;
 }
 
 

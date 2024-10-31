@@ -65,8 +65,8 @@
     <canvas id="sales-comparison-chart" width="400" height="200"></canvas>
   </div>
   <div class="chart-wrapper">
-    <h3 class="chart-title">Monthly Sales</h3>
-    <canvas id="myLineChart" width="400" height="200"></canvas> 
+    <h3 class="chart-title">Room Bookings vs. Sales</h3>
+    <canvas id="comboChart" width="400" height="200"></canvas> 
   </div>
 </div>
 
@@ -78,11 +78,12 @@
       const barCtx = document.getElementById('myBarChart').getContext('2d');
       const lineCtx = document.getElementById('myLineChart').getContext('2d');
 			const salesCtx = document.getElementById('sales-comparison-chart').getContext('2d');
+			const comboCtx = document.getElementById('comboChart').getContext('2d');
 			const metricBooking = document.querySelector('.metric-booking');
 			const metricGuest = document.querySelector('.metric-guest');
 			const metricMonthSales = document.querySelector('.metric-month-sales');
 			const metricAvailRoom = document.querySelector('.metric-avail-room');
-      let barChart, lineChart, salesChart;
+      let barChart, lineChart, salesChart, comboChart;
 
       function fetchChartData() {
           fetch("{% url 'dashboard:sample_sales_data' %}")
@@ -202,6 +203,61 @@
 												}
 										});
 								}
+
+                const comboData = {
+                  labels: data.room_labels,
+                  datasets: [
+                      {
+                          label: data.sales_labels[0],  // Change to sales
+                          data: data.room_sales, 
+                          backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                          borderColor: 'rgba(255, 99, 132, 1)',
+                          tension: 0.1,
+                          fill: false,
+                          yAxisID: 'salesYAxis' // Assign to the first Y-axis (left)
+                      },
+                      {
+                          label: data.sales_labels[1],  // Change to bookings
+                          data: data.room_bookings,
+                          backgroundColor: 'rgba(54, 162, 235, 0.8)', 
+                          borderColor: 'rgba(54, 162, 235, 1)',
+                          tension: 0.1,
+                          type: 'bar',
+                          fill: false,  // Ensure lines are not filled
+                          yAxisID: 'bookingYAxis' // Assign to the second Y-axis (right)
+                      }
+                  ]
+              };
+              
+              if (comboChart) {
+                  comboChart.data.labels = data.room_labels;
+                  comboChart.data.datasets[0].data = comboData.datasets[0].data; 
+                  comboChart.data.datasets[1].data = comboData.datasets[1].data; 
+                  comboChart.update();
+              } else {
+                  comboChart = new Chart(comboCtx, {
+                      type: 'line',
+                      data: comboData, 
+                      options: {
+                          scales: {
+                              salesYAxis: {
+                                  type: 'linear',
+                                  position: 'left',  // Sales on the left
+                                  beginAtZero: true
+                              },
+                              bookingYAxis: {
+                                  type: 'linear',
+                                  position: 'right', // Bookings on the right
+                                  beginAtZero: true,
+                                  grid: {
+                                      drawOnChartArea: false // Only show grid on one side
+                                  }
+                              }
+                          }
+                      }
+                  });
+              }
+              
 								
               })
 
