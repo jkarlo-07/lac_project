@@ -14,8 +14,8 @@
 			<img src="{% static "images/icons/check-in.png" %}" alt="metric icon" class="metric-icon">
 		</div>
 		<div class="metric-info">
-			<p class="metric-value">8,461</p>
-			<p class="metric-title">New Booking</p>
+			<p class="metric-value metric-booking">8,461</p>
+			<p class="metric-title">Total Booking</p>
 		</div>
 	</div>
 	<div class="metric-wrapper">
@@ -24,8 +24,8 @@
 			<img src="{% static "images/icons/check-in.png" %}" alt="metric icon" class="metric-icon">
 		</div>
 		<div class="metric-info">
-			<p class="metric-value">8,461</p>
-			<p class="metric-title">New Booking</p>
+			<p class="metric-value metric-guest">8,461</p>
+			<p class="metric-title">Total Guests</p>
 		</div>
 	</div>
 	<div class="metric-wrapper">
@@ -34,8 +34,8 @@
 			<img src="{% static "images/icons/check-in.png" %}" alt="metric icon" class="metric-icon">
 		</div>
 		<div class="metric-info">
-			<p class="metric-value">8,461</p>
-			<p class="metric-title">New Booking</p>
+			<p class="metric-value metric-month-sales">8,461</p>
+			<p class="metric-title">Monthly Sales </p>
 		</div>
 	</div>
 	<div class="metric-wrapper">
@@ -44,8 +44,8 @@
 			<img src="{% static "images/icons/check-in.png" %}" alt="metric icon" class="metric-icon">
 		</div>
 		<div class="metric-info">
-			<p class="metric-value">8,461</p>
-			<p class="metric-title">New Booking</p>
+			<p class="metric-value metric-avail-room">8,461</p>
+			<p class="metric-title">Available Room</p>
 		</div>
 	</div>
 </div>
@@ -53,6 +53,16 @@
   <div class="chart-wrapper">
     <h3 class="chart-title">Room Bookings</h3>
     <canvas id="myBarChart" width="400" height="200"></canvas>
+  </div>
+  <div class="chart-wrapper">
+    <h3 class="chart-title">Monthly Sales</h3>
+    <canvas id="myLineChart" width="400" height="200"></canvas> 
+  </div>
+</div>
+<div class="chart-container">
+  <div class="chart-wrapper">
+    <h3 class="chart-title">Booking Comparison</h3>
+    <canvas id="sales-comparison-chart" width="400" height="200"></canvas>
   </div>
   <div class="chart-wrapper">
     <h3 class="chart-title">Monthly Sales</h3>
@@ -67,7 +77,12 @@
   <script>
       const barCtx = document.getElementById('myBarChart').getContext('2d');
       const lineCtx = document.getElementById('myLineChart').getContext('2d');
-      let barChart, lineChart;
+			const salesCtx = document.getElementById('sales-comparison-chart').getContext('2d');
+			const metricBooking = document.querySelector('.metric-booking');
+			const metricGuest = document.querySelector('.metric-guest');
+			const metricMonthSales = document.querySelector('.metric-month-sales');
+			const metricAvailRoom = document.querySelector('.metric-avail-room');
+      let barChart, lineChart, salesChart;
 
       function fetchChartData() {
           fetch("{% url 'dashboard:sample_sales_data' %}")
@@ -78,7 +93,18 @@
                   return response.json();
               })
               .then(data => {
-                  console.log(data);  
+                  console.log(data);
+									
+									console.log(metricBooking);
+
+									metricBooking.textContent = data.metric_total;
+									metricGuest.textContent = data.metric_guest;
+									metricAvailRoom.textContent = data.metric_avail_room;
+									const monthSales = data.metric_month_sales;
+
+									const formattedSales = `₱${new Intl.NumberFormat().format(monthSales)}`;
+
+									metricMonthSales.textContent = formattedSales;
                   
                   if (barChart) {
                       barChart.data.labels = data.room_labels;
@@ -135,9 +161,55 @@
                           }
                       });
                   }
+
+									const salesData = {
+										labels: data.sales_months,
+										datasets: [
+												{
+													label: data.sales_labels[1],
+													data: data.sales_past_amounts,
+													backgroundColor: 'rgba(54, 162, 235, 1)', 
+													borderColor: 'rgba(54, 162, 235, 1)',
+													tension: 0.1,
+													fill: false  // Ensure lines are not filled
+												},
+												{
+													label: data.sales_labels[0],
+														data: data.bookCountperMonth[1], 
+														backgroundColor: 'rgba(255, 99, 132, 1)',
+														borderColor: 'rgba(255, 99, 132, 1)',
+														tension: 0.1,
+														fill: false
+												}
+										]
+								};
+								
+								if (salesChart) {
+										salesChart.data.labels = salesData.labels;
+										salesChart.data.datasets[0].data = salesData.datasets[0].data; 
+										salesChart.data.datasets[1].data = salesData.datasets[1].data; 
+										salesChart.update();
+								} else {
+										salesChart = new Chart(salesCtx, {
+												type: 'line',
+												data: salesData, 
+												options: {
+														scales: {
+																y: {
+																		beginAtZero: true
+																}
+														}
+												}
+										});
+								}
+								
               })
+
+							
               .catch(error => console.error('Error fetching sales data:', error)); 
       }
+	
+		
 
       fetchChartData();
 
