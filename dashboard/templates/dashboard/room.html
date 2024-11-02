@@ -12,6 +12,29 @@
 {% endblock %}
 
 {% block content %}
+	<form action="" class="booking-forms-walkin add-new-room-type">
+		<h1>Add New Room</h1>
+		<div class="room-type-info">
+		<div class="input-group">
+			<input type="text" name="fname" id="f-name-form" placeholder="Room Type">
+			<input type="text" name="lnane" id="l-name-form" placeholder="Room Number">
+		</div>
+		<div class="input-group inprice">
+			<input type="text" name="address" id="address-form" placeholder="Price">
+		</div>
+		<div class="input-group indesc">
+			<textarea name="" id="" placeholder="Description"></textarea>
+		</div>
+		<div class="input-group incap">
+			<input type="text" name="address" id="address-form" placeholder="Capacity">
+		</div>    
+		<div class="file-group">
+			<p>Picture</p>
+			<input type="file" name="dob" id="dob-form">
+		</div>
+		<button type="button">Submit</button>
+		</div>
+	</form>
 	<form action="{% url 'dashboard:add_existing_room' %}" 
 				method="post" 
 				class="booking-forms-walkin addroom-form"
@@ -45,7 +68,7 @@
 					<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-room-option">
 			</div>
 			<div class="option-container">
-					<button type="button">New Room Type</button>
+					<button type="button" class="add-new-type-btn">New Room Type</button>
 					<button type="button" class="add-existing-btn">Existing Room Type</button>
 			</div>
 	</div>
@@ -88,6 +111,8 @@
 				const options = document.querySelector('.option_room_form');
 				const closeOption = document.getElementById('close-room-option');
 				const addExistingForm = document.querySelector('.addroom-form');
+				const addNewTypeBtn = document.querySelector('.add-new-type-btn');	
+				const addNewTypeForm = document.querySelector('.add-new-room-type');
 
 				addRoomBtn.addEventListener("click", function() {
 					options.style.display = 'block';
@@ -99,6 +124,10 @@
 
 				addExistingBtn.addEventListener("click", function() {
 					addExistingForm.style.display = 'block';
+				})
+
+				addNewTypeBtn.addEventListener("click", function() {
+					addNewTypeForm.style.display = 'block';
 				})
     </script>
 

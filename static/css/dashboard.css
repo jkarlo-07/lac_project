@@ -95,6 +95,11 @@ li {
 
 }
 
+.add-new-room-type {
+  z-index: 2000;
+  display: none;
+}
+
 .select-group select{
   width: 50%;
 }
