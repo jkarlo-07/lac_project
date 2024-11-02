@@ -88,6 +88,8 @@ li {
   gap: 10px;
 }
 
+
+
 .room-info input, .room-info select{
   padding: 5px 10px;
   border: none;
@@ -111,6 +113,19 @@ li {
 }
 
 .inprice input, .indesc textarea, .incap input{
+  width: 100%;
+}
+
+.errorlist {
+  font-size: 0.6rem;
+  color: red;
+}
+
+.add-new-room-type input {
+  height: 30px;
+}
+
+.input-container1 {
   width: 100%;
 }
 
@@ -236,6 +251,25 @@ canvas {
 
 
 /*Add Room CSS*/
+
+.room-tab {
+  display: flex;
+}
+
+.room-tab > * {
+  padding: 10px 15px;
+  background-color: #b58a60;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.type-selection {
+  background-color: #fff;
+  color: #b58a60;
+}
+
 .rnum input, .rtselect select{
   width: 100%;
   padding: 10px;

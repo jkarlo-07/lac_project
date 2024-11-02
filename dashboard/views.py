@@ -5,8 +5,9 @@ from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm
+from .forms import ExistingRoomForm, NewRoomTypeForm
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 
 def is_staff(user):
@@ -235,7 +236,9 @@ def add_existing_room(request):
         if form.is_valid():
             room = form.save(commit=False)
             room.room_number = form.cleaned_data.get('room_number')
-            room.room_type = form.cleaned_data.get('room_type')
+            room_type_post = request.POST.get('room_type')
+            roomtype = get_object_or_404(RoomType, id=room_type_post)
+            room.room_type = roomtype
             room.save()
 
 
@@ -260,3 +263,72 @@ def add_existing_room(request):
             'form': form,
             'show_form': True  
         })
+    
+
+from django.db import transaction
+from django.shortcuts import render
+
+def add_new_room_type(request):
+    rooms = Room.objects.all()
+    roomtypes = RoomType.objects.all()
+
+    if request.method == 'POST':
+        form = NewRoomTypeForm(request.POST, request.FILES)
+        form2 = ExistingRoomForm(request.POST)
+
+        if form.is_valid() and form2.is_valid():
+            print('Both forms are valid')
+            roomtype = form.save(commit=False)  # Don't save yet
+            print('RoomType instance created')
+
+            # Set roomtype fields
+            roomtype.room_type = form.cleaned_data.get('room_type')
+            roomtype.description = form.cleaned_data.get('description')
+            roomtype.price = form.cleaned_data.get('price')
+            roomtype.capacity = form.cleaned_data.get('capacity')
+            roomtype.picture = form.cleaned_data.get('picture')
+
+            # Use a transaction to ensure atomicity
+            with transaction.atomic():
+                roomtype.save() 
+                print('RoomType saved:', roomtype.id)
+
+                room = form2.save(commit=False)
+                room.room_type = roomtype
+                room.room_number = form2.cleaned_data.get('room_number')
+                room.save() 
+                print('Room instance saved')
+
+                # Reset the form for new entries
+                form = NewRoomTypeForm()
+                form2 = ExistingRoomForm()
+
+        else:
+            print('One or both forms are not valid')
+            if not form.is_valid():
+                print('Form errors:', form.errors)
+            if not form2.is_valid():
+                print('Form2 errors:', form2.errors)
+
+            # Render the page with both forms and their errors
+            return render(request, "dashboard/room.html", {
+                'rooms': rooms,
+                'roomtypes': roomtypes,
+                'form': form,
+                'form2': form2,
+                'show_form': True,
+                'show_form2': True  # Show both forms for correction
+            })
+
+    else:
+        form = NewRoomTypeForm()
+        form2 = ExistingRoomForm()
+
+    return render(request, "dashboard/room.html", {
+        'rooms': rooms,
+        'roomtypes': roomtypes,
+        'form': form,
+        'form2': form2,
+        'show_form': True,
+        'show_form2': False
+    })

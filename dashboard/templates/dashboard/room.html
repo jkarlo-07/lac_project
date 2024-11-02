@@ -12,31 +12,64 @@
 {% endblock %}
 
 {% block content %}
-	<form action="" class="booking-forms-walkin add-new-room-type">
+	<form action="{% url 'dashboard:add_new_room_type' %}" 
+	class="booking-forms-walkin add-new-room-type"
+	style="{% if show_form2 %}display: block;{% else %}display: none;{% endif %};"
+	method="POST" 
+	enctype="multipart/form-data"> 
+		{% csrf_token %}
 		<div class="option-header2">
 			<h1>Add New Room</h1>
-			<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-room-option">
+			<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-new-room-btn">
 		</div>
 		
 		<div class="room-type-info">
 		<div class="input-group">
-			<input type="text" name="fname" id="f-name-form" placeholder="Room Type">
-			<input type="text" name="lnane" id="l-name-form" placeholder="Room Number">
+			<div class="input-container1">
+				<input type="text" name="room_type" id="f-name-form" placeholder="Room Type" value="{{ form.room_type.value|default:'' }}">
+				{% if form.room_type.errors %}
+          <p class="errorlist">{{ form.room_type.errors }}</p>
+				{% endif %}
+			</div>
+			
+			<div class="input-container1">
+				<input type="text" name="room_number" id="l-name-form" placeholder="Room Number" value="{{ form2.room_number.value|default:'' }}">
+				{% if form.room_number.errors %}
+          <p class="errorlist">{{ form.room_type.errors }}</p>
+				{% endif %}
+			</div>
+			
 		</div>
 		<div class="input-group inprice">
-			<input type="text" name="address" id="address-form" placeholder="Price">
+			<div class="input-container1">
+				<input type="text" name="price" placeholder="Price" value="{{ form.price.value|default:'' }}">
+				{% if form.price.errors %}
+					<p class="errorlist">{{ form.price.errors }}</p>
+				{% endif %}
+			</div>
 		</div>
 		<div class="input-group indesc">
-			<textarea name="" id="" placeholder="Description"></textarea>
+			<div class="input-container1">
+				<textarea name="description" id="" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
+				{% if form.description.errors %}
+					<p class="errorlist">{{ form.description.errors }}</p>
+				{% endif %}
+			</div>
 		</div>
 		<div class="input-group incap">
-			<input type="text" name="address" id="address-form" placeholder="Capacity">
+			<div class="input-container1">
+				<input type="text" name="capacity" id="address-form" placeholder="Capacity" value="{{ form.capacity.value|default:'' }}">
+				{% if form.capacity.errors %}
+					<p class="errorlist">{{ form.capacity.errors }}</p>
+				{% endif %}
+			</div>
+			
 		</div>    
 		<div class="file-group">
 			<p>Picture</p>
-			<input type="file" name="dob" id="dob-form">
+			<input type="file" name="picture" id="dob-form">
 		</div>
-		<button type="button">Submit</button>
+		<button type="submit">Submit</button>
 		</div>
 	</form>
 	<form action="{% url 'dashboard:add_existing_room' %}" 
@@ -46,7 +79,7 @@
 		{% csrf_token %}
 		<div class="option-header3">
 			<h1>Add Room</h1>
-			<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-room-option">
+			<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-existing-room-btn">
 		</div>
 		
 		<div class="room-type-info">
@@ -68,7 +101,10 @@
 				<button type="submit">Submit</button>
 		</div>
 	</form>
-
+	<div class="room-tab">
+		<h3 class="room-selection current-tab">Room</h3>
+		<h3 class="type-selection">Room Type</h3>
+	</div>
 
 	<div class="option_room_form">
 			<div class="option-header">
@@ -81,7 +117,7 @@
 			</div>
 	</div>
   <p class="dashboard-add-room">Add Room</p>
-  <table id="myTable" class="display">
+  <table id="myTable" class="display roomTable">
     <thead>
         <tr>
             <th>Room Number</th>
@@ -96,7 +132,7 @@
         <tr>
             <td>{{room.room_number}}</td>
             <td>{{room.room_type.room_type}}</td>
-            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim veritatis molestiae officiis non. Amet adipisci dolorem, molestiae, quae aperiam optio vitae sequi natus nulla reiciendis at iusto, non tenetur minima!</td>
+            <td>{{room.room_type.description}}</td>
             <td>{{room.room_type.price}}</td>
             <td>{{room.room_type.capacity}}</td>
         </tr>
@@ -105,9 +141,25 @@
 </table>    
 {% endblock %}
 {% block extra_script  %}
-    <script src="{% static "lib/jquery/jquery-3.7.1.js" %}"></script>
+		<script src="{% static 'lib/jquery/jquery-3.7.1.js' %}"></script>
+		<script src="{% static 'lib/datatables/dataTables.js' %}"></script>
+		<script>
+				$(document).ready(function () {
+						$('#myTable').DataTable({
+								initComplete: function() {
+										const roomTable = document.querySelector(".roomTable");
+										const roomTab = document.querySelector('.room-tab');
 
-    <script src="{% static "lib/datatables/dataTables.js" %}"></script>
+										if (roomTable && roomTab) {
+												roomTable.parentElement.insertBefore(roomTab, roomTable);
+												console.log('roomTab moved above roomTable');
+										} else {
+												console.log('One or both elements not found');
+										}
+								}
+						});
+				});
+		</script>
 
     <script>
         $(document).ready(function () {
@@ -121,12 +173,15 @@
 				const addExistingForm = document.querySelector('.addroom-form');
 				const addNewTypeBtn = document.querySelector('.add-new-type-btn');	
 				const addNewTypeForm = document.querySelector('.add-new-room-type');
+				const btnCloseNewRoom = document.getElementById('close-new-room-btn');
+				const btnExistRoomClose = document.getElementById('close-existing-room-btn');  
 
 				addRoomBtn.addEventListener("click", function() {
 					options.style.display = 'block';
 				});
 
 				closeOption.addEventListener("click", function() {
+					console.log("ldskfj")
 					options.style.display = 'none';
 				})
 
@@ -137,6 +192,42 @@
 				addNewTypeBtn.addEventListener("click", function() {
 					addNewTypeForm.style.display = 'block';
 				})
-    </script>
+
+				btnCloseNewRoom.addEventListener("click", function() {
+					addNewTypeForm.style.display = 'none';
+				});
+
+				btnExistRoomClose.addEventListener("click", function() {
+					addExistingForm.style.display = 'none';
+				});
+				
+				
+				
+
+			const roomSelection = document.querySelector('.room-selection');
+			const typeSelection = document.querySelector(".type-selection");
+			
+			console.log(roomSelection, typeSelection);
+			
+			
+			typeSelection.addEventListener("click", function() {
+				typeSelection.style.color = "#fff";
+				typeSelection.style.backgroundColor = "#b58a60";
+				roomSelection.style.color = "#b58a60	";
+				roomSelection.style.backgroundColor = "#fff";
+			});
+			
+			roomSelection.addEventListener("click", function() {
+				roomSelection.style.color = "#fff";
+				roomSelection.style.backgroundColor = "#b58a60";
+				typeSelection.style.color = "#b58a60	";
+				typeSelection.style.backgroundColor = "#fff";
+			});
+			
+
+			
+
+				
+	</script>
 
 {% endblock  %}

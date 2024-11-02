@@ -13,4 +13,5 @@ urlpatterns = [
     path('sample-sales-data/', views.sample_sales_data, name='sample_sales_data'),
     path('option_room', views.option_room_view, name='option_room'),
     path('add_existing_room', views.add_existing_room, name='add_existing_room'),
+    path('add_new_room_type', views.add_new_room_type, name='add_new_room_type'),
 ]
