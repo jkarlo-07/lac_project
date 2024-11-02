@@ -285,6 +285,24 @@ canvas {
   cursor: pointer;
 }
 
+.option-header2 img{
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.option-header3 img{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
 .option-container{
   display: flex;
   flex-direction: column;
