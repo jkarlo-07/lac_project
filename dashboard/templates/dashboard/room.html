@@ -117,28 +117,14 @@
 			</div>
 	</div>
   <p class="dashboard-add-room">Add Room</p>
-  <table id="myTable" class="display roomTable">
-    <thead>
-        <tr>
-            <th>Room Number</th>
-            <th>Room Type</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Capacity</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for room in rooms %}
-        <tr>
-            <td>{{room.room_number}}</td>
-            <td>{{room.room_type.room_type}}</td>
-            <td>{{room.room_type.description}}</td>
-            <td>{{room.room_type.price}}</td>
-            <td>{{room.room_type.capacity}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>    
+  <div id="roomTableContainer">
+    {% if switchToRoom %}
+        {% include 'dashboard/room_type_table.html' %}
+    {% else %}
+        {% include 'dashboard/room_table.html' %}
+    {% endif %}
+	</div>
+
 {% endblock %}
 {% block extra_script  %}
 		<script src="{% static 'lib/jquery/jquery-3.7.1.js' %}"></script>
@@ -163,7 +149,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#myTable').DataTable();
+            $('#myTable1').DataTable();
         });
 
 				const addRoomBtn = document.querySelector(".dashboard-add-room");
@@ -224,8 +210,72 @@
 				typeSelection.style.backgroundColor = "#fff";
 			});
 			
+			const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}";
 
+$(document).ready(function () {
+
+    const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}";
+
+    const roomSelection = document.querySelector('.room-selection');
+    const typeSelection = document.querySelector(".type-selection");
+
+    roomSelection.addEventListener("click", function() {
+        fetch(`${fetchRoomsUrl}?switchToRoom=false`, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("roomTableContainer").innerHTML = data.html;
+
+            $('#myTable1').DataTable({
+							initComplete: function() {
+									const roomTable = document.querySelector(".roomTable");
+									const roomTab = document.querySelector('.room-tab');
 			
+									if (roomTable && roomTab) {
+											roomTable.parentElement.insertBefore(roomTab, roomTable);
+											console.log('roomTab moved above roomTable');
+									} else {
+											console.log('One or both elements not found');
+									}
+							}
+					});
+        })
+        .catch(error => console.error("Error fetching data:", error));
+    });
+
+    typeSelection.addEventListener("click", function() {
+        fetch(`${fetchRoomsUrl}?switchToRoom=true`, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("roomTableContainer").innerHTML = data.html;
+
+            $('#myTable2').DataTable({
+							initComplete: function() {
+									const roomTable = document.querySelector(".roomTable");
+									const roomTab = document.querySelector('.room-tab');
+			
+									if (roomTable && roomTab) {
+											roomTable.parentElement.insertBefore(roomTab, roomTable);
+											console.log('roomTab moved above roomTable');
+									} else {
+											console.log('One or both elements not found');
+									}
+							}
+					});
+        })
+        .catch(error => console.error("Error fetching data:", error));
+    });
+});
+
 
 				
 	</script>

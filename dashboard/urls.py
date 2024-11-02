@@ -14,4 +14,5 @@ urlpatterns = [
     path('option_room', views.option_room_view, name='option_room'),
     path('add_existing_room', views.add_existing_room, name='add_existing_room'),
     path('add_new_room_type', views.add_new_room_type, name='add_new_room_type'),
+    path('fetch_all_rooms', views.fetch_all_rooms, name='fetch_all_rooms'),
 ]

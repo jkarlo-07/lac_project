@@ -1,0 +1,22 @@
+
+<table id="myTable2" class="display roomTable2">
+  <thead>
+      <tr>
+          <th>Room Type</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Capacity</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for roomtype in roomtypes %}
+      <tr>
+          <td>{{ roomtype.room_type }}</td>
+          <td>{{ roomtype.description }}</td>
+          <td>{{ roomtype.price }}</td>
+          <td>{{ roomtype.capacity }}</td>
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+

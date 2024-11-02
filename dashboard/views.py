@@ -278,17 +278,15 @@ def add_new_room_type(request):
 
         if form.is_valid() and form2.is_valid():
             print('Both forms are valid')
-            roomtype = form.save(commit=False)  # Don't save yet
+            roomtype = form.save(commit=False)  
             print('RoomType instance created')
 
-            # Set roomtype fields
             roomtype.room_type = form.cleaned_data.get('room_type')
             roomtype.description = form.cleaned_data.get('description')
             roomtype.price = form.cleaned_data.get('price')
             roomtype.capacity = form.cleaned_data.get('capacity')
             roomtype.picture = form.cleaned_data.get('picture')
 
-            # Use a transaction to ensure atomicity
             with transaction.atomic():
                 roomtype.save() 
                 print('RoomType saved:', roomtype.id)
@@ -299,7 +297,6 @@ def add_new_room_type(request):
                 room.save() 
                 print('Room instance saved')
 
-                # Reset the form for new entries
                 form = NewRoomTypeForm()
                 form2 = ExistingRoomForm()
 
@@ -310,14 +307,13 @@ def add_new_room_type(request):
             if not form2.is_valid():
                 print('Form2 errors:', form2.errors)
 
-            # Render the page with both forms and their errors
             return render(request, "dashboard/room.html", {
                 'rooms': rooms,
                 'roomtypes': roomtypes,
                 'form': form,
                 'form2': form2,
                 'show_form': True,
-                'show_form2': True  # Show both forms for correction
+                'show_form2': True  
             })
 
     else:
@@ -331,4 +327,25 @@ def add_new_room_type(request):
         'form2': form2,
         'show_form': True,
         'show_form2': False
+    })
+    
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
+def fetch_all_rooms(request):
+    rooms = Room.objects.all()
+    roomtypes = RoomType.objects.all()
+    switch_to_room = request.GET.get('switchToRoom') == 'true'
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html_content = render_to_string(
+            'dashboard/room_table.html' if not switch_to_room else 'dashboard/room_type_table.html',
+            {'rooms': rooms, 'roomtypes': roomtypes}
+        )
+        return JsonResponse({'html': html_content})
+    
+    return render(request, "dashboard/room.html", {
+        'rooms': rooms, 
+        'roomtypes': roomtypes, 
+        'switchToRoom': switch_to_room,
     })
