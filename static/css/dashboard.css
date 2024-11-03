@@ -48,6 +48,21 @@ li {
   text-align: center  ;
 }
 
+.add-room-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  float: right;
+  margin-bottom: 10px; 
+}
+
+.room-table-label {
+  padding: 5px 10px;
+  font-size: 1.3rem;
+  color: #b58a60;
+  font-weight: 600;
+}
+
 
 .booking-forms-walkin button{
   background-color: #b58a60;
@@ -88,6 +103,10 @@ li {
   gap: 10px;
 }
 
+#roomTableContainer {
+  border: 1px solid #b58a60 ;
+  border-radius: 0 15px 15px 15px;
+}
 
 
 .room-info input, .room-info select{
@@ -254,6 +273,7 @@ canvas {
 
 .room-tab {
   display: flex;
+
 }
 
 .room-tab > * {
@@ -287,8 +307,6 @@ canvas {
   color: #fff;
   font-size: 1rem;
   border-radius: 15px;
-  float: right;
-  margin-bottom: 20px;
   cursor: pointer;
 }
 

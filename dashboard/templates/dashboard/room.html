@@ -116,7 +116,11 @@
 					<button type="button" class="add-existing-btn">Existing Room Type</button>
 			</div>
 	</div>
-  <p class="dashboard-add-room">Add Room</p>
+  <div class="add-room-container">
+	<p class="room-table-label">Rooms</p>
+	<p class="dashboard-add-room">Add Room</p>
+  </div>
+  
   <div id="roomTableContainer">
     {% if switchToRoom %}
         {% include 'dashboard/room_type_table.html' %}
