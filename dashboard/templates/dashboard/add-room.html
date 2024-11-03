@@ -7,25 +7,33 @@
 {% endblock %}
 
 {% block content %}
-    <form action="" class="booking-forms-walkin addroom-form">
-        <h1>Add Room</h1>
-        <div class="room-type-info">
-            <label for="">Room Number</label>
-            <div class="input-group rnum">
-                <input type="text" name="fname" id="f-name-form">
-            </div>
-            <label for="">Room Type</label>
-            <div class="input-group rtselect">
-                <select id="Room-type-select">
-                    <option value="">-------</option>
-                    <option value="12">Standard</option>
-                    <option value="24">Executie</option>
-                    <option value="24">Deluxe</option>
-                    <option value="24">E-house</option>
-                </select>
-            </div>
-            <button type="button">Submit</button>
-        </div>
+    <form action="" class="booking-forms-walkin edit-room-form" style="display: block">
+        <div class="update-room-table">
+			<div class="update-room-header">
+					<h1>Update Room Type</h1>
+					<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-update-room">
+			</div>
+			<div class="update-input-container">
+                <input type="text" name="rtype" id="r-edit-form" placeholder="Room Type">
+                <textarea rows="5" class="no-resize" id="desc-edit-form" placeholder="Description"></textarea>
+                <div class="pricecap-container">
+                    <input type="text" name="price" id="price-edit-form" placeholder="Price">
+                    <input type="text" name="capacity" id="capacity-edit-form" placeholder="Capacity">
+                </div>
+                <div class="edit-image-container">
+                    <p>Picture:</p>
+                    <div class="input-update-image">
+                        <p>Currently:</p>
+                        <div class="input-change-image">
+                            <p>Change:</p>
+                            <input type="file" name="update-picture" id="update-pic-form">
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="button">UPDATE</button>
+			</div>
+	</div>
     </form>
 
 {% endblock %}

@@ -6,6 +6,10 @@
   Room
 {% endblock %}
 
+{% block pagetitle %}
+	Room
+{% endblock %}
+
 {% block extra_head %}
     <link rel="stylesheet" href="{% static "lib/datatables/dataTables.css" %}">
 
@@ -50,7 +54,7 @@
 		</div>
 		<div class="input-group indesc">
 			<div class="input-container1">
-				<textarea name="description" id="" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
+				<textarea rows="5" class="no-resize" name="description" id="" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
 				{% if form.description.errors %}
 					<p class="errorlist">{{ form.description.errors }}</p>
 				{% endif %}
@@ -116,10 +120,8 @@
 					<button type="button" class="add-existing-btn">Existing Room Type</button>
 			</div>
 	</div>
-  <div class="add-room-container">
-	<p class="room-table-label">Rooms</p>
-	<p class="dashboard-add-room">Add Room</p>
-  </div>
+	<p class="dashboard-add-room">+ New Room</p>
+
   
   <div id="roomTableContainer">
     {% if switchToRoom %}
@@ -201,17 +203,18 @@
 			
 			
 			typeSelection.addEventListener("click", function() {
-				typeSelection.style.color = "#fff";
-				typeSelection.style.backgroundColor = "#b58a60";
-				roomSelection.style.color = "#b58a60	";
-				roomSelection.style.backgroundColor = "#fff";
+				typeSelection.style.color = "#b58a60";
+				roomSelection.style.color = "#6E6E6E";
+				typeSelection.style.borderBottom = "1.5px solid #b58a60";
+				roomSelection.style.borderBottom = "1px solid #d4d4d4";
+
 			});
 			
 			roomSelection.addEventListener("click", function() {
-				roomSelection.style.color = "#fff";
-				roomSelection.style.backgroundColor = "#b58a60";
-				typeSelection.style.color = "#b58a60	";
-				typeSelection.style.backgroundColor = "#fff";
+				roomSelection.style.color = "#b58a60";
+				typeSelection.style.color = "#6E6E6E";	
+				typeSelection.style.borderBottom = "1px solid #d4d4d4";
+				roomSelection.style.borderBottom = "1.5px solid #b58a60";
 			});
 			
 			const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}";

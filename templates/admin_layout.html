@@ -22,7 +22,14 @@
           class="header-menu"
           width="100"
         />
-        <h1 class="header-text">Dashboard</h1>
+        
+        <h1 class="header-text">
+          {% block pagetitle %}
+          Dashboard
+          {% endblock  %}
+        </h1>
+        
+        
       </div>
       <div>
         <div class="search-input-container">

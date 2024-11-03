@@ -11,7 +11,12 @@
   <tbody>
       {% for roomtype in roomtypes %}
       <tr>
-          <td>{{ roomtype.room_type }}</td>
+          <td>
+            <div class="room-picture-table-container">
+                <img src="{{roomtype.picture.url}}" alt="room" class="room-picture-table">
+                <p>{{ roomtype.room_type }}</p>
+            </div>
+          </td>
           <td>{{ roomtype.description }}</td>
           <td>{{ roomtype.price }}</td>
           <td>{{ roomtype.capacity }}</td>

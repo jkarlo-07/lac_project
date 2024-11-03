@@ -56,6 +56,27 @@ li {
   margin-bottom: 10px; 
 }
 
+.dots-action {
+  width: 20px;
+  cursor: pointer;
+}
+
+.dot-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.action-container {
+  display: none;
+  text-align: left;
+  position: absolute;
+  padding: 10px 40px 10px 10px;
+  background-color: #ececec;
+  border-radius: 10px;
+  right: 0;
+}
+
 .room-table-label {
   padding: 5px 10px;
   font-size: 1.3rem;
@@ -103,10 +124,7 @@ li {
   gap: 10px;
 }
 
-#roomTableContainer {
-  border: 1px solid #b58a60 ;
-  border-radius: 0 15px 15px 15px;
-}
+
 
 
 .room-info input, .room-info select{
@@ -255,6 +273,65 @@ canvas {
   transform: translate(-50%, -50%);
 }
 
+/*Update Room */
+
+
+.edit-room-form{
+  padding: 50px 20px;
+}
+
+.edit-image-container{
+  display: flex;
+  gap: 20%;;
+}
+
+.input-change-image{
+  display: flex;
+  align-items: center;
+}
+
+.edit-image-container p{
+  font-size: 0.8rem;
+}
+
+.no-resize {
+  resize: none; 
+}
+
+.pricecap-container{
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.pricecap-container input{
+  width: 50%;
+}
+
+
+.update-input-container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.update-input-container input, .update-input-container textarea{
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+}
+
+
+.update-room-header img{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+
 
 
 
@@ -277,17 +354,34 @@ canvas {
 }
 
 .room-tab > * {
-  padding: 10px 15px;
-  background-color: #b58a60;
-  border-radius: 10px 10px 0 0;
-  border: 1px solid #000;
-  color: #fff;
+  background: transparent;
+  color: #b58a60;
+  font-size: 14px;
+  font-weight: 500;
+  padding: .5rem 1.25rem;
   cursor: pointer;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+
+.room-picture-table {
+  height: 4rem;
+  width: 8rem;
+  object-fit: cover;
+  border-radius: .75rem;
+}
+.room-picture-table-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.room-selection{
+  border-bottom: 1.5px solid #b58a60;
 }
 
 .type-selection {
-  background-color: #fff;
-  color: #b58a60;
+  color: #6e6e6e;
 }
 
 .rnum input, .rtselect select{
@@ -302,6 +396,8 @@ canvas {
 }
 
 .dashboard-add-room {
+  float: right;
+  margin-bottom: 10px;
   padding: 0.5rem 1rem;
   background-color: #b58a60;
   color: #fff;

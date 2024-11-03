@@ -72,24 +72,7 @@ table.dataTable thead > tr > th:active,
 table.dataTable thead > tr > td:active {
   outline: none;
 }
-table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:before, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:before,
-table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order:before,
-table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order:before {
-  position: absolute;
-  display: block;
-  bottom: 50%;
-  content: "▲";
-  content: "▲"/"";
-}
-table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:after, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:after,
-table.dataTable thead > tr > td.dt-orderable-desc span.dt-column-order:after,
-table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:after {
-  position: absolute;
-  display: block;
-  top: 50%;
-  content: "▼";
-  content: "▼"/"";
-}
+
 table.dataTable thead > tr > th.dt-orderable-asc, table.dataTable thead > tr > th.dt-orderable-desc, table.dataTable thead > tr > th.dt-ordering-asc, table.dataTable thead > tr > th.dt-ordering-desc,
 table.dataTable thead > tr > td.dt-orderable-asc,
 table.dataTable thead > tr > td.dt-orderable-desc,
@@ -98,31 +81,8 @@ table.dataTable thead > tr > td.dt-ordering-desc {
   position: relative;
   padding-right: 30px;
 }
-table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order,
-table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order,
-table.dataTable thead > tr > td.dt-orderable-desc span.dt-column-order,
-table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order,
-table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order {
-  position: absolute;
-  right: 12px;
-  top: 0;
-  bottom: 0;
-  width: 12px;
-}
-table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:before, table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:after, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:before, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:after, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:before, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:after, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:before, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:after,
-table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order:before,
-table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order:after,
-table.dataTable thead > tr > td.dt-orderable-desc span.dt-column-order:before,
-table.dataTable thead > tr > td.dt-orderable-desc span.dt-column-order:after,
-table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order:before,
-table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order:after,
-table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:before,
-table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:after {
-  left: 0;
-  opacity: 0.125;
-  line-height: 9px;
-  font-size: 0.8em;
-}
+
+
 table.dataTable thead > tr > th.dt-orderable-asc, table.dataTable thead > tr > th.dt-orderable-desc,
 table.dataTable thead > tr > td.dt-orderable-asc,
 table.dataTable thead > tr > td.dt-orderable-desc {
@@ -381,9 +341,7 @@ table.dataTable > tbody > tr > th,
 table.dataTable > tbody > tr > td {
   padding: 8px 10px;
 }
-table.dataTable.row-border > tbody > tr > *, table.dataTable.display > tbody > tr > * {
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
-}
+
 table.dataTable.row-border > tbody > tr:first-child > *, table.dataTable.display > tbody > tr:first-child > * {
   border-top: none;
 }
@@ -401,10 +359,7 @@ table.dataTable.cell-border > tbody > tr > *:first-child {
 table.dataTable.cell-border > tbody > tr:first-child > * {
   border-top: 1px solid rgba(0, 0, 0, 0.3);
 }
-table.dataTable.stripe > tbody > tr:nth-child(odd) > *, table.dataTable.display > tbody > tr:nth-child(odd) > * {
-  box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.023);
-  box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-stripe), 0.023);
-}
+
 table.dataTable.stripe > tbody > tr:nth-child(odd).selected > *, table.dataTable.display > tbody > tr:nth-child(odd).selected > * {
   box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.923);
   box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-selected), 0.923);
@@ -771,8 +726,19 @@ html.dark .dt-container .dt-paging .dt-paging-button:active {
 }
 
 .table.dataTable thead > tr > th.dt-orderable-asc, table.dataTable thead > tr > th.dt-orderable-desc, table.dataTable thead > tr > td.dt-orderable-asc, table.dataTable thead > tr > td.dt-orderable-desc{
-  background-color: #b58a60;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 17px 13px;
+}
+
+tr{
+  text-align: center;
+  border: none !important;
+  font-size: 14px;
+  color: #6E6E6E;
 }
 
 tr:nth-child(even) {
@@ -780,7 +746,7 @@ tr:nth-child(even) {
 }
 
 tr:nth-child(odd) {
-  background-color: #FFF8E8 !important; /* White background for odd rows */
+  background-color: #FFF !important; /* White background for odd rows */
 }
 
 tr:hover {
