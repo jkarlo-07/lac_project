@@ -56,32 +56,25 @@ li {
   margin-bottom: 10px; 
 }
 
-.dots-action {
+.dots-action, .dots-action2 {
   width: 20px;
   cursor: pointer;
   position: relative;
 }
 
-.dot-container {
+.dot-container, .dot-container2 {
   display: flex;
   align-items: center;
 }
 
-.dot-size {
+.dot-size, .dot-size2 {
   position: relative;
   display: flex;
   align-items: center;
 }
 
 
-
-.dot-size {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.action-container {
+.action-container, .action-container2 {
   padding: 5px 0;
   display: none;
   text-align: left;
@@ -94,21 +87,21 @@ li {
   transform: translateY(0); /* Remove any vertical translation */
 }
 
-.action-container p {
+.action-container p, .action-container2 p{
   padding: 0 70px 0 10px; 
   cursor: pointer;
 }
 
-.action-container p:hover {
+.action-container p:hover, .action-container2 p:hover {
   background-color: #fff;
 }
 
-.action-container p:first-child {
+.action-container p:first-child, .action-container2 p:first-child {
   padding-top: 5px; 
   padding-bottom: 5px;
 }
 
-.action-container p:nth-child(2) {
+.action-container p:nth-child(2), .action-container2 p:nth-child(2) {
   padding-bottom: 5px; 
   padding-top: 5px;
 }
