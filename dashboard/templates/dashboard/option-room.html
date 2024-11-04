@@ -12,24 +12,21 @@
 
 {% block content %}
 
-    <form action="{% url 'dashboard:add_existing_room' %}" 
-				method="post" 
-				class="booking-forms-walkin addroom-form"
-				style="{% if show_form %}display: none;{% else %}display: block;{% endif %};">
-		<div class="option-header3">
+    <form class="booking-forms-walkin updateroom-form" style="display: block;">
+		<div class="updateroom-header">
 			<h1>Update Room</h1>
-			<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-existing-room-btn">
+			<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-update-exist-room-btn">
 		</div>
 		
-		<div class="room-type-info">
-				<div class="input-group">
+		<div class="update-room-info">
+				<div class="update-input-group">
 						<label for="room-number">Room Number</label>
-						<input type="text" name="room_number" id="room-number" required placeholder="Enter room number">
+						<input type="text" name="room_number" id="updateroom-number" required placeholder="Enter room number">
 				</div>
 
-				<div class="input-group">
+				<div class="update-input-group">
 						<label for="room-type-select">Room Type</label>
-						<select name="room_type" id="room-type-select" required>
+						<select name="room_type" id="updateroom-type-select" required>
 								<option value="">--------------</option>
 						</select>
 				</div>
