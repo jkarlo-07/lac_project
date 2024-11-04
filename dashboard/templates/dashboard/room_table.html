@@ -33,31 +33,56 @@
   </tbody>
 </table>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const dotsActions = document.querySelectorAll('.dots-action');
+<form class="booking-forms-walkin updateroom-form" style="display: z;">
+  <div class="updateroom-header">
+    <h1>Update Room</h1>
+    <img src="{% static 'images/icons/button-option.png' %}" alt="close icon" id="close-update-exist-room-btn" />
+  </div>
 
+  <div class="update-room-info">
+    <div class="update-input-group">
+      <label for="room-number">Room Number</label>
+      <input type="text" name="room_number" id="updateroom-number" required placeholder="Enter room number" />
+    </div>
+
+    <div class="update-input-group">
+      <label for="room-type-select">Room Type</label>
+      <select name="room_type" id="updateroom-type-select" required>
+        <option value="">--------------</option>
+      </select>
+    </div>
+
+    <button type="submit">UPDATE</button>
+  </div>
+</form>
+<p class="testP">hey</p>
+
+<script>
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    const dotsActions = document.querySelectorAll('.dots-action')
+  
     dotsActions.forEach((dotsAction) => {
       dotsAction.addEventListener('click', function (event) {
-        const actionContainer = dotsAction.nextElementSibling;
-
+        const actionContainer = dotsAction.nextElementSibling
+  
         if (actionContainer.style.display === 'block') {
-          actionContainer.style.display = 'none';
+          actionContainer.style.display = 'none'
         } else {
           document.querySelectorAll('.action-container').forEach((container) => {
-            container.style.display = 'none';
-          });
-          actionContainer.style.display = 'block';
+            container.style.display = 'none'
+          })
+          actionContainer.style.display = 'block'
         }
-
-        event.stopPropagation();
-      });
-    });
-
+  
+        event.stopPropagation()
+      })
+    })
+  
     document.addEventListener('click', function () {
       document.querySelectorAll('.action-container').forEach((container) => {
-        container.style.display = 'none';
-      });
-    });
-  });
+        container.style.display = 'none'
+      })
+    })
+  })
 </script>

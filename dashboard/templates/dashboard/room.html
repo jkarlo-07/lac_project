@@ -1,4 +1,4 @@
-{% extends "admin_layout.html" %}
+{% extends 'admin_layout.html' %}
 
 {% load static %}
 
@@ -7,284 +7,278 @@
 {% endblock %}
 
 {% block pagetitle %}
-	Room
+  Room
 {% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static "lib/datatables/dataTables.css" %}">
-
+  <link rel="stylesheet" href="{% static 'lib/datatables/dataTables.css' %}" />
 {% endblock %}
 
 {% block content %}
-	<form action="{% url 'dashboard:add_new_room_type' %}" 
-	class="booking-forms-walkin add-new-room-type"
-	style="{% if show_form2 %}display: block;{% else %}display: none;{% endif %};"
-	method="POST" 
-	enctype="multipart/form-data"> 
-		{% csrf_token %}
-		<div class="option-header2">
-			<h1>Add New Room</h1>
-			<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-new-room-btn">
-		</div>
-		
-		<div class="room-type-info">
-		<div class="input-group">
-			<div class="input-container1">
-				<input type="text" name="room_type" id="f-name-form" placeholder="Room Type" value="{{ form.room_type.value|default:'' }}">
-				{% if form.room_type.errors %}
-          <p class="errorlist">{{ form.room_type.errors }}</p>
-				{% endif %}
-			</div>
-			
-			<div class="input-container1">
-				<input type="text" name="room_number" id="l-name-form" placeholder="Room Number" value="{{ form2.room_number.value|default:'' }}">
-				{% if form.room_number.errors %}
-          <p class="errorlist">{{ form.room_type.errors }}</p>
-				{% endif %}
-			</div>
-			
-		</div>
-		<div class="input-group inprice">
-			<div class="input-container1">
-				<input type="text" name="price" placeholder="Price" value="{{ form.price.value|default:'' }}">
-				{% if form.price.errors %}
-					<p class="errorlist">{{ form.price.errors }}</p>
-				{% endif %}
-			</div>
-		</div>
-		<div class="input-group indesc">
-			<div class="input-container1">
-				<textarea rows="5" class="no-resize" name="description" id="" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
-				{% if form.description.errors %}
-					<p class="errorlist">{{ form.description.errors }}</p>
-				{% endif %}
-			</div>
-		</div>
-		<div class="input-group incap">
-			<div class="input-container1">
-				<input type="text" name="capacity" id="address-form" placeholder="Capacity" value="{{ form.capacity.value|default:'' }}">
-				{% if form.capacity.errors %}
-					<p class="errorlist">{{ form.capacity.errors }}</p>
-				{% endif %}
-			</div>
-			
-		</div>    
-		<div class="file-group">
-			<p>Picture</p>
-			<input type="file" name="picture" id="dob-form">
-		</div>
-		<button type="submit">Submit</button>
-		</div>
-	</form>
-	<form action="{% url 'dashboard:add_existing_room' %}" 
-				method="post" 
-				class="booking-forms-walkin addroom-form"
-				style="{% if show_form %}display: none;{% else %}display: block;{% endif %};">
-		{% csrf_token %}
-		<div class="option-header3">
-			<h1>Add Room</h1>
-			<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-existing-room-btn">
-		</div>
-		
-		<div class="room-type-info">
-				<div class="input-group">
-						<label for="room-number">Room Number</label>
-						<input type="text" name="room_number" id="room-number" required placeholder="Enter room number">
-				</div>
+  <form action="{% url 'dashboard:add_new_room_type' %}"
+    class="booking-forms-walkin add-new-room-type"
+    style="{% if show_form2 %}
+      display: block;
+    {% else %}
+      display: none;
+    {% endif %};"
+    method="POST"
+    enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="option-header2">
+      <h1>Add New Room</h1>
+      <img src="{% static 'images/icons/button-option.png' %}" alt="close icon" id="close-new-room-btn" />
+    </div>
 
-				<div class="input-group">
-						<label for="room-type-select">Room Type</label>
-						<select name="room_type" id="room-type-select" required>
-								<option value="">--------------</option>
-								{% for roomtype in roomtypes %}
-										<option value="{{ roomtype.id }}">{{ roomtype.room_type }}</option>
-								{% endfor %}
-						</select>
-				</div>
+    <div class="room-type-info">
+      <div class="input-group">
+        <div class="input-container1">
+          <input type="text" name="room_type" id="f-name-form" placeholder="Room Type" value="{{ form.room_type.value|default:'' }}" />
+          {% if form.room_type.errors %}
+            <p class="errorlist">{{ form.room_type.errors }}</p>
+          {% endif %}
+        </div>
 
-				<button type="submit">Submit</button>
-		</div>
-	</form>
-	<div class="room-tab">
-		<h3 class="room-selection current-tab">Room</h3>
-		<h3 class="type-selection">Room Type</h3>
-	</div>
+        <div class="input-container1">
+          <input type="text" name="room_number" id="l-name-form" placeholder="Room Number" value="{{ form2.room_number.value|default:'' }}" />
+          {% if form.room_number.errors %}
+            <p class="errorlist">{{ form.room_type.errors }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="input-group inprice">
+        <div class="input-container1">
+          <input type="text" name="price" placeholder="Price" value="{{ form.price.value|default:'' }}" />
+          {% if form.price.errors %}
+            <p class="errorlist">{{ form.price.errors }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="input-group indesc">
+        <div class="input-container1">
+          <textarea rows="5" class="no-resize" name="description" id="" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
+          {% if form.description.errors %}
+            <p class="errorlist">{{ form.description.errors }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="input-group incap">
+        <div class="input-container1">
+          <input type="text" name="capacity" id="address-form" placeholder="Capacity" value="{{ form.capacity.value|default:'' }}" />
+          {% if form.capacity.errors %}
+            <p class="errorlist">{{ form.capacity.errors }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="file-group">
+        <p>Picture</p>
+        <input type="file" name="picture" id="dob-form" />
+      </div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+  <form action="{% url 'dashboard:add_existing_room' %}"
+    method="post"
+    class="booking-forms-walkin addroom-form"
+    style="{% if show_form %}
+      display: none;
+    {% else %}
+      display: block;
+    {% endif %};">
+    {% csrf_token %}
+    <div class="option-header3">
+      <h1>Add Room</h1>
+      <img src="{% static 'images/icons/button-option.png' %}" alt="close icon" id="close-existing-room-btn" />
+    </div>
 
-	<div class="option_room_form">
-			<div class="option-header">
-					<h1>Add Room</h1>
-					<img src="{% static "images/icons/button-option.png" %}" alt="close icon" id="close-room-option">
-			</div>
-			<div class="option-container">
-					<button type="button" class="add-new-type-btn">New Room Type</button>
-					<button type="button" class="add-existing-btn">Existing Room Type</button>
-			</div>
-	</div>
-	<p class="dashboard-add-room">+ New Room</p>
+    <div class="room-type-info">
+      <div class="input-group">
+        <label for="room-number">Room Number</label>
+        <input type="text" name="room_number" id="room-number" required placeholder="Enter room number" />
+      </div>
 
-  
+      <div class="input-group">
+        <label for="room-type-select">Room Type</label>
+        <select name="room_type" id="room-type-select" required>
+          <option value="">--------------</option>
+          {% for roomtype in roomtypes %}
+            <option value="{{ roomtype.id }}">{{ roomtype.room_type }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+  <div class="room-tab">
+    <h3 class="room-selection current-tab">Room</h3>
+    <h3 class="type-selection">Room Type</h3>
+  </div>
+
+  <div class="option_room_form">
+    <div class="option-header">
+      <h1>Add Room</h1>
+      <img src="{% static 'images/icons/button-option.png' %}" alt="close icon" id="close-room-option" />
+    </div>
+    <div class="option-container">
+      <button type="button" class="add-new-type-btn">New Room Type</button>
+      <button type="button" class="add-existing-btn">Existing Room Type</button>
+    </div>
+  </div>
+  <p class="dashboard-add-room">+ New Room</p>
+
   <div id="roomTableContainer">
     {% if switchToRoom %}
-        {% include 'dashboard/room_type_table.html' %}
+      {% include 'dashboard/room_type_table.html' %}
     {% else %}
-        {% include 'dashboard/room_table.html' %}
+      {% include 'dashboard/room_table.html' %}
     {% endif %}
-	</div>
-
+  </div>
 {% endblock %}
-{% block extra_script  %}
-		<script src="{% static 'lib/jquery/jquery-3.7.1.js' %}"></script>
-		<script src="{% static 'lib/datatables/dataTables.js' %}"></script>
-		<script>
-				$(document).ready(function () {
-						$('#myTable').DataTable({
-								initComplete: function() {
-										const roomTable = document.querySelector(".roomTable");
-										const roomTab = document.querySelector('.room-tab');
+{% block extra_script %}
+  <script src="{% static 'lib/jquery/jquery-3.7.1.js' %}"></script>
+  <script src="{% static 'lib/datatables/dataTables.js' %}"></script>
+  <script>
+		
+    $(document).ready(function () {
+      $('#myTable').DataTable({
+        initComplete: function () {
+          const roomTable = document.querySelector('.roomTable')
+          const roomTab = document.querySelector('.room-tab')
+    
+          if (roomTable && roomTab) {
+            roomTable.parentElement.insertBefore(roomTab, roomTable)
+            console.log('roomTab moved above roomTable')
+          } else {
+            console.log('One or both elements not found')
+          }
+        }
+      })
+    })
+  </script>
 
-										if (roomTable && roomTab) {
-												roomTable.parentElement.insertBefore(roomTab, roomTable);
-												console.log('roomTab moved above roomTable');
-										} else {
-												console.log('One or both elements not found');
-										}
-								}
-						});
-				});
-		</script>
-
-    <script>
-        $(document).ready(function () {
-            $('#myTable1').DataTable();
-        });
-
-				const addRoomBtn = document.querySelector(".dashboard-add-room");
-				const addExistingBtn = document.querySelector('.add-existing-btn')
-				const options = document.querySelector('.option_room_form');
-				const closeOption = document.getElementById('close-room-option');
-				const addExistingForm = document.querySelector('.addroom-form');
-				const addNewTypeBtn = document.querySelector('.add-new-type-btn');	
-				const addNewTypeForm = document.querySelector('.add-new-room-type');
-				const btnCloseNewRoom = document.getElementById('close-new-room-btn');
-				const btnExistRoomClose = document.getElementById('close-existing-room-btn');  
-
-				addRoomBtn.addEventListener("click", function() {
-					options.style.display = 'block';
-				});
-
-				closeOption.addEventListener("click", function() {
-					console.log("ldskfj")
-					options.style.display = 'none';
-				})
-
-				addExistingBtn.addEventListener("click", function() {
-					addExistingForm.style.display = 'block';
-				})
-
-				addNewTypeBtn.addEventListener("click", function() {
-					addNewTypeForm.style.display = 'block';
-				})
-
-				btnCloseNewRoom.addEventListener("click", function() {
-					addNewTypeForm.style.display = 'none';
-				});
-
-				btnExistRoomClose.addEventListener("click", function() {
-					addExistingForm.style.display = 'none';
-				});
-				
-				
-				
-
-			const roomSelection = document.querySelector('.room-selection');
-			const typeSelection = document.querySelector(".type-selection");
-			
-			console.log(roomSelection, typeSelection);
-			
-			
-			typeSelection.addEventListener("click", function() {
-				typeSelection.style.color = "#b58a60";
-				roomSelection.style.color = "#6E6E6E";
-				typeSelection.style.borderBottom = "1.5px solid #b58a60";
-				roomSelection.style.borderBottom = "1px solid #d4d4d4";
-
-			});
-			
-			roomSelection.addEventListener("click", function() {
-				roomSelection.style.color = "#b58a60";
-				typeSelection.style.color = "#6E6E6E";	
-				typeSelection.style.borderBottom = "1px solid #d4d4d4";
-				roomSelection.style.borderBottom = "1.5px solid #b58a60";
-			});
-			
-			const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}";
-
-$(document).ready(function () {
-
-    const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}";
-
-    const roomSelection = document.querySelector('.room-selection');
-    const typeSelection = document.querySelector(".type-selection");
-
-    roomSelection.addEventListener("click", function() {
+  <script>
+    $(document).ready(function () {
+      $('#myTable1').DataTable()
+    })
+    
+    const addRoomBtn = document.querySelector('.dashboard-add-room')
+    const addExistingBtn = document.querySelector('.add-existing-btn')
+    const options = document.querySelector('.option_room_form')
+    const closeOption = document.getElementById('close-room-option')
+    const addExistingForm = document.querySelector('.addroom-form')
+    const addNewTypeBtn = document.querySelector('.add-new-type-btn')
+    const addNewTypeForm = document.querySelector('.add-new-room-type')
+    const btnCloseNewRoom = document.getElementById('close-new-room-btn')
+    const btnExistRoomClose = document.getElementById('close-existing-room-btn')
+    
+    addRoomBtn.addEventListener('click', function () {
+      options.style.display = 'block'
+    })
+    
+    closeOption.addEventListener('click', function () {
+      console.log('ldskfj')
+      options.style.display = 'none'
+    })
+    
+    addExistingBtn.addEventListener('click', function () {
+      addExistingForm.style.display = 'block'
+    })
+    
+    addNewTypeBtn.addEventListener('click', function () {
+      addNewTypeForm.style.display = 'block'
+    })
+    
+    btnCloseNewRoom.addEventListener('click', function () {
+      addNewTypeForm.style.display = 'none'
+    })
+    
+    btnExistRoomClose.addEventListener('click', function () {
+      addExistingForm.style.display = 'none'
+    })
+    
+    const roomSelection = document.querySelector('.room-selection')
+    const typeSelection = document.querySelector('.type-selection')
+    
+    console.log(roomSelection, typeSelection)
+    
+    typeSelection.addEventListener('click', function () {
+      typeSelection.style.color = '#b58a60'
+      roomSelection.style.color = '#6E6E6E'
+      typeSelection.style.borderBottom = '1.5px solid #b58a60'
+      roomSelection.style.borderBottom = '1px solid #d4d4d4'
+    })
+    
+    roomSelection.addEventListener('click', function () {
+      roomSelection.style.color = '#b58a60'
+      typeSelection.style.color = '#6E6E6E'
+      typeSelection.style.borderBottom = '1px solid #d4d4d4'
+      roomSelection.style.borderBottom = '1.5px solid #b58a60'
+    })
+    
+    const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}"
+    
+    $(document).ready(function () {
+      const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}"
+    
+      const roomSelection = document.querySelector('.room-selection')
+      const typeSelection = document.querySelector('.type-selection')
+    
+      roomSelection.addEventListener('click', function () {
         fetch(`${fetchRoomsUrl}?switchToRoom=false`, {
-            headers: { "X-Requested-With": "XMLHttpRequest" }
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
-        .then(response => {
-            if (!response.ok) throw new Error(`Server error: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById("roomTableContainer").innerHTML = data.html;
-
+          .then((response) => {
+            if (!response.ok) throw new Error(`Server error: ${response.status}`)
+            return response.json()
+          })
+          .then((data) => {
+            document.getElementById('roomTableContainer').innerHTML = data.html
+    
             $('#myTable1').DataTable({
-							initComplete: function() {
-									const roomTable = document.querySelector(".roomTable");
-									const roomTab = document.querySelector('.room-tab');
-			
-									if (roomTable && roomTab) {
-											roomTable.parentElement.insertBefore(roomTab, roomTable);
-											console.log('roomTab moved above roomTable');
-									} else {
-											console.log('One or both elements not found');
-									}
-							}
-					});
-        })
-        .catch(error => console.error("Error fetching data:", error));
-    });
-
-    typeSelection.addEventListener("click", function() {
+              initComplete: function () {
+                const roomTable = document.querySelector('.roomTable')
+                const roomTab = document.querySelector('.room-tab')
+    
+                if (roomTable && roomTab) {
+                  roomTable.parentElement.insertBefore(roomTab, roomTable)
+                  console.log('roomTab moved above roomTable')
+                } else {
+                  console.log('One or both elements not found')
+                }
+              }
+            })
+          })
+          .catch((error) => console.error('Error fetching data:', error))
+      })
+    
+      typeSelection.addEventListener('click', function () {
         fetch(`${fetchRoomsUrl}?switchToRoom=true`, {
-            headers: { "X-Requested-With": "XMLHttpRequest" }
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
-        .then(response => {
-            if (!response.ok) throw new Error(`Server error: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById("roomTableContainer").innerHTML = data.html;
-
+          .then((response) => {
+            if (!response.ok) throw new Error(`Server error: ${response.status}`)
+            return response.json()
+          })
+          .then((data) => {
+            document.getElementById('roomTableContainer').innerHTML = data.html
+    
             $('#myTable2').DataTable({
-							initComplete: function() {
-									const roomTable = document.querySelector(".roomTable");
-									const roomTab = document.querySelector('.room-tab');
-			
-									if (roomTable && roomTab) {
-											roomTable.parentElement.insertBefore(roomTab, roomTable);
-											console.log('roomTab moved above roomTable');
-									} else {
-											console.log('One or both elements not found');
-									}
-							}
-					});
-        })
-        .catch(error => console.error("Error fetching data:", error));
-    });
-});
-
-
-				
-	</script>
-
-{% endblock  %}
+              initComplete: function () {
+                const roomTable = document.querySelector('.roomTable')
+                const roomTab = document.querySelector('.room-tab')
+    
+                if (roomTable && roomTab) {
+                  roomTable.parentElement.insertBefore(roomTab, roomTable)
+                  console.log('roomTab moved above roomTable')
+                } else {
+                  console.log('One or both elements not found')
+                }
+              }
+            })
+          })
+          .catch((error) => console.error('Error fetching data:', error))
+      })
+    })
+  </script>
+{% endblock %}

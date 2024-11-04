@@ -184,6 +184,10 @@
     <main>{% block content %}{% endblock %}</main>
 
     <script>
+      const testP = document.querySelector('.testP')
+  testP.addEventListener('click', function (event) {
+    console.log("h")
+  })
       document.addEventListener("DOMContentLoaded", function () {
         // Code to execute when the DOM is fully loaded and parsed
       });
