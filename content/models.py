@@ -33,14 +33,14 @@ class Guest(models.Model):
     
 class Booking(models.Model):
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True)  # Allow NULL values
     check_in = models.DateTimeField()
     check_out = models.DateTimeField()
-    duration = models.DurationField(default=timedelta(hours=12)) 
+    duration = models.DurationField(default=timedelta(hours=12))
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
     @property
     def room_number(self):
-        return self.room.room_number
+        return self.room.room_number if self.room else "Room deleted"
     
     

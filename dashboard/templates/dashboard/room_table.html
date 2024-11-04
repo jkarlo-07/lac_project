@@ -19,20 +19,48 @@
           <td>{{ room.room_type.capacity }}</td>
           <td>
             <div class="dot-container">
-                <img src="{% static "images/icons/dots.png" %}" alt="option" width="100" class="dots-action">
-                <div class="action-container">
-									<p>Edit</p>
-									<p>Delete</p>
+                <div class="dot-size">
+									<img src="{% static "images/icons/dots.png" %}" alt="option" width="100" class="dots-action">
+									<div class="action-container">
+										<p>Edit</p>
+										<p>Delete</p>
+									</div> 
                 </div>
             </div>
           </td>
       </tr>
       {% endfor %}
   </tbody>
-</table>\
+</table>
+
+
 
 <script>
-
-	
-</script>
-
+    document.addEventListener('DOMContentLoaded', function() {
+        const dotsActions = document.querySelectorAll('.dots-action');
+    
+        dotsActions.forEach(dotsAction => {
+            dotsAction.addEventListener('click', function(event) {
+                const actionContainer = dotsAction.nextElementSibling;
+    
+                if (actionContainer.style.display === 'block') {
+                    actionContainer.style.display = 'none';
+                } else {
+                    document.querySelectorAll('.action-container').forEach(container => {
+                        container.style.display = 'none';
+                    });
+                    actionContainer.style.display = 'block';
+                }
+    
+                event.stopPropagation();
+            });
+        });
+    
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.action-container').forEach(container => {
+                container.style.display = 'none';
+            });
+        });
+    });
+    </script>
+    

@@ -59,23 +59,60 @@ li {
 .dots-action {
   width: 20px;
   cursor: pointer;
+  position: relative;
 }
 
 .dot-container {
   display: flex;
   align-items: center;
+}
+
+.dot-size {
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+
+
+.dot-size {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .action-container {
+  padding: 5px 0;
   display: none;
   text-align: left;
   position: absolute;
-  padding: 10px 40px 10px 10px;
   background-color: #ececec;
-  border-radius: 10px;
+  border-radius: 5px;
   right: 0;
+  top: 100%; /* Position at the very bottom of .dot-size */
+  z-index: 100;
+  transform: translateY(0); /* Remove any vertical translation */
 }
+
+.action-container p {
+  padding: 0 70px 0 10px; 
+  cursor: pointer;
+}
+
+.action-container p:hover {
+  background-color: #fff;
+}
+
+.action-container p:first-child {
+  padding-top: 5px; 
+  padding-bottom: 5px;
+}
+
+.action-container p:nth-child(2) {
+  padding-bottom: 5px; 
+  padding-top: 5px;
+}
+
 
 .room-table-label {
   padding: 5px 10px;
