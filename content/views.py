@@ -84,9 +84,8 @@ def book_view3(request):
         check_in = datetime.combine(check_in_date, check_in_time)
         check_out = check_in + timedelta(hours=duration)
         check_out_date = check_out.date() 
-        room = get_object_or_404(RoomType, id=room_id)
+        room = get_object_or_404(Room, id=room_id)
         email = request.user.email
-        in_time = "haha"
         form = GuestForm(request.POST)
         if form.is_valid():
             guest = form.save(commit=False)
@@ -158,7 +157,7 @@ def book_view3(request):
         check_in_time = start_datetime.time()
 
         room_id = request.GET.get('roomtype')
-        room = get_object_or_404(RoomType, id=room_id)
+        room = get_object_or_404(Room, id=room_id)
         email = request.user.email
         
         form = GuestForm()  
