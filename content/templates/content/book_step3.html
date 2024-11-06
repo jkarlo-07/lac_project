@@ -8,7 +8,7 @@
 {% endblock %} 
 
 {% block content %}
-<form action="{% url 'content:book_3' %}" method="POST">
+<div>
   <div class="booking3-wrapper">
     {% csrf_token %}
     <div class="booking3-container">
@@ -167,7 +167,8 @@
       </div>
     </div>
   </div>
-</form>
+  {{ paypal.render }}
+</div>
 {% endblock %} {% block add_script %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {

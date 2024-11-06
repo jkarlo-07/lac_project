@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('content.urls')),
     path('', include('users.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('', include('paypal.standard.ipn.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -10,8 +10,58 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import GuestForm, BookingForm
 from datetime import timedelta, time, datetime
-from .models import Room
 from .controllers import create_payment_link
+from paypal.standard.forms import PayPalPaymentsForm
+import uuid
+from django.urls import reverse
+from django.conf import settings
+from django.dispatch import receiver
+from paypal.standard.models import ST_PP_COMPLETED
+from paypal.standard.ipn.signals import valid_ipn_received
+from .models import RoomType, Room # Corrected to RoomType, as that is what you want to create
+from django.conf import settings
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.models import ST_PP_COMPLETED
+from paypal.standard.ipn.models import PayPalIPN
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import urllib.parse
+
+@csrf_exempt
+def paypal_ipn(request):
+    # Decode and log the raw IPN data for debugging purposes
+    ipn_data = request.body.decode('utf-8')
+    print("IPN Request Data:", ipn_data)
+
+    # Parse the IPN data into a dictionary
+    parsed_data = dict(urllib.parse.parse_qsl(ipn_data))
+    
+    # Retrieve payment status and other important fields
+    payment_status = parsed_data.get("payment_status", "")
+    mc_gross = parsed_data.get("mc_gross", "")
+    txn_id = parsed_data.get("txn_id", "")
+    payer_email = parsed_data.get("payer_email", "")
+    custom_value = parsed_data.get("custom", "")  # Get the 'custom' field
+
+    # Log payment information
+    print(f"Payment Status: {payment_status}")
+    print(f"Amount: {mc_gross}")
+    print(f"Transaction ID: {txn_id}")
+    print(f"Payer Email: {payer_email}")
+    print(f"Custom Value: {custom_value}")  # Log the custom value
+
+    # Check if payment was completed successfully
+    if payment_status == "Completed":
+        print("Payment completed successfully.")
+        # Add further logic, like updating your database with the payment status
+    else:
+        print("Payment not completed.")
+
+    return HttpResponse(status=200)
+
+
+
 
 def index(request):
     return render(request, "content/index.html")
@@ -159,8 +209,27 @@ def book_view3(request):
         room_id = request.GET.get('roomtype')
         room = get_object_or_404(Room, id=room_id)
         email = request.user.email
-        
+        price = room.room_type.price
         form = GuestForm()  
+        
+
+        host = request.get_host()
+
+        paypal_checkout = {
+            'business': settings.PAYPAL_RECEIVER_EMAIL,
+            'amount': price,
+            'item_name': "any",
+            'invoice': str(uuid.uuid4()),
+            'currency_code': 'PHP',
+            'notify_url': "https://9b79-2001-4453-6c4-6400-1079-4938-7e0e-ac41.ngrok-free.app/paypal-ipn/",
+            'return_url': "http://127.0.0.1:8000/rooms/", 
+            'custom': "standard"
+        }
+
+
+
+        paypal_payment = PayPalPaymentsForm(initial=paypal_checkout)
+
         context = {
             'form': form,
             'duration': duration,
@@ -170,7 +239,9 @@ def book_view3(request):
             'check_out_time': check_out_time,
             'room': room,
             'email': email,
+            'paypal': paypal_payment,
         }
+
         return render(request, 'content/book_step3.html', context)
 
 

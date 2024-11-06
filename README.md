@@ -28,3 +28,7 @@ MERGE BRANCH
 - `git merge 'branch'`
 - `git push origin 'branch'`
 
+REVERTING BACK TO UPLOADED INT GITHUB
+- git fetch origin
+- git reset --hard origin/main
+- git clean -fd

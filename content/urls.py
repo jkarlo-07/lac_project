@@ -16,4 +16,5 @@ urlpatterns = [
     path('search', views.search_room, name='search_room'),
     path('payment/', views.payment, name='payment'),
     path('test_payment/', views.test_payment, name='test_payment'),
+    path('paypal-ipn/', views.paypal_ipn, name='paypal-ipn'),
 ]

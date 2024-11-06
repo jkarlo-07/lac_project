@@ -33,7 +33,8 @@ EMAIL_HOST_USER = 'lacresort1@gmail.com'
 EMAIL_HOST_PASSWORD = 'himx eulu imah xuxn'  
 DEFAULT_FROM_EMAIL = 'lacresort1@gmail.com'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] # Your ngrok URL
+
 
 
 # Application definition
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'content',
     'users',
     'dashboard',
+    'paypal.standard.ipn',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -145,3 +147,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PAYPAL_RECEIVER_EMAIL = "sb-glpmn33691254@business.example.com"
+PAYPAL_TEST = True
