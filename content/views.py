@@ -350,6 +350,7 @@ def book_view4(request):
     }
     return render(request, "content/book_step4.html", context)
 
+@login_required(login_url="users:login")
 def calendar_view(request):
     return render(request, "content/calendar.html")
 

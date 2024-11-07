@@ -447,6 +447,25 @@
 
 /* Booking Step 2 */
 
+
+.btn-image-back{
+    display: flex;
+}
+
+.btn-image-back img{
+    height: auto;
+    width: 40px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.btn-image-back a{
+    font-size: 20px;
+    font-weight: 400;
+    color: #b3886b;
+}
+
+
 .book3-info-container {
     flex-direction: column;
 }
@@ -467,7 +486,7 @@
     width: 67%;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px;
 }
 
 .book3-field {
@@ -500,6 +519,7 @@
 .book3-heading {
     font-weight: 400;
     font-size: 1.5rem;
+    margin-bottom: 10px;
 }
 
 .book3-totals {
@@ -536,16 +556,19 @@
 .white-border {
     border: 0.1px solid #dedede;
     border-right: none;
+    color: #6e6e6e;
 }
 
 .white-border-nobot {
     border: 0.1px solid #dedede;
     border-right: none;
     border-bottom: none;
+    color: #6e6e6e;
 }
 
 .white-border-bottom {
     border-bottom: 0.1px solid #dedede;
+    color: #000;
 }
 
 
@@ -557,12 +580,17 @@
     width: 60%;
 }
 
-.brown-bg {
-    background-color: #b58a60;
+.totaltxt {
+    font-weight: bold;
+}
+
+.black-fg {
+    border-top: 2px solid #b3886b;
 }
 
 .white-fg {
-    color: #fff;
+    color: #000;
+    border-bottom: 0.1px solid #dedede;
 }
 
 .book3-book-btn {

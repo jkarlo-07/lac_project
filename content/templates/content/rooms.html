@@ -25,7 +25,7 @@
 					<div class="seperator"></div>
 				</div>
 				<p>{{ roomtype.description }}</p>
-				<a href=""><p class="room-book-btn">BOOK NOW</p></a>
+				<a href="{% url "content:calendar" %}"><p class="room-book-btn">BOOK NOW</p></a>
 			</div>
 		</div>
 	{% endfor %}

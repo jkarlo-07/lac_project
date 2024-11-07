@@ -9,9 +9,13 @@
 
 {% block content %}
 <form method="POST" action="{% url "content:book_3" %}">
+  
   <div class="booking3-wrapper">
     {% csrf_token %}
     <div class="booking3-container">
+      <div class="btn-image-back">
+        <img src="{% static "images/icons/left-arrow.png" %}" alt="back icon">
+      </div>
       <div class="booking-step-wrapper clearfix">
         <div class="booking-step active">
           <a class="step-number">1</a>
@@ -19,9 +23,9 @@
         </div>
         <div class="booking-step active">
           <a class="step-number">2</a>
-          <a class="step-label">Add-Ons</a>
+          <a class="step-label">Guest Info</a>
         </div>
-        <div class="booking-step active">
+        <div class="booking-step">
           <a class="step-number">3</a>
           <a class="step-label">Payment</a>
         </div>
@@ -101,34 +105,14 @@
           </div>
         </div>
       </div>
-      <div class="book3-pay-summ">
-        <h2 class="book3-heading">Payment Summary</h2>
-        <div class="book3-totals">
-          <div class="book3-totals-row">
-            <p class="brown-bg white-fg">Payment</p>
-            <p class="brown-bg white-fg">Subtotal</p>
-          </div>
-          <div class="book3-totals-row">
-            <p>Reservation</p>
-            <p class="white-border-nobot">$1999</p>
-          </div>
-          <div class="book3-totals-row">
-            <p class="brown-bg white-fg white-border-bottom">SubTotal</p>
-            <p class="white-border">$1000</p>
-          </div>
-          <div class="book3-totals-row">
-            <p class="brown-bg white-fg">Total</p>
-            <p class="white-border-bottom">$9000</p>
-          </div>
-        </div>
-      </div>
+      
       <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
       <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
       <input type="hidden" name="room_id" value="{{ room.id }}">
       <input type="hidden" name="total_amount" value="{{ room.price|floatformat:2|intcomma }}">
       <input type="hidden" name="duration" value="{{ duration }}">
       <input type="hidden" name="check_in_time" value="{{ check_in_time }}">
-      <button class="button-sub-3">SUBMIT</button>
+      <button class="button-sub-3">NEXT</button>
     </div>
 
     <div class="booking3-aside atWrapper">
@@ -163,7 +147,6 @@
             </div>
           </div>
         </div>
-        <p class="book3-remove">Remove</p>
       </div>
     </div>
   </div>

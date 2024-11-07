@@ -12,6 +12,11 @@
 {% block content %}
 <div class="booking-page-wrapper">
   <div class="booking_container_main">
+    <div class="btn-image-back">
+      <img src="{% static "images/icons/left-arrow.png" %}" alt="back icon" class="back-step-form">
+      
+    </div>
+    
     <div class="booking-step-wrapper clearfix">
       <div class="booking-step active">
         <a class="step-number">1</a>
@@ -19,7 +24,7 @@
       </div>
       <div class="booking-step active">
         <a class="step-number">2</a>
-        <a class="step-label">Add-Ons</a>
+        <a class="step-label">Guest Info</a>
       </div>
       <div class="booking-step active">
         <a class="step-number">3</a>
@@ -37,12 +42,8 @@
       <h2 class="book3-heading">Booking Summary</h2>
       <div class="book3-totals">
         <div class="book3-totals-row">
-          <p class="brown-bg white-fg"></p>
-          <p class="brown-bg white-fg"></p>
-        </div>
-        <div class="book3-totals-row">
           <p class="white-border-bottom black-fg">Guest</p>
-          <p class="white-border">{{ first_name }} {{ last_name }}</p>
+          <p class="white-border black-fg">{{ first_name }} {{ last_name }}</p>
         </div>
         <div class="book3-totals-row">
           <p class="brown-bg white-fg">Room Number</p>
@@ -61,8 +62,8 @@
           <p class="white-border">{{check_out}}</p>
         </div>
         <div class="book3-totals-row">
-          <p class="brown-bg white-fg">Total</p>
-          <p class="white-border-bottom">₱ {{ room_id.room_type.price|floatformat:2|intcomma }}</p>
+          <p class="brown-bg white-fg totaltxt">Total</p>
+          <p class="white-border-bottom totaltxt">₱ {{ room_id.room_type.price|floatformat:2|intcomma }}</p>
         </div>
       </div>
       <div class="paypal-btn">
