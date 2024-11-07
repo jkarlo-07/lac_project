@@ -1,6 +1,6 @@
 from django.core.mail import BadHeaderError
 from django.shortcuts import render, get_object_or_404, redirect
-
+import json
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -18,7 +18,8 @@ from django.conf import settings
 from django.dispatch import receiver
 from paypal.standard.models import ST_PP_COMPLETED
 from paypal.standard.ipn.signals import valid_ipn_received
-from .models import RoomType, Room # Corrected to RoomType, as that is what you want to create
+from .models import RoomType, Room, Guest, TempGuest, Booking# Corrected to RoomType, as that is what you want to create
+from users.models import CustomUser
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -36,25 +37,56 @@ def paypal_ipn(request):
 
     # Parse the IPN data into a dictionary
     parsed_data = dict(urllib.parse.parse_qsl(ipn_data))
-    
+    first_name = request.session.get('first_name', '')
+    print("first name:", first_name)
     # Retrieve payment status and other important fields
     payment_status = parsed_data.get("payment_status", "")
     mc_gross = parsed_data.get("mc_gross", "")
     txn_id = parsed_data.get("txn_id", "")
     payer_email = parsed_data.get("payer_email", "")
     custom_value = parsed_data.get("custom", "")  # Get the 'custom' field
-
+    print(request.session.get('first_name'))
     # Log payment information
     print(f"Payment Status: {payment_status}")
     print(f"Amount: {mc_gross}")
     print(f"Transaction ID: {txn_id}")
     print(f"Payer Email: {payer_email}")
     print(f"Custom Value: {custom_value}")  # Log the custom value
-
+    custom_data = json.loads(custom_value)
+    user_id = custom_data['uid']
+    temp_guest = get_object_or_404(TempGuest, id=custom_data['tg'])
+    room = get_object_or_404(Room, id=custom_data['rm'])
+    duration = timedelta(hours=int(custom_data['dt']))
+    check_in_str = custom_data['cin']
+    check_out_str = custom_data['cout']
+    check_in = datetime.strptime(check_in_str, "%Y-%m-%d %H:%M:%S")
+    check_out = datetime.strptime(check_out_str, "%Y-%m-%d %H:%M:%S")
     # Check if payment was completed successfully
     if payment_status == "Completed":
         print("Payment completed successfully.")
-        # Add further logic, like updating your database with the payment status
+        user = get_object_or_404(CustomUser, id=user_id)
+        if Guest.objects.filter(user_id=user).exists():
+            guest = get_object_or_404(Guest,user_id=user)
+        else:
+            new_guest = Guest(  
+                first_name=temp_guest.first_name,
+                last_name=temp_guest.last_name,
+                address=temp_guest.address,
+                phone=temp_guest.phone,
+                user_id=user.id,
+                date_of_birth=temp_guest.date_of_birth  # Use a date string or a `datetime.date` object
+            )
+            new_guest.save()
+            guest = new_guest
+        book = Booking(
+            total_amount=custom_data['tl'],
+            room=room,
+            duration=duration,
+            check_in=check_in,
+            check_out=check_out,
+            guest=guest
+        )
+        book.save()
     else:
         print("Payment not completed.")
 
@@ -109,7 +141,89 @@ def book_view1(request):
     return render(request, "content/booking.html", { 'roomtypes':roomtypes } )
 
 def book_view2(request):
-    return render(request, "content/book_step2.html")
+    # Retrieve session data
+    first_name = request.session.get('first_name', '')
+    last_name = request.session.get('last_name', '')
+    address = request.session.get('address', '')
+    phone = request.session.get('phone', '')
+    date_of_birth = request.session.get('date_of_birth', '')
+    check_in_date = request.session.get('check_in_date', '')
+    check_in_time = request.session.get('check_in_time', '')
+    check_out_date = request.session.get('check_out_date', '')
+    check_out_time = request.session.get('check_out_time', '')
+    check_in = request.session.get('check_in', '')
+    check_out = request.session.get('check_out', '')
+    room_id = request.session.get('room', '')
+    total_amount = request.session.get('total_amount', '')
+    duration = request.session.get('duration', '')
+    email = request.session.get('email', '')
+    user_id = request.user.id
+    room = get_object_or_404(Room, id=room_id)
+    check_in_formatted = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
+
+
+    temp_guest = TempGuest(  
+        first_name=first_name,
+        last_name=last_name,
+        address=address,
+        phone=phone,
+        user_id=user_id,
+        date_of_birth=date_of_birth  # Use a date string or a `datetime.date` object
+    )
+    temp_guest.save()
+# Add one hour to check_in
+    check_out = check_in_formatted + timedelta(hours=int(duration))
+    check_out = str(check_out)  
+    host = request.get_host()
+
+    paypal_checkout = {
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': room.room_type.price,
+        'item_name': "any",
+        'invoice': str(uuid.uuid4()),
+        'currency_code': 'PHP',
+        'notify_url': "https://bb27-2001-4453-6c4-6400-7970-1a6f-2f10-67ab.ngrok-free.app/paypal-ipn/",
+        'return_url': "http://127.0.0.1:800/rooms/", 
+        'custom': json.dumps({
+            'rtype': str(room.room_type),
+            'rm': str(room_id),  # Ensure room_type is serializable
+            'uid': user_id,
+            'cin': check_in,
+            'cout': check_out,
+            'tl': str(total_amount),
+            'dt': str(duration),
+            'tg': str(temp_guest.id)
+        })
+    }
+
+
+
+    paypal_payment = PayPalPaymentsForm(initial=paypal_checkout)
+
+    # Prepare context to pass to template
+    context = {
+        'first_name': first_name,
+        'last_name': last_name,
+        'address': address,
+        'phone': phone,
+        'date_of_birth': date_of_birth,
+        'check_in_date': check_in_date,
+        'check_in_time': check_in_time,
+        'check_out_date': check_out_date,
+        'check_out_time': check_out_time,
+        'check_in': check_in,
+        'check_out': check_out,
+        'room_id': room,
+        'total_amount': total_amount,
+        'duration': duration,
+        'paypal': paypal_payment,
+    }
+
+    return render(request, "content/book_step2.html", context)
+
+
+
+
 
 def book_view3(request):
     if request.method == 'POST':
@@ -129,23 +243,30 @@ def book_view3(request):
         check_in_time = check_in_time.replace('.', '')
 
         check_in_date = date_object.strftime('%Y-%m-%d')
+        request.session['check_in_date'] = str(check_in_date)
         check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d')
+        
         check_in_time = datetime.strptime(check_in_time, '%I %p').time()
         check_in = datetime.combine(check_in_date, check_in_time)
+        check_out = check_in + timedelta(hours=1)
+        request.session['check_out'] = str(check_out)
+        request.session['check_in'] = str(check_in)
         check_out = check_in + timedelta(hours=duration)
+        
         check_out_date = check_out.date() 
+        request.session['check_out_date'] = str(check_out_date)
         room = get_object_or_404(Room, id=room_id)
         email = request.user.email
+        email = str(email)
         form = GuestForm(request.POST)
         if form.is_valid():
-            guest = form.save(commit=False)
-            guest.user = request.user
-            guest.first_name = form.cleaned_data.get('first_name')
-            guest.last_name = form.cleaned_data.get('last_name')
-            guest.address = form.cleaned_data.get('address')
-            guest.phone = form.cleaned_data.get('phone')
-            guest.date_of_birth = form.cleaned_data.get('date_of_birth')
-            guest.save()
+            request.session['first_name'] = str(form.cleaned_data.get('first_name', ''))
+            request.session['last_name'] = str(form.cleaned_data.get('last_name', ''))
+            request.session['address'] = str(form.cleaned_data.get('address', ''))
+            request.session['phone'] = str(form.cleaned_data.get('phone', ''))
+            request.session['date_of_birth'] = str(form.cleaned_data.get('date_of_birth', ''))
+            request.session['email'] = email
+
         else:
             check_in_date = check_in_date.date()
             check_out_time = check_out.time()
@@ -164,22 +285,16 @@ def book_view3(request):
         
         form2 = BookingForm(request.POST)
         if form2.is_valid():
-            booking = form2.save(commit=False)
-            booking.guest = guest
-            booking.check_in = check_in
-            booking.check_out = check_out
-            room_id = request.POST.get('room_id')
-            room = get_object_or_404(Room, id=room_id) 
-            booking.room = room
-            booking.total_amount = room.room_type.price
+            request.session['check_out'] = check_out.strftime('%Y-%m-%d') if check_out else None
 
-            booking.duration = timedelta(hours=duration)
-            booking.save()
-            return render(request, "content/book_step4.html", {
-                "check_in": check_in,
-                "check_out": check_out,
-                "email": email,
-            })
+            room_id = request.POST.get('room_id')
+            room = get_object_or_404(Room, id=room_id)
+
+            request.session['room'] = str(room.id)  # Convert room ID to string
+            request.session['total_amount'] = str(room.room_type.price)  # Convert price to string
+            request.session['duration'] = str(duration)  # Convert duration to string
+
+            return redirect('content:book_2')
         else:
             print(form2.errors)  
             return render(request, "content/book_step3.html", {
@@ -213,23 +328,7 @@ def book_view3(request):
         form = GuestForm()  
         
 
-        host = request.get_host()
-
-        paypal_checkout = {
-            'business': settings.PAYPAL_RECEIVER_EMAIL,
-            'amount': price,
-            'item_name': "any",
-            'invoice': str(uuid.uuid4()),
-            'currency_code': 'PHP',
-            'notify_url': "https://9b79-2001-4453-6c4-6400-1079-4938-7e0e-ac41.ngrok-free.app/paypal-ipn/",
-            'return_url': "http://127.0.0.1:8000/rooms/", 
-            'custom': "standard"
-        }
-
-
-
-        paypal_payment = PayPalPaymentsForm(initial=paypal_checkout)
-
+        
         context = {
             'form': form,
             'duration': duration,
@@ -239,7 +338,6 @@ def book_view3(request):
             'check_out_time': check_out_time,
             'room': room,
             'email': email,
-            'paypal': paypal_payment,
         }
 
         return render(request, 'content/book_step3.html', context)

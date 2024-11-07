@@ -508,8 +508,23 @@
 
 .book3-pay-summ {
     font-size: 0.9rem;
+    margin: 80px;
 }
 
+.paypal-btn {
+    width: 100%;
+}
+
+.paypal-btn form {
+    display: flex;
+    width: 100%;
+    justify-content: end;
+}
+.paypal-btn input{
+    margin-top: 40px;
+    max-width: 30%;
+    align-items: center;
+}
 .book3-totals-row {
     display: flex;
 }

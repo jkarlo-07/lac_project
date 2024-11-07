@@ -8,7 +8,7 @@
 {% endblock %} 
 
 {% block content %}
-<div>
+<form method="POST" action="{% url "content:book_3" %}">
   <div class="booking3-wrapper">
     {% csrf_token %}
     <div class="booking3-container">
@@ -158,7 +158,7 @@
             <div class="book3-info-container">
               <p class="book3-info">{{room.room_type}}</p>
               <p class="book3-info">
-                ₱ {{ room.price|floatformat:2|intcomma }}
+                ₱ {{ room.room_type.price|floatformat:2|intcomma }}
               </p>
             </div>
           </div>
@@ -167,8 +167,7 @@
       </div>
     </div>
   </div>
-  {{ paypal.render }}
-</div>
+</form>
 {% endblock %} {% block add_script %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {

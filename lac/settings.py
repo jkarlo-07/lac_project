@@ -150,3 +150,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 PAYPAL_RECEIVER_EMAIL = "sb-glpmn33691254@business.example.com"
 PAYPAL_TEST = True
+
+PAYPAL_BUY_BUTTON_IMAGE = "https://res.cloudinary.com/dwmvsvw3w/image/upload/v1730959297/PayBtn_u3o1dx.png"

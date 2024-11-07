@@ -1,113 +1,76 @@
 {% extends "layout.html" %}
 {% load static %}
-
+{% load humanize %}
 {% block title %}
   Booking
 {% endblock %}
 
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'css/booking.css' %}">
-  <script src="{% static 'js/read.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
-  <div class="booking-page-wrapper">
-    <div class="booking_container_main">
-      <div class="booking-step-wrapper clearfix">
-        <div class="booking-step active">
-          <a class="step-number">1</a>
-          <a class="step-label">Rooms</a>
-        </div>
-        <div class="booking-step active">
-          <a class="step-number">2</a>
-          <a class="step-label">Add-Ons</a>
-        </div>
-        <div class="booking-step">
-          <a class="step-number">3</a>
-          <a class="step-label">Payment</a>
-        </div>
-        <div class="booking-step">
-          <a class="step-number">4</a>
-          <a class="step-label">Complete</a>
-        </div>
-        <div class="booking-step-line">
-          <div style="width: 25%;"></div>
-        </div>
+<div class="booking-page-wrapper">
+  <div class="booking_container_main">
+    <div class="booking-step-wrapper clearfix">
+      <div class="booking-step active">
+        <a class="step-number">1</a>
+        <a class="step-label">Rooms</a>
       </div>
-      <div class="room-select-wrapper">
-        <p>Select add-ons for: <span>Room 1</span></p>
+      <div class="booking-step active">
+        <a class="step-number">2</a>
+        <a class="step-label">Add-Ons</a>
       </div>
-      <div class="booking-room-container">
-        <div class="room-image">
-          <a href="#"><img src="{% static 'images/photos/ehouse-room.jpg' %}" alt="Room Image" class="booking-room-img"></a>
-        </div>
-        <div class="room-additionalfee-wrapper">
-          <div class="room-expand-wrapper">
-            <div class="room-expand-small">
-              <h3>Airport Pickup</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel libero id sem sagittis fringilla. Sed porta tortor et tellus bibendum imperdiet. Aliquam erat volutpat. Nunc pulvinar mi id eros suscipit, vitae ullamcorper quam ullamcorper. Sed pretium, quam aliquet dignissim vestibulum, mi justo elementum ligula, eget interdum elit velit a lectus. Morbi dignissim rhoncus lectus dictum rhoncus. Nunc auctor tincidunt nisi, vitae tempor massa placerat sed. Curabitur sem metus, finibus in dictum nec, posuere ut dolor.</p>
-              <p>Integer dictum blandit neque, in iaculis lorem pretium eget. Mauris sed enim nec nisl molestie consectetur ac sed nisi. Maecenas malesuada est id nisl hendrerit fermentum. Morbi vel nisl non urna dignissim placerat. Suspendisse commodo leo at facilisis sollicitudin. Donec commodo, orci sed suscipit hendrerit, orci eros sollicitudin augue, ac tristique tellus mauris id tellus. Proin imperdiet condimentum felis, nec fringilla elit fermentum at. Suspendisse in lacus tempor, eleifend ante non, aliquam sapien. Nam est nisi, mollis ut diam vitae, scelerisque aliquet ligula. Vivamus neque lorem, accumsan et ex nec, euismod cursus sapien. Ut semper suscipit ex id cursus.</p>
-            </div>
-          </div>
-          <a href="#" class="expand-button-hidden">Read More</a>
-          <hr class="divider">
-          <form class="room-form">
-            <div class="room-input">
-              <label for="room-people">People</label>
-              <input type="text" class="room-people" id="room-people">
-            </div>
-            <div class="room-input">
-              <label for="room-date">Date</label>
-              <input type="text" class="room-date" id="room-date">
-            </div>
-            <div class="room-input">
-              <label for="room-checkin">Time</label>
-              <div class="time-box">
-                <input type="text" class="room-checkin" id="room-checkin">
-                <input type="text" class="room-checkout" id="room-checkout">
-              </div>
-            </div>
-            <div class="form-input-button-price">
-              <button>Select</button>
-              <p>P4000</p>
-            </div>
-          </form>
-        </div>
-        <div class="room-additionalfee-info-form">
-          <div class="room-additionalfee-info-form-section">
-          </div>
-        </div>
+      <div class="booking-step active">
+        <a class="step-number">3</a>
+        <a class="step-label">Payment</a>
+      </div>
+      <div class="booking-step">
+        <a class="step-number">4</a>
+        <a class="step-label">Complete</a>
+      </div>
+      <div class="booking-step-line">
+        <div style="width: 25%;"></div>
       </div>
     </div>
-    <div class="booking-aside-step2">
-      <div class="step2-roominfo">
-          <h3>Room 1 of 1</h3>
-          <hr class="bar-yellow">
-        <ul>
-          <li><span>Dates: </span>Aug 28, 2024 - Sep 17, 2024</li>
-          <li><span>Guest: </span>2 Adults, 2 Children </li>
-        </ul>
-        <div class="step2-info">
-          <img src="{% static 'images/photos/ehouse-room.jpg' %}" alt="image">
-          <div class="info-text">
-            <p>Deluxe Queen Room</p>
-            <p style="font-style: italic">Full Board</p>
-            <p style="text-decoration: underline">20 Nights</p>
-          </div>
-          <p>P6000</p>
+    <div class="book3-pay-summ">
+      <h2 class="book3-heading">Booking Summary</h2>
+      <div class="book3-totals">
+        <div class="book3-totals-row">
+          <p class="brown-bg white-fg"></p>
+          <p class="brown-bg white-fg"></p>
         </div>
-        <hr class="divider">
-          <div class="info-total"> 
-            <p>Total</p>
-            <p>P250</p>
-          </div>
-          <div class="continue-add">
-            <a class="with-color" href="#">Continue</a>
-            <a class = "without-color" href="">Add a Room?</a>
-          </div>  
+        <div class="book3-totals-row">
+          <p class="white-border-bottom black-fg">Guest</p>
+          <p class="white-border">{{ first_name }} {{ last_name }}</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="brown-bg white-fg">Room Number</p>
+          <p class="white-border-nobot">{{room_id.room_number}}</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class=" white-border-bottom">Room Type</p>
+          <p class="white-border">{{room_id.room_type}}</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="brown-bg white-fg white-border-bottom">Check In</p>
+          <p class="white-border">{{check_in}}</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="white-border-bottom">Check Out</p>
+          <p class="white-border">{{check_out}}</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="brown-bg white-fg">Total</p>
+          <p class="white-border-bottom">₱ {{ room_id.room_type.price|floatformat:2|intcomma }}</p>
+        </div>
       </div>
-      
+      <div class="paypal-btn">
+        {{paypal.render}}
+      </div>
     </div>
+    
   </div>
+</div>
   
 {% endblock %}
