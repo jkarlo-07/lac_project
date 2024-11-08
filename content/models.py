@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import CustomUser
-from datetime import timedelta, time
+from datetime import timedelta, time, datetime
 # Create your models here.
 
 class RoomType(models.Model):
@@ -37,12 +37,20 @@ class Guest(models.Model):
 
 
 class TempGuest(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.IntegerField()
     first_name = models.CharField(max_length=75)
     last_name = models.CharField(max_length=75)
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=30)
     date_of_birth = models.DateField(default="2002-01-01")
+    room = models.IntegerField(default=1)  
+    check_in = models.DateTimeField(default=datetime(2024, 1, 1, 8, 0))
+    check_out = models.DateTimeField(default=datetime(2024, 1, 1, 8, 0))
+    duration = models.DurationField(default=timedelta(hours=12))
+    adult_count = models.IntegerField(default=1)
+    kid_count = models.IntegerField(default=0)
+    is_overnight = models.BooleanField(default=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=1000)
     
     def __str__(self):
         return self.first_name

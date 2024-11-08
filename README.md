@@ -1,4 +1,6 @@
-
+TO DO NOTES:
+    - modify the email message when booking is done
+    - modify the thank you message when booking is done
 
 POSTGRESQL
 -Create lac_db in postgre / pg admin
