@@ -19,13 +19,16 @@ from lac.utils.email_utils import send_email_contact
 import uuid
 import urllib.parse
 import json
+import logging
 
+# Set up logging
+logger = logging.getLogger(__name__)
 @csrf_exempt
 def paypal_ipn(request):
     # Decode and log the raw IPN data for debugging purposes
     ipn_data = request.body.decode('utf-8')
     print("IPN Request Data:", ipn_data)
-
+    logger.info(f"IPN Request Data: {ipn_data}")
     # Parse the IPN data into a dictionary
     parsed_data = dict(urllib.parse.parse_qsl(ipn_data))
     first_name = request.session.get('first_name', '')
@@ -235,7 +238,7 @@ def book_view2(request):
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://bc96-49-149-143-0.ngrok-free.app/paypal-ipn/",
+        'notify_url': "https://lacresort.com/paypal-ipn/",
         'return_url': f"http://{host}/booking/step4/{temp_guest.id}",
         'custom': json.dumps({
             'tg': str(temp_guest.id),

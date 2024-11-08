@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import django_heroku
+import dj_database_url
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xm4r18l#t-%@@-ji&x)i@y7m$gql&26jwh49fu5epnu$@1dnv&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -33,8 +39,7 @@ EMAIL_HOST_USER = 'lacresort1@gmail.com'
 EMAIL_HOST_PASSWORD = 'himx eulu imah xuxn'  
 DEFAULT_FROM_EMAIL = 'lacresort1@gmail.com'
 
-ALLOWED_HOSTS = ['*'] # Your ngrok URL
-
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -50,6 +55,7 @@ INSTALLED_APPS = [
     'content',
     'users',
     'dashboard',
+    'storages',
     'paypal.standard.ipn',
 ]
 
@@ -90,14 +96,9 @@ WSGI_APPLICATION = 'lac.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "lac_db",
-        "USER": "postgres",
-        "PASSWORD": "password",
-        "HOST": "localhost",  
-        "PORT": "5432",   
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
 
 
@@ -132,13 +133,38 @@ USE_I18N = True
 USE_TZ = True
 
 
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_FILE_OVERWRITE = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+STORAGES = {
+
+    # Media file (image) management   
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+    
+    # CSS and JS file management
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+}
+
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+django_heroku.settings(locals())
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -152,3 +178,6 @@ PAYPAL_RECEIVER_EMAIL = "sb-glpmn33691254@business.example.com"
 PAYPAL_TEST = True
 
 PAYPAL_BUY_BUTTON_IMAGE = "https://res.cloudinary.com/dwmvsvw3w/image/upload/v1730959297/PayBtn_u3o1dx.png"
+# dfsd
+
+
