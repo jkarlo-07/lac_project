@@ -1,33 +1,24 @@
 from django.core.mail import BadHeaderError
 from django.shortcuts import render, get_object_or_404, redirect
-import json
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import RoomType
-from lac.utils.email_utils import send_email_contact
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .forms import GuestForm, BookingForm, BookGuestForm
-from datetime import timedelta, time, datetime
-from .controllers import create_payment_link
-from paypal.standard.forms import PayPalPaymentsForm
-import uuid
 from django.urls import reverse
 from django.conf import settings
 from django.dispatch import receiver
-from paypal.standard.models import ST_PP_COMPLETED
-from paypal.standard.ipn.signals import valid_ipn_received
-from .models import RoomType, Room, Guest, TempGuest, Booking# Corrected to RoomType, as that is what you want to create
-from users.models import CustomUser
-from django.conf import settings
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.forms import PayPalPaymentsForm
 from paypal.standard.models import ST_PP_COMPLETED
 from paypal.standard.ipn.models import PayPalIPN
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from paypal.standard.ipn.signals import valid_ipn_received
+from datetime import timedelta, time, datetime
+from .models import RoomType, Room, Guest, TempGuest, Booking
+from users.models import CustomUser
+from .forms import GuestForm, BookingForm, BookGuestForm
+from .controllers import create_payment_link
+from lac.utils.email_utils import send_email_contact
+import uuid
 import urllib.parse
+import json
 
 @csrf_exempt
 def paypal_ipn(request):
@@ -61,7 +52,6 @@ def paypal_ipn(request):
     check_out_str = custom_data['cout']
     check_in = datetime.strptime(check_in_str, "%Y-%m-%d %H:%M:%S")
     check_out = datetime.strptime(check_out_str, "%Y-%m-%d %H:%M:%S")
-    # Check if payment was completed successfully
     if payment_status == "Completed":
         print("Payment completed successfully.")
         user = get_object_or_404(CustomUser, id=user_id)
@@ -74,7 +64,7 @@ def paypal_ipn(request):
                 address=temp_guest.address,
                 phone=temp_guest.phone,
                 user_id=user.id,
-                date_of_birth=temp_guest.date_of_birth  # Use a date string or a `datetime.date` object
+                date_of_birth=temp_guest.date_of_birth  
             )
             new_guest.save()
             guest = new_guest
@@ -158,12 +148,9 @@ def book_view2(request):
     check_in = request.session.get('check_in', '')
     check_in_datetime = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
 
-# Extract the time portion
     check_in_time = check_in_datetime.time()
-    start_time = time(14, 0)  # 2 PM
+    start_time = time(14, 0)  
     end_time = time(22, 0)    # 8 PM
-
-    # Check if check_in_time is between 2 PM and 8 PM
     
     check_out = request.session.get('check_out', '')
     room_id = request.session.get('room', '')
@@ -217,10 +204,9 @@ def book_view2(request):
         address=address,
         phone=phone,
         user_id=user_id,
-        date_of_birth=date_of_birth  # Use a date string or a `datetime.date` object
+        date_of_birth=date_of_birth 
     )
     temp_guest.save()
-# Add one hour to check_in
     check_out = check_in_formatted + timedelta(hours=int(duration))
     check_out = str(check_out)  
     host = request.get_host()
@@ -231,11 +217,11 @@ def book_view2(request):
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://60cf-2001-4453-6c4-6400-e57e-5bcb-6826-7713.ngrok-free.app/paypal-ipn/",
+        'notify_url': "https://47cc-49-149-143-0.ngrok-free.app/paypal-ipn/",
         'return_url': "http://127.0.0.1:800/booking/step4",
         'custom': json.dumps({
             'rtype': str(room.room_type),
-            'rm': str(room_id),  # Ensure room_type is serializable
+            'rm': str(room_id), 
             'uid': user_id,
             'cin': check_in,
             'cout': check_out,
@@ -252,7 +238,6 @@ def book_view2(request):
 
     paypal_payment = PayPalPaymentsForm(initial=paypal_checkout)
 
-    # Prepare context to pass to template
     context = {
         'first_name': first_name,
         'last_name': last_name,
@@ -334,8 +319,8 @@ def book_view3(request):
             room_id = request.POST.get('room_id')
             room = get_object_or_404(Room, id=room_id)
 
-            request.session['room'] = str(room.id)  # Convert room ID to string
-            request.session['total_amount'] = str(room.room_type.price)  # Convert price to string
+            request.session['room'] = str(room.id) 
+            request.session['total_amount'] = str(room.room_type.price) 
             request.session['duration'] = str(duration) 
             return redirect('content:book_2')
 
@@ -411,20 +396,16 @@ from django.db.models import Q
 def search_room(request):
     if request.method == 'GET':
         check_in_unformat = request.GET.get('check_in_date')
-        # Parse the string into a datetime object
         date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
         check_in_date = date_object.strftime('%Y-%m-%d')
         capacity = request.GET.get("capacity")
         checkin_time = request.GET.get("checkin_time", "12:00") 
         duration = request.GET.get("duration", 8)  
 
-        # Convert check_in_date to a date object
         check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d').date() if check_in_date else None
 
-        # Convert duration to integer
         duration = int(duration) if isinstance(duration, str) and duration.isdigit() else 8
 
-        # Filter rooms by capacity
         rooms = Room.objects.filter(room_type__capacity__gte=capacity)
 
         # Exclude rooms that are booked during the requested time range
@@ -433,12 +414,11 @@ def search_room(request):
             start_datetime = datetime.combine(check_in_date, start_time)
             end_datetime = start_datetime + timedelta(hours=duration)
 
-            # Exclude rooms that overlap with the booking date range
+            
             rooms = rooms.exclude(
                 Q(booking__check_in__lt=end_datetime) & Q(booking__check_out__gt=start_datetime)
             )
 
-        # To get only one distinct RoomType
         rooms = rooms.distinct('room_type')
 
         check_in_date_str = date_object.strftime('%b. %d, %Y')  
