@@ -75,26 +75,6 @@ def paypal_ipn(request):
             is_overnight=temp_guest.is_overnight
         )
         book.save()
-        name =  "hello"
-        email = "achicokarlo@gmail.com"
-        subject = "ewam"
-        message = "hoy"
-        if name and email and subject and message:
-            try:
-                result = send_email_contact(name, email, subject, message, 'jkma.achico@gmail.com', 'content/email_template.html')
-                
-                if result['success']:
-                    return JsonResponse({"message": result['message']}) 
-                else:
-                     return JsonResponse({'error': result['error']}, status=500)             
-            except BadHeaderError:
-                return JsonResponse({'error': 'Invalid header found.'}, status=400)
-            
-            except Exception as e:
-                return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
-        
-        else:
-            return JsonResponse({'error': 'Make sure all fields are entered and valid.'}, status=400)
     else:
         print("Payment not completed.")
 
