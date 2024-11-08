@@ -232,7 +232,7 @@ def book_view2(request):
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
         'notify_url': "https://60cf-2001-4453-6c4-6400-e57e-5bcb-6826-7713.ngrok-free.app/paypal-ipn/",
-        'return_url': "http://127.0.0.1:800/rooms/", 
+        'return_url': "http://127.0.0.1:800/booking/step4",
         'custom': json.dumps({
             'rtype': str(room.room_type),
             'rm': str(room_id),  # Ensure room_type is serializable
