@@ -62,8 +62,30 @@
           <p class="white-border">{{check_out}}</p>
         </div>
         <div class="book3-totals-row">
+          <p class="white-border-bottom">Adult Count</p>
+          <p class="white-border">{{adult_count}}</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="white-border-bottom">Kid Count</p>
+          <p class="white-border">{{kid_count}}</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="white-border-bottom">Entrance Fee(Kid:₱{{ kid_price|floatformat:2|intcomma }} / Adult ₱{{ adult_price|floatformat:2|intcomma }})</p>
+          <p class="white-border">₱ {{ entrance_fee|floatformat:2|intcomma }}</p>
+        </div>
+        <div class="book3-totals-row">
+          <p class="white-border-bottom">Room Price ({{ room_id.room_type }})</p>
+          <p class="white-border">₱ {{ room_price|floatformat:2|intcomma }}</p>
+        </div>
+        {% if is_cottage_required %}
+        <div class="book3-totals-row">
+          <p class="white-border-bottom">Cottage(Required) Price</p>
+          <p class="white-border">₱ {{ 750|floatformat:2|intcomma }}</p>
+        </div>
+        {% endif %}
+        <div class="book3-totals-row">
           <p class="brown-bg white-fg totaltxt">Total</p>
-          <p class="white-border-bottom totaltxt">₱ {{ room_id.room_type.price|floatformat:2|intcomma }}</p>
+          <p class="white-border-bottom totaltxt">₱ {{ total_amount|floatformat:2|intcomma }}</p>
         </div>
       </div>
       <div class="paypal-btn">

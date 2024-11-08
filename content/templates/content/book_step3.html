@@ -104,6 +104,31 @@
             <input type="text" id="book3-email" value="{{ email }}" readonly />
           </div>
         </div>
+        <div class="book3-twofields">
+          <div class="book3-field">
+            <label for="book3-adult_count">Adult Count:</label>
+            <input type="text" name="adult_count" value="{{ form.adult_count.value|default:'' }}">
+            {% if form.adult_count.errors %}
+              <ul class="errorlist">
+                {% for error in form.adult_count.errors %}
+                  <li class="error-msg">{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+          <div class="book3-field">
+            <label for="book3-kid_count">Kid Count:</label>
+            <input type="text" id="book3-lname" name="kid_count" value="{{ form.kid_count.value|default:'' }}"/>
+            {% if form.kid_count.errors %}
+              <ul class="errorlist">
+                {% for error in form.kid_count.errors %}
+                  <li class="error-msg">{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+        
       </div>
       
       <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
@@ -137,13 +162,9 @@
           <div class="book3-purchase-info">
             <div class="book3-bed-info">
               <p class="gray-fg">Room:</p>
-              <p class="gray-fg">Total:</p>
             </div>
             <div class="book3-info-container">
               <p class="book3-info">{{room.room_type}}</p>
-              <p class="book3-info">
-                ₱ {{ room.room_type.price|floatformat:2|intcomma }}
-              </p>
             </div>
           </div>
         </div>

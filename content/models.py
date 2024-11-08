@@ -9,6 +9,8 @@ class RoomType(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     capacity = models.IntegerField(default=0)
     picture = models.ImageField(upload_to='room/', default='room/room_fallback.jpg', blank=True)
+    is_cottage_required = models.BooleanField(default=True)
+    cottage_price = models.DecimalField(max_digits=10, decimal_places=2, default=750)
 
     def __str__(self):
         return self.room_type
@@ -30,7 +32,10 @@ class Guest(models.Model):
     
     def __str__(self):
         return self.first_name
-    
+
+
+
+
 class TempGuest(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=75)
@@ -48,7 +53,11 @@ class Booking(models.Model):
     check_in = models.DateTimeField()
     check_out = models.DateTimeField()
     duration = models.DurationField(default=timedelta(hours=12))
+    adult_count = models.IntegerField(default=1)
+    kid_count = models.IntegerField(default=0)
+    is_overnight = models.BooleanField(default=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+   
 
     @property
     def room_number(self):

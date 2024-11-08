@@ -8,7 +8,7 @@ from .models import RoomType
 from lac.utils.email_utils import send_email_contact
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .forms import GuestForm, BookingForm
+from .forms import GuestForm, BookingForm, BookGuestForm
 from datetime import timedelta, time, datetime
 from .controllers import create_payment_link
 from paypal.standard.forms import PayPalPaymentsForm
@@ -84,7 +84,10 @@ def paypal_ipn(request):
             duration=duration,
             check_in=check_in,
             check_out=check_out,
-            guest=guest
+            guest=guest,
+            kid_count=custom_data['k'],
+            adult_count=custom_data['a'],
+            is_overnight=custom_data['o']
         )
         book.save()
     else:
@@ -148,10 +151,20 @@ def book_view2(request):
     phone = request.session.get('phone', '')
     date_of_birth = request.session.get('date_of_birth', '')
     check_in_date = request.session.get('check_in_date', '')
-    check_in_time = request.session.get('check_in_time', '')
     check_out_date = request.session.get('check_out_date', '')
     check_out_time = request.session.get('check_out_time', '')
+    kid_count = request.session.get('kid_count', '')
+    adult_count = request.session.get('adult_count', '')
     check_in = request.session.get('check_in', '')
+    check_in_datetime = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
+
+# Extract the time portion
+    check_in_time = check_in_datetime.time()
+    start_time = time(14, 0)  # 2 PM
+    end_time = time(22, 0)    # 8 PM
+
+    # Check if check_in_time is between 2 PM and 8 PM
+    
     check_out = request.session.get('check_out', '')
     room_id = request.session.get('room', '')
     total_amount = request.session.get('total_amount', '')
@@ -161,6 +174,42 @@ def book_view2(request):
     room = get_object_or_404(Room, id=room_id)
     check_in_formatted = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S")
 
+
+        
+
+    if start_time <= check_in_time <= end_time or int(duration) == 24:
+        entrance_fee = (float(adult_count)*150) + (float(kid_count)*100)
+        adult_price = 150
+        kid_price = 100
+        print("it is overnight")
+        is_overnight = True
+    else:
+        entrance_fee = (float(adult_count)*100) + (float(kid_count)*50)
+        adult_price = 100
+        kid_price = 50  
+        is_overnight = False
+        print("its is not overnight")
+    
+    
+
+
+    
+    print(check_in_time)
+    print(entrance_fee)
+    room_price = room.room_type.price
+
+    total_amount = float(room_price) + float(entrance_fee)
+    print(total_amount)
+    if room.room_type.is_cottage_required:
+        cottage_price = 750
+        is_cottage_required = True
+        print("it is cottage required")
+    else:
+        cottage_price = 0
+        is_cottage_required = False
+        print("not")
+
+    total_amount = float(total_amount) + float(cottage_price)
 
     temp_guest = TempGuest(  
         first_name=first_name,
@@ -178,11 +227,11 @@ def book_view2(request):
 
     paypal_checkout = {
         'business': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': room.room_type.price,
+        'amount': total_amount,
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://bb27-2001-4453-6c4-6400-7970-1a6f-2f10-67ab.ngrok-free.app/paypal-ipn/",
+        'notify_url': "https://60cf-2001-4453-6c4-6400-e57e-5bcb-6826-7713.ngrok-free.app/paypal-ipn/",
         'return_url': "http://127.0.0.1:800/rooms/", 
         'custom': json.dumps({
             'rtype': str(room.room_type),
@@ -192,7 +241,10 @@ def book_view2(request):
             'cout': check_out,
             'tl': str(total_amount),
             'dt': str(duration),
-            'tg': str(temp_guest.id)
+            'tg': str(temp_guest.id),
+            'k': str(kid_count),
+            'a': str(adult_count),
+            'o': str(is_overnight),
         })
     }
 
@@ -216,7 +268,16 @@ def book_view2(request):
         'room_id': room,
         'total_amount': total_amount,
         'duration': duration,
+        'kid_count': kid_count,
+        'adult_count': adult_count,
+        'entrance_fee': entrance_fee,
+        'room_price': room_price,
+        'total_amount': total_amount,
+        'kid_price': kid_price,
+        'is_cottage_required': is_cottage_required,
+        'adult_price': adult_price,
         'paypal': paypal_payment,
+        
     }
 
     return render(request, "content/book_step2.html", context)
@@ -258,7 +319,7 @@ def book_view3(request):
         room = get_object_or_404(Room, id=room_id)
         email = request.user.email
         email = str(email)
-        form = GuestForm(request.POST)
+        form = BookGuestForm(request.POST)
         if form.is_valid():
             request.session['first_name'] = str(form.cleaned_data.get('first_name', ''))
             request.session['last_name'] = str(form.cleaned_data.get('last_name', ''))
@@ -266,6 +327,17 @@ def book_view3(request):
             request.session['phone'] = str(form.cleaned_data.get('phone', ''))
             request.session['date_of_birth'] = str(form.cleaned_data.get('date_of_birth', ''))
             request.session['email'] = email
+            request.session['adult_count'] = str(form.cleaned_data.get('adult_count', ''))
+            request.session['kid_count'] = str(form.cleaned_data.get('kid_count', ''))
+            request.session['check_out'] = check_out.strftime('%Y-%m-%d') if check_out else None
+
+            room_id = request.POST.get('room_id')
+            room = get_object_or_404(Room, id=room_id)
+
+            request.session['room'] = str(room.id)  # Convert room ID to string
+            request.session['total_amount'] = str(room.room_type.price)  # Convert price to string
+            request.session['duration'] = str(duration) 
+            return redirect('content:book_2')
 
         else:
             check_in_date = check_in_date.date()
@@ -282,28 +354,6 @@ def book_view3(request):
                 'check_out_time': check_out_time,
                 'duration': duration
             })
-        
-        form2 = BookingForm(request.POST)
-        if form2.is_valid():
-            request.session['check_out'] = check_out.strftime('%Y-%m-%d') if check_out else None
-
-            room_id = request.POST.get('room_id')
-            room = get_object_or_404(Room, id=room_id)
-
-            request.session['room'] = str(room.id)  # Convert room ID to string
-            request.session['total_amount'] = str(room.room_type.price)  # Convert price to string
-            request.session['duration'] = str(duration)  # Convert duration to string
-
-            return redirect('content:book_2')
-        else:
-            print(form2.errors)  
-            return render(request, "content/book_step3.html", {
-                "form": form,
-                "check_in": check_in,
-                "room": room,
-                "email": email,
-            })
-
     else:
         check_in_unformat = request.GET.get('book_check_in_date')
         check_in_time = request.GET.get("book_check_in_time")
@@ -383,10 +433,13 @@ def search_room(request):
             start_datetime = datetime.combine(check_in_date, start_time)
             end_datetime = start_datetime + timedelta(hours=duration)
 
-            
+            # Exclude rooms that overlap with the booking date range
             rooms = rooms.exclude(
                 Q(booking__check_in__lt=end_datetime) & Q(booking__check_out__gt=start_datetime)
             )
+
+        # To get only one distinct RoomType
+        rooms = rooms.distinct('room_type')
 
         check_in_date_str = date_object.strftime('%b. %d, %Y')  
 
