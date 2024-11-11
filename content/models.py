@@ -28,7 +28,7 @@ class Guest(models.Model):
     last_name = models.CharField(max_length=75, blank=True)  
     address = models.CharField(max_length=200, blank=True) 
     phone = models.CharField(max_length=30, blank=True)  
-    date_of_birth = models.DateField(default="2002-01-01", blank=True)  
+    date_of_birth = models.DateField(blank=True)  
     
     def __str__(self):
         return self.first_name
