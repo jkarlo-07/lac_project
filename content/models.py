@@ -23,12 +23,12 @@ class Room(models.Model):
         return self.room_number
     
 class Guest(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)  
     first_name = models.CharField(max_length=75)
-    last_name = models.CharField(max_length=75)
-    address = models.CharField(max_length=200)
-    phone = models.CharField(max_length=30)
-    date_of_birth = models.DateField(default="2002-01-01")
+    last_name = models.CharField(max_length=75, blank=True)  
+    address = models.CharField(max_length=200, blank=True) 
+    phone = models.CharField(max_length=30, blank=True)  
+    date_of_birth = models.DateField(default="2002-01-01", blank=True)  
     
     def __str__(self):
         return self.first_name
