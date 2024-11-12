@@ -514,6 +514,10 @@ canvas {
   cursor: pointer;
 }
 
+.updateroom-form {
+  display: none;
+}
+
 .option-container{
   display: flex;
   flex-direction: column;
