@@ -27,14 +27,21 @@
     <tbody>
         {% for guest in guests %}
         <tr>
-            <td>{{guest.id}}</td>
-            <td>{{ guest.first_name }} {{ guest.last_name }}</td>
-            <td>{{ guest.date_of_birth|age }}</td>
-            <td>{{ guest.address }}</td>
-            <td>{{guest.phone}}</td>
+            <td>{{ guest.id|default:"" }}</td>
+            <td>{{ guest.first_name|default:"" }} {{ guest.last_name|default:"" }}</td>
+            <td>
+                {% if guest.date_of_birth %}
+                    {{ guest.date_of_birth|age }}
+                {% else %}
+               
+                {% endif %}
+            </td>
+            <td>{{ guest.address|default:"" }}</td>
+            <td>{{ guest.phone|default:"" }}</td>
         </tr>
         {% endfor %}
-    </tbody>
+
+
 {% endblock %}
 
 {% block extra_script  %}
