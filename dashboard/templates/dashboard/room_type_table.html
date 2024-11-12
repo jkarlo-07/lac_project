@@ -1,27 +1,65 @@
-
+{% load static %}
 <table id="myTable2" class="display roomTable2">
   <thead>
-      <tr>
-          <th>Room Type</th>
-          <th>Description</th>
-          <th>Price</th>
-          <th>Capacity</th>
-      </tr>
+    <tr>
+      <th>Room Type</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Capacity</th>
+      <th></th>
+    </tr>
   </thead>
   <tbody>
-      {% for roomtype in roomtypes %}
+    {% for roomtype in roomtypes %}
       <tr>
-          <td>
-            <div class="room-picture-table-container">
-                <img src="{{roomtype.picture.url}}" alt="room" class="room-picture-table">
-                <p>{{ roomtype.room_type }}</p>
+        <td>
+          <div class="room-picture-table-container">
+            <img src="{{ roomtype.picture.url }}" alt="room" class="room-picture-table" />
+            <p>{{ roomtype.room_type }}</p>
+          </div>
+        </td>
+        <td>{{ roomtype.description }}</td>
+        <td>{{ roomtype.price }}</td>
+        <td>{{ roomtype.capacity }}</td>
+        <td>
+          <div class="dot-container2">
+            <div class="dot-size2">
+              <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action2" />
+              <div class="action-container2">
+                <p>Edit</p>
+                <p>Delete</p>
+              </div>
             </div>
-          </td>
-          <td>{{ roomtype.description }}</td>
-          <td>{{ roomtype.price }}</td>
-          <td>{{ roomtype.capacity }}</td>
+          </div>
+        </td>
       </tr>
-      {% endfor %}
+    {% endfor %}
   </tbody>
 </table>
 
+<script>
+  const dotsActions = document.querySelectorAll('.dots-action2')
+  
+  dotsActions.forEach((dotsAction) => {
+    dotsAction.addEventListener('click', function (event) {
+      const actionContainer = dotsAction.nextElementSibling
+  
+      if (actionContainer.style.display === 'block') {
+        actionContainer.style.display = 'none'
+      } else {
+        document.querySelectorAll('.action-container2').forEach((container) => {
+          container.style.display = 'none'
+        })
+        actionContainer.style.display = 'block'
+      }
+  
+      event.stopPropagation()
+    })
+  })
+  
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.action-container2').forEach((container) => {
+      container.style.display = 'none'
+    })
+  })
+</script>

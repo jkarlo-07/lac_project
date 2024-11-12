@@ -353,3 +353,17 @@ def fetch_all_rooms(request):
         'roomtypes': roomtypes, 
         'switchToRoom': switch_to_room,
     })
+
+def delete_room(request):
+    if request.method == "POST":
+        room_id = request.POST.get('deleteID')
+        print("Room_id: ", room_id)
+        room = get_object_or_404(Room, id=room_id)
+        room.delete()
+        
+        rooms = Room.objects.all()
+        roomtypes = RoomType.objects.all()
+        return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })
+
+
+    return redirect('home')

@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <table id="myTable1" class="display roomTable1">
   <thead>
     <tr>
@@ -23,7 +24,7 @@
               <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action" />
               <div class="action-container">
                 <p>Edit</p>
-                <p>Delete</p>
+                <p class="delete-mode" data-room-id="{{ room.id }}">Delete</p>
               </div>
             </div>
           </div>
@@ -51,17 +52,45 @@
         <option value="">--------------</option>
       </select>
     </div>
-
+    
     <button type="submit">UPDATE</button>
   </div>
 </form>
-<p class="testP">hey</p>
 
 <script>
-  
-  document.addEventListener('DOMContentLoaded', function () {
+    const closeBtnDelete = document.querySelector('#close-update-exist-room-btn')
     const dotsActions = document.querySelectorAll('.dots-action')
-  
+    const deleteForm = document.querySelector('.delete_option')
+    const deleteModes = document.querySelectorAll('.delete-mode')
+    const deleteConfirm = document.querySelector('.red-delete-button')
+    const deleteID = document.querySelector('#deleteID')
+
+    deleteConfirm.addEventListener('click', function() {
+
+    })
+
+    //new 
+    const deleteCancelBtn = document.querySelector('.gray-cancel-button')
+    deleteCancelBtn.addEventListener('click', function() {
+      deleteForm.style.display = "none"
+    })
+
+    //newend
+    closeBtnDelete.addEventListener('click', function() {
+      deleteForm.style.display = "none"
+    })
+
+
+    deleteModes.forEach((deleteMode) => {
+      deleteMode.addEventListener('click', function (event) {
+        deleteForm.style.display = "block"
+        const roomId = deleteMode.getAttribute('data-room-id');
+        console.log('Room ID:', roomId); 
+        deleteID.value = roomId
+        console.log(deleteID)
+      })
+    })
+
     dotsActions.forEach((dotsAction) => {
       dotsAction.addEventListener('click', function (event) {
         const actionContainer = dotsAction.nextElementSibling
@@ -84,5 +113,4 @@
         container.style.display = 'none'
       })
     })
-  })
 </script>

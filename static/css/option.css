@@ -1,45 +1,69 @@
-.option_room_form{
-    position: fixed;
-    background-color: #e4e7eb;
-    padding: 50px;
-    font-weight: 500;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-height: 90%;
+.delete_option {
+    display: none;
+    z-index: 1000;
 }
 
-.option-header{
+
+.delete-option-header h1{
+    font-family: "Nunito";
+    font-weight: 600;
+    color: #636363;
+}
+
+.exit-choose-container{
+    text-align: center;
+    padding: 10px 20px;
+}
+
+.delete-choose-container{
     display: flex;
-    padding:  5px 30px;
-}
-
-.option-header img{
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-}
-
-.option-container{
-    display: flex;
+    text-align: center;
     flex-direction: column;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.delete-choose-container p{
+    color: #B3B4B6;
+}
+
+.button-choose-delete{
+    display: flex;
+    justify-content: center;
     gap: 10px;
 }
 
-.option-container button{
-    background-color: #b58a60;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    color: #fff;
-    font-size: 16px;    
+.gray-cancel-button{
+    background-color: #C1C1C1 !important;
 }
 
-.option-container button:hover{
-    background-color: #795b3c;
+.red-delete-button{
+    background-color: #FF225D !important;
 }
+
+.gray-cancel-button:hover{
+    background-color: #acabab !important;
+}
+
+.red-delete-button:hover{
+    background-color: #f7698f !important;
+}
+
+.delete-option-header img{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.image-delete-icon img{
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+

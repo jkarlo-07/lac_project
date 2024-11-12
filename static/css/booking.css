@@ -457,7 +457,14 @@
     width: 40px;
     object-fit: cover;
     cursor: pointer;
+    transition: .4s;
 }
+
+.btn-image-back img:hover{
+    transform: scale(1.2);
+}
+
+
 
 .btn-image-back a{
     font-size: 20px;

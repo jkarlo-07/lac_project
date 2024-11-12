@@ -13,8 +13,8 @@
 }
 
 @font-face {
-  font-family: "Architects Daughter";
-  src: url("../fonts/ArchitectsDaughter-Regular.ttf") format("ttf");
+  font-family: "SourGummy";
+  src: url("../fonts/SourGummy_Expanded-Black.ttf") format("ttf");
   font-weight: normal;
   font-style: normal;
 }
@@ -23,6 +23,11 @@ body {
   font-family: "Poppins", Arial, sans-serif;
   font-weight: 400;
 }
+
+.delete-option-header h1{
+  font-family: "SourGummy";
+}
+
 
 a {
   text-decoration: none;
@@ -35,7 +40,9 @@ li {
 /*Booking Forms*/
 .booking-forms-walkin{
   position: fixed;
-  background-color: #e4e7eb;
+  background-color: #fff;
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
   padding: 60px 30px;
   font-weight: 500;
   top: 50%;
@@ -163,6 +170,12 @@ li {
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
+  background-color: #e4e7eb;
+}
+
+.input-group select{
+  background-color: #e4e7eb;
+  border-radius: 5px;
 }
 
 .room-info{
@@ -211,8 +224,17 @@ li {
   color: red;
 }
 
-.add-new-room-type input {
+#dob-form{
+  background-color: #fff;
+}
+
+.add-new-room-type input{
   height: 30px;
+  background-color: #e4e7eb;
+}
+
+.add-new-room-type textarea{
+  background-color: #e4e7eb;
 }
 
 .input-container1 {
@@ -236,6 +258,13 @@ li {
 .file-group p{
   line-height: 1;
   margin-bottom: 10px;
+}
+
+.cot_req{
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
 }
 
 /* Dashboard CSS */
@@ -461,7 +490,9 @@ canvas {
 
 .option_room_form{
   position: fixed;
-  background-color: #e4e7eb;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
   padding: 50px;
   font-weight: 500;
   top: 50%;
@@ -475,32 +506,47 @@ canvas {
 .option-header{
   display: flex;
   padding:  5px 30px;
+  font-family: "Nunito";
+  font-weight: 600;
+  color: #636363;
 }
 
 .option-header img{
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  top: 20px;
+  right: 20px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
+}
+
+.option-header2{
+  font-family: "Nunito";
+  font-weight: 600;
+  color: #636363;
+}
+
+.option-header3{
+  font-family: "Nunito";
+  font-weight: 600;
+  color: #636363;
 }
 
 .option-header2 img{
   position: absolute;
   top: 20px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  right: 20px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
 }
 
 .option-header3 img{
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  top: 20px;
+  right: 20px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
 }
 

@@ -8,29 +8,29 @@
 
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'css/option.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
-  <form class="booking-forms-walkin updateroom-form" style="display: block;">
-    <div class="updateroom-header">
-      <h1>Update Room</h1>
-      <img src="{% static 'images/icons/button-option.png' %}" alt="close icon" id="close-update-exist-room-btn" />
+  <form class="booking-forms-walkin delete_option" style="display: block;">
+    <div class="image-delete-icon">
+      <img src="{% static 'images/icons/remove-del.png' %}" alt="exit icon" />
+    </div>
+    <div class="delete-option-header">
+      <h1>Are you sure?</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-exist-room-btn" />
     </div>
 
-    <div class="update-room-info">
-      <div class="update-input-group">
-        <label for="room-number">Room Number</label>
-        <input type="text" name="room_number" id="updateroom-number" required placeholder="Enter room number" />
+    <div class="delete-choose-container">
+      <p>
+        Do you really want to delete this record? This <br /> process cannot be undone.
+      </p>
+      <div class="button-choose-delete">
+        <button class="gray-cancel-button" type="submit">Cancel</button>
+        <button class="red-delete-button" type="submit">Delete</button>
       </div>
-
-      <div class="update-input-group">
-        <label for="room-type-select">Room Type</label>
-        <select name="room_type" id="updateroom-type-select" required>
-          <option value="">--------------</option>
-        </select>
-      </div>
-
-      <button type="submit">UPDATE</button>
     </div>
   </form>
 {% endblock %}
