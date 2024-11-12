@@ -100,18 +100,18 @@ def booking_count_per_month():
 
     return last_six_months, booking_counts
 
-def booking_count_per_month_past():
+def booking_count_per_month_past(past_year):
     today = datetime.now()
 
     last_six_months = []
     booking_counts = [0] * 6
 
     for i in range(5, -1, -1):  
-        month_date = today.replace(year=today.year - 1) - relativedelta(months=i)
+        month_date = today.replace(year=today.year - past_year) - relativedelta(months=i)
         last_six_months.append(month_date.strftime('%B %Y'))
 
     bookings = Booking.objects.filter(
-        check_in__year=today.year - 1,
+        check_in__year=today.year - past_year,
         check_in__month__in=[datetime.strptime(month, '%B %Y').month for month in last_six_months]
     )
 
@@ -174,7 +174,8 @@ def sample_sales_data(request):
 
     sales_months, sales_amounts = total_amount_per_month()
     bookCountperMonth = booking_count_per_month()
-    sales_pastyearamounts = booking_count_per_month_past()
+    sales_pastyearamounts = booking_count_per_month_past(1)
+    sales_past2yearamounts = booking_count_per_month_past(2)
 
     total_bookings = Booking.objects.count() 
     guest_count = Guest.objects.count()
@@ -195,13 +196,15 @@ def sample_sales_data(request):
     this_year = today.year
     past_year = this_year - 1
     past_past_year = this_year - 2
+    past_3_years = this_year - 3
 
     sales_labels = []
     if today.month <= 5:  
-        sales_labels = [f"{past_year}-{this_year}", f"{past_past_year}-{past_year}"]
+        sales_labels = [f"{past_year}-{this_year}", f"{past_past_year}-{past_year}", f"{past_3_years}-{past_past_year}"]
     else:
-        sales_labels = [str(this_year), str(past_year)] 
+        sales_labels = [str(this_year), str(past_year), past_past_year] 
 
+    sales_labels.append("2022")
     data = {
         'room_labels': room_labels,      
         'room_bookings': room_bookings, 
@@ -212,6 +215,7 @@ def sample_sales_data(request):
         'metric_month_sales': monthSales,
         'metric_avail_room': total_available_rooms,
         'sales_past_amounts': sales_pastyearamounts,
+        'sales_past2_amounts': sales_past2yearamounts,
         'sales_labels': sales_labels,
         'bookCountperMonth':bookCountperMonth,
         'room_sales':room_sales,
