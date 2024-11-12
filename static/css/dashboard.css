@@ -10,6 +10,7 @@
   --secondary-text-color: #b58a60;
   --main-bg-transparent: rgba(7, 14, 19, 0.9);
   --input-color-text: rgb(150, 150, 150);
+  --main-hover-color: #93683e;
 }
 
 @font-face {
@@ -134,7 +135,7 @@ li {
 }
 
 .booking-forms-walkin button:hover{
-  background-color: #795b3c;
+  background-color: var(--main-hover-color);
 }
 
 .black-fg {
@@ -488,6 +489,10 @@ canvas {
   cursor: pointer;
 }
 
+.dashboard-add-room:hover{
+  background-color: var(--main-hover-color);
+}
+
 .option_room_form{
   position: fixed;
   background-color: #fff;
@@ -582,7 +587,7 @@ canvas {
 }
 
 .option-container button:hover{
-  background-color: #795b3c;
+  background-color: var(--main-hover-color);
 }
 
 

@@ -180,7 +180,7 @@
 }
 
 .button-sub-3:hover{
-    background: #a17b5e;
+    background: var(--main-hover-color);
 }
 
 
@@ -278,7 +278,7 @@
 }
 
 .accomodation-select-room:hover {
-    background-color: #b08b6c;
+    background-color: var(--main-hover-color);
 }
 
 .booking-view-details {

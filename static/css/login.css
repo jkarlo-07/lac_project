@@ -73,7 +73,12 @@
 }
 
 .newpass-form button:hover{
-  background-color: #b37a4f;
+  background-color: var(--main-hover-color);
+}
+
+.forgot-link{
+  color: #b58a60;
+  text-decoration: underline;
 }
 
 /* Pin Forgot Password */
@@ -114,6 +119,10 @@
   color: #fff;
   border: none;
   cursor: pointer;
+}
+
+.pin-form button:hover{
+  background-color: var(--main-hover-color);
 }
 
 .pin-forgot-container input:focus,
@@ -163,7 +172,7 @@
 }
 
 .forgot-text button:hover{
-  background-color: #b37a4f
+  background-color: var(--main-hover-color);
 }
 
 .forgot-text input,
@@ -288,6 +297,11 @@ li {
   font-size: 20px;
   font-weight: bold;
   color: #fff;
+  cursor: pointer;
+}
+
+#login-form button:hover{
+  background-color: var(--main-hover-color);
 }
 
 #login-form p {

@@ -91,7 +91,7 @@
                         <button class="header-book-btn">LOG OUT</button>
                     </form>
                 {% else %}
-                    <a class="header-book-btn" href="{% url "users:login" %}">BOOK NOW</a>
+                    <a class="header-book-btn" href="{% url "content:calendar" %}">BOOK NOW</a>
                 {% endif %}
             </nav>
         </div>
@@ -102,7 +102,7 @@
             <div class="footer-follow-container">
                 <h3>FOLLOW US:</h3>
                 <div class="footer-socmed">
-                    <a href="#">
+                    <a href="https://www.facebook.com/L.A.CResort">
                         <img 
                             src="{% static 'images/icons/facebook.png' %}" 
                             alt="facebook" 
@@ -116,9 +116,9 @@
                             class="socmed-icon"
                         />
                     </a>
-                    <a href="#">
+                    <a href="mailto:lacresortfarm@gmail.com">
                         <img
-                            src="{% static 'images/icons/email.png' %}"
+                            src="{% static 'images/icons/gmail-1.png' %}"
                             alt="gmail"
                             class="socmed-icon"
                         />

@@ -10,6 +10,7 @@
   --secondary-text-color: #b58a60;
   --main-bg-transparent: rgba(7, 14, 19, 0.9);
   --input-color-text: rgb(150, 150, 150);
+  --main-hover-color: #93683e;
 }
 
 @font-face {
@@ -139,6 +140,10 @@ li {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.header-book-btn:hover{
+  background-color: var(--main-hover-color);
 }
 
 /* for menu button */
@@ -413,7 +418,7 @@ footer {
 }
 
 .index-room__button a:hover {
-  color: var(--main-bg-color);
+  background-color: var(--main-hover-color);
 }
 
 .index-room__capacity {
@@ -535,7 +540,7 @@ footer {
 }
 
 .index-service__btn:hover {
-  color: var(--main-bg-color);
+  background-color: var(--main-hover-color);
 }
 
 /* for quote in index */
@@ -654,6 +659,11 @@ footer {
   text-align: center;
   padding: 0.5rem 0;
   border-radius: 5px;
+}
+
+
+.room-book-btn:hover{
+  background-color: var(--main-hover-color);
 }
 
 /*FOR SERVICE PAGE*/
@@ -859,6 +869,10 @@ footer {
   cursor: pointer;
 }
 
+#form-contact-btn:hover{
+  background-color: var(--main-hover-color);
+}
+
 /* FOR ABOUT PAGE */
 
 .about-main {
@@ -937,6 +951,11 @@ footer {
   font-weight: 600 !important;
   padding: 0.5rem 2rem;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.quote-book-btn:hover{
+  background-color: var(--main-hover-color);
 }
 
 /* For event in about page */
@@ -997,6 +1016,11 @@ footer {
 .arrow-btn {
   width: 50px;
   cursor: pointer;
+  transition: .4s;
+}
+
+.arrow-btn:hover{
+  transform: scale(1.1);
 }
 
 .button-container {
