@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% load static %}
 
+{% load humanize %}
+
 {% block title %}
   Booking
 {% endblock %}
@@ -8,6 +10,7 @@
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'css/booking.css' %}">
   <script src="{% static 'js/read.js' %}" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -23,16 +26,23 @@
             <hr class="bar-yellow space">
         </h3>
         <p class="booking-confirmation-message">
-            Thank you for booking, we look forward to welcoming you to our hotel soon, and in the meantime if you have any questions please do not hesitate to get in touch with us via phone or email and we’ll be happy to hear from you.
+            Thank you for completing your booking with us! We look forward to welcoming you to our hotel soon. If you have any questions before your stay, feel free to reach out to us by phone or email—we’re happy to assist you!
         </p>
         <h3 class="lac-hotel-title">
             Check In
             <hr class="bar-yellow space">
         </h3>
         <ul class="booking-checkin-checkout">
-            <li><span>Check In:</span> {{ details.check_in }}</li>
+            <li class="display-value"><span class="assign-value">Guest Name:</span> {{ details.first_name }} {{details.last_name}}</li>
             <hr class="divider">
-            <li><span>Check Out:</span>{{ details.check_out }}</li>
+            <li class="display-value"><span class="assign-value">Room:</span> {{ room.room_type}}</li>
+            <hr class="divider">
+            <li class="display-value"><span class="assign-value">Check In:</span> {{ details.check_in }}</li>
+            <hr class="divider">
+            <li class="display-value"><span class="assign-value">Check Out: </span>{{ details.check_out }}</li>
+            <hr class="divider">
+            <li class="display-value"><span class="assign-value">Total:</span> ₱{{ details.total_amount|floatformat:2|intcomma }}</li>
+            <hr class="divider">
         </ul>
         <h3 class="lac-hotel-title">
             Find Us

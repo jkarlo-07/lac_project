@@ -218,7 +218,7 @@ def book_view2(request):
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://www.lacresort.com/paypal-ipn/",
+        'notify_url': "https://b903-2001-4453-6c4-6400-c504-8880-84f9-55e0.ngrok-free.app/paypal-ipn/",
         'return_url': f"http://{host}/booking/step4/{temp_guest.id}",
         'custom': json.dumps({
             'tg': str(temp_guest.id),
@@ -368,10 +368,12 @@ def book_view3(request):
 
 def book_view4(request, temp_id):
     details = get_object_or_404(TempGuest,id=temp_id)
+    room = get_object_or_404(Room, id=details.room)
     email = request.user.email
     context = {
         "email":email,
         "details":details,
+        "room":room
     }
     return render(request, "content/book_step4.html", context)
 

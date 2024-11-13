@@ -675,7 +675,7 @@
 
 /* Booking Step 4*/
 .booking-page4-wrapper {
-    margin: 100px;
+    margin: 100px 200px;
 }
 
 .booking-complete-wrapper h3 {
@@ -712,6 +712,17 @@
     margin-bottom: 40px;
     display: flex;
     flex-direction: column;
+}
+
+.display-value{
+    color: #656170;
+    
+    font-family: "Work Sans";
+}
+
+.assign-value{
+    color: #181b20;
+    font-family: "Work Sans";
 }
 
 .hotel-contact-details-list {
