@@ -37,47 +37,35 @@
       </div>
     </div>
   </form>
+  <form class="booking-forms-walkin delete_option_roomtype" style="display: none;" method="post" action="{% url 'dashboard:delete_roomtype' %}">
+    {% csrf_token %}
+    <div class="image-delete-icon">
+      <img src="{% static 'images/icons/remove-del.png' %}" alt="exit icon" />
+    </div>
+    <div class="delete-option-header">
+      <h1>Are you sure?</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-exist-room-btn2" />
+    </div>
+    <input type="hidden" name="deleteID2" id="deleteID2" value="" />
+    <div class="delete-choose-container">
+      <p>
+        Do you really want to delete this record? This <br /> process cannot be undone.
+      </p>
+      <div class="button-choose-delete">
+        <button class="gray-cancel-button cancel-roomtype" type="button">Cancel</button>
+        <button class="red-delete-button" type="submit">Delete</button>
+      </div>
+    </div>
+  </form>
   <form action="{% url 'dashboard:add_new_room_type' %}"
     class="booking-forms-walkin add-new-room-type"
     style="{% if show_form2 %}
       
-      
-      
-      
-      
-      
-      
-      
-      
       display: block;
 
-
-
-
-
-
-
-
-
     {% else %}
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
       display: none;
-
-
-
-
-
-
-
-
 
     {% endif %};"
     method="POST"
@@ -133,7 +121,7 @@
         <input type="file" name="picture" id="dob-form" />
       </div>
       <div class="input-group cot_req">
-        <input type="checkbox" id="cottage_req" />
+        <input type="checkbox" id="cottage_req" name="cottage_req" />
         <label for="cottage_req">Cottage Required</label>
       </div>
       <button type="submit">Submit</button>
@@ -144,6 +132,10 @@
     class="booking-forms-walkin addroom-form"
     id="addroom-form"
     style="{% if show_form %}
+      
+      
+      
+      
       
       
       
@@ -163,6 +155,10 @@
 
 
 
+
+
+
+
     {% else %}
       
       
@@ -173,7 +169,15 @@
       
       
       
+      
+      
+      
+      
       display: block;
+
+
+
+
 
 
 
@@ -237,29 +241,94 @@
 {% block extra_script %}
   <script src="{% static 'lib/jquery/jquery-3.7.1.js' %}"></script>
   <script src="{% static 'lib/datatables/dataTables.js' %}"></script>
-  <script>
-    $(document).ready(function () {
-      $('#myTable').DataTable({
-        initComplete: function () {
-          const roomTable = document.querySelector('.roomTable')
-          const roomTab = document.querySelector('.room-tab')
-    
-          if (roomTable && roomTab) {
-            roomTable.parentElement.insertBefore(roomTab, roomTable)
-            console.log('roomTab moved above roomTable')
-          } else {
-            console.log('One or both elements not found')
-          }
-        }
-      })
-    })
-  </script>
 
   <script>
     $(document).ready(function () {
       $('#myTable1').DataTable()
     })
+    const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}"
+    const roomSelection = document.querySelector('.room-selection')
+    const typeSelection = document.querySelector('.type-selection')
+    const roomTable = document.querySelector('.roomTable')
+    const roomTab = document.querySelector('.room-tab')
     
+    {% if switchToRoom %}
+      console.log("hello")
+      console.log(roomSelection)
+      console.log(typeSelection)
+      typeSelection.style.color = '#b58a60'
+      roomSelection.style.color = '#6E6E6E'
+      typeSelection.style.borderBottom = '1.5px solid #b58a60'
+      roomSelection.style.borderBottom = '1px solid #d4d4d4'
+      fetch(`${fetchRoomsUrl}?switchToRoom=true`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error(`Server error: ${response.status}`)
+          return response.json()
+        })
+        .then((data) => {
+          document.getElementById('roomTableContainer').innerHTML = data.html
+  
+          $('#myTable2').DataTable({
+            initComplete: function () {
+              const roomTable = document.querySelector('.roomTable')
+              const roomTab = document.querySelector('.room-tab')
+              const dotsActions = document.querySelectorAll('.dots-action2')
+              const closeBtnDelete2 = document.querySelector('#close-update-exist-room-btn2')
+              const deleteModes2 = document.querySelectorAll('.delete-mode2')
+              const deleteForm2 = document.querySelector('.delete_option_roomtype')
+  
+              const deleteCancelBtn2 = document.querySelector('.cancel-roomtype')
+              deleteCancelBtn2.addEventListener('click', function () {
+                deleteForm2.style.display = 'none'
+              })
+  
+              closeBtnDelete2.addEventListener('click', function () {
+                console.log('jdfl')
+                deleteForm2.style.display = 'none'
+              })
+  
+              deleteModes2.forEach((deleteMode) => {
+                deleteMode.addEventListener('click', function (event) {
+                  deleteForm2.style.display = 'block'
+                  const roomId2 = deleteMode.getAttribute('data-room-id')
+                  console.log('Room ID:', roomId2)
+                  const deleteID2 = document.querySelector("#deleteID2")
+                  deleteID2.value = roomId2
+                  console.log(deleteID2)
+                })
+              })
+  
+              dotsActions.forEach((dotsAction) => {
+                dotsAction.addEventListener('click', function (event) {
+                  const actionContainer = dotsAction.nextElementSibling
+  
+                  if (actionContainer.style.display === 'block') {
+                    actionContainer.style.display = 'none'
+                  } else {
+                    document.querySelectorAll('.action-container2').forEach((container) => {
+                      container.style.display = 'none'
+                    })
+                    actionContainer.style.display = 'block'
+                  }
+  
+                  event.stopPropagation()
+                })
+              })
+  
+              document.addEventListener('click', function () {
+                document.querySelectorAll('.action-container2').forEach((container) => {
+                  container.style.display = 'none'
+                })
+              })
+            }
+          })
+        })
+        .catch((error) => console.error('Error fetching data:', error))
+    {% else %}
+      console.log("hi")
+    {% endif %}
     const addRoomBtn = document.querySelector('.dashboard-add-room')
     const addExistingBtn = document.querySelector('.add-existing-btn')
     const options = document.querySelector('.option_room_form')
@@ -299,8 +368,6 @@
       addExistingForm.style.display = 'none'
     })
     
-    const roomSelection = document.querySelector('.room-selection')
-    const typeSelection = document.querySelector('.type-selection')
     
     console.log(roomSelection, typeSelection)
     
@@ -318,14 +385,14 @@
       roomSelection.style.borderBottom = '1.5px solid #b58a60'
     })
     
-    const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}"
+    
     
     $(document).ready(function () {
       const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}"
-    
+      
       const roomSelection = document.querySelector('.room-selection')
       const typeSelection = document.querySelector('.type-selection')
-    
+      
       roomSelection.addEventListener('click', function () {
         fetch(`${fetchRoomsUrl}?switchToRoom=false`, {
           headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -342,6 +409,7 @@
                 const roomTable = document.querySelector('.roomTable')
                 const roomTab = document.querySelector('.room-tab')
                 const closeBtnDelete = document.querySelector('#close-update-exist-room-btn')
+    
                 const dotsActions = document.querySelectorAll('.dots-action')
                 const deleteForm = document.querySelector('.delete_option')
                 const deleteModes = document.querySelectorAll('.delete-mode')
@@ -393,12 +461,6 @@
                     container.style.display = 'none'
                   })
                 })
-                if (roomTable && roomTab) {
-                  roomTable.parentElement.insertBefore(roomTab, roomTable)
-                  console.log('roomTab moved above roomTable')
-                } else {
-                  console.log('One or both elements not found')
-                }
               }
             })
           })
@@ -421,6 +483,30 @@
                 const roomTable = document.querySelector('.roomTable')
                 const roomTab = document.querySelector('.room-tab')
                 const dotsActions = document.querySelectorAll('.dots-action2')
+                const closeBtnDelete2 = document.querySelector('#close-update-exist-room-btn2')
+                const deleteModes2 = document.querySelectorAll('.delete-mode2')
+                const deleteForm2 = document.querySelector('.delete_option_roomtype')
+    
+                const deleteCancelBtn2 = document.querySelector('.cancel-roomtype')
+                deleteCancelBtn2.addEventListener('click', function () {
+                  deleteForm2.style.display = 'none'
+                })
+    
+                closeBtnDelete2.addEventListener('click', function () {
+                  console.log('jdfl')
+                  deleteForm2.style.display = 'none'
+                })
+    
+                deleteModes2.forEach((deleteMode) => {
+                  deleteMode.addEventListener('click', function (event) {
+                    deleteForm2.style.display = 'block'
+                    const roomId2 = deleteMode.getAttribute('data-room-id')
+                    console.log('Room ID:', roomId2)
+                    const deleteID2 = document.querySelector("#deleteID2")
+                    deleteID2.value = roomId2
+                    console.log(deleteID2)
+                  })
+                })
     
                 dotsActions.forEach((dotsAction) => {
                   dotsAction.addEventListener('click', function (event) {
@@ -444,12 +530,6 @@
                     container.style.display = 'none'
                   })
                 })
-                if (roomTable && roomTab) {
-                  roomTable.parentElement.insertBefore(roomTab, roomTable)
-                  console.log('roomTab moved above roomTable')
-                } else {
-                  console.log('One or both elements not found')
-                }
               }
             })
           })

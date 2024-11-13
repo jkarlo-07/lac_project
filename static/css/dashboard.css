@@ -25,6 +25,10 @@ body {
   font-weight: 400;
 }
 
+.delete_option_roomtype {
+  z-index: 1000;
+}
+
 .delete-option-header h1{
   font-family: "SourGummy";
 }

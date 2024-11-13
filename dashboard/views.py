@@ -285,6 +285,12 @@ def add_new_room_type(request):
             roomtype = form.save(commit=False)  
             print('RoomType instance created')
 
+            is_cottage_required = request.POST.get('cottage_req')
+            if is_cottage_required == "on":
+                roomtype.is_cottage_required = True
+            else:
+                roomtype.is_cottage_required = False
+            roomtype.base_price = form.cleaned_data.get('price')
             roomtype.room_type = form.cleaned_data.get('room_type')
             roomtype.description = form.cleaned_data.get('description')
             roomtype.price = form.cleaned_data.get('price')
@@ -364,6 +370,29 @@ def delete_room(request):
         rooms = Room.objects.all()
         roomtypes = RoomType.objects.all()
         return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })
+
+
+    return redirect('home')
+
+def delete_roomtype(request):
+    if request.method == "POST":
+        room_id = request.POST.get('deleteID2')
+        print("Room_id: ", room_id)
+        room = get_object_or_404(RoomType, id=room_id)
+        room.delete()
+        
+        rooms = Room.objects.all()
+        roomtypes = RoomType.objects.all()
+        switch_to_room = request.GET.get('switchToRoom') == 'true'
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            html_content = render_to_string(
+                'dashboard/room_table.html' if not switch_to_room else 'dashboard/room_type_table.html',
+                {'rooms': rooms, 'roomtypes': roomtypes}
+            )
+            return JsonResponse({'html': html_content})
+        
+        return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True, 'switchToRoom': "true",  })
 
 
     return redirect('home')
