@@ -17,6 +17,28 @@
 {% endblock %}
 
 {% block content %}
+  <form class="booking-forms-walkin updateroom-form" style="display: none;">
+    <div class="updateroom-header">
+      <h1>Update Room</h1>
+      <img src="{% static 'images/icons/button-option.png' %}" alt="close icon" id="update-close-btn" />
+    </div>
+
+    <div class="update-room-info">
+      <div class="update-input-group">
+        <label for="room-number">Room Number</label>
+        <input type="text" name="room_number" id="updateroom-number" required placeholder="Enter room number" />
+      </div>
+        <input type="hidden" name="room_id" id="updateroom-id" value="">
+      <div class="update-input-group">
+        <label for="room-type-select">Room Type</label>
+        <select name="room_type" id="updateroom-type-select" required>
+          <option value="">--------------</option>
+        </select>
+      </div>
+
+      <button type="submit">UPDATE</button>
+    </div>
+  </form>
   <form class="booking-forms-walkin delete_option" style="display: none;" method="post" action="{% url 'dashboard:delete_room' %}">
     {% csrf_token %}
     <div class="image-delete-icon">
@@ -61,11 +83,19 @@
     class="booking-forms-walkin add-new-room-type"
     style="{% if show_form2 %}
       
+      
+      
       display: block;
 
+
+
     {% else %}
+      
+      
 
       display: none;
+
+
 
     {% endif %};"
     method="POST"
@@ -142,10 +172,14 @@
       
       
       
+      
+      
     
       
       
       display: none;
+
+
 
 
 
@@ -173,7 +207,11 @@
       
       
       
+      
+      
       display: block;
+
+
 
 
 
@@ -246,12 +284,13 @@
     $(document).ready(function () {
       $('#myTable1').DataTable()
     })
+
     const fetchRoomsUrl = "{% url 'dashboard:fetch_all_rooms' %}"
     const roomSelection = document.querySelector('.room-selection')
     const typeSelection = document.querySelector('.type-selection')
     const roomTable = document.querySelector('.roomTable')
     const roomTab = document.querySelector('.room-tab')
-    
+
     {% if switchToRoom %}
       console.log("hello")
       console.log(roomSelection)
@@ -419,6 +458,15 @@
                 deleteConfirm.addEventListener('click', function () {})
     
                 //new
+
+                const editModes = document.querySelectorAll('.edit-mode')
+                const updateRoomForm = document.querySelector('.updateroom-form')
+                editModes.forEach((editMode) => {
+                  editMode.addEventListener('click', function (event) {
+                    updateRoomForm.style.display = "block"
+                  })
+                })
+                //end
                 const deleteCancelBtn = document.querySelector('.gray-cancel-button')
                 deleteCancelBtn.addEventListener('click', function () {
                   deleteForm.style.display = 'none'

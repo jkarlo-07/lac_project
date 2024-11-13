@@ -160,6 +160,11 @@ li {
   gap: 10px;
 }
 
+.updateroom-form {
+  z-index: 200;
+}
+
+
 .update-input-group{
   display: flex;
   gap: 10px;

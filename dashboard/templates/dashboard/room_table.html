@@ -23,7 +23,13 @@
             <div class="dot-size">
               <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action" />
               <div class="action-container">
-                <p>Edit</p>
+                <p class="edit-mode" 
+                  data-room-id="{{ room.id }}"
+                  data-room-number="{{ room.room_number }}"
+                  data-room-type="{{ room.room_type.room_type }}"
+                >
+                  Edit
+                </p>
                 <p class="delete-mode" data-room-id="{{ room.id }}">Delete</p>
               </div>
             </div>
@@ -62,14 +68,35 @@
     const dotsActions = document.querySelectorAll('.dots-action')
     const deleteForm = document.querySelector('.delete_option')
     const deleteModes = document.querySelectorAll('.delete-mode')
+    
     const deleteConfirm = document.querySelector('.red-delete-button')
     const deleteID = document.querySelector('#deleteID')
-
-    deleteConfirm.addEventListener('click', function() {
-
-    })
+    
 
     //new 
+
+    const editModes = document.querySelectorAll('.edit-mode')
+    const updateRoomForm = document.querySelector('.updateroom-form')
+    const closeUpdateBtn = document.getElementById('update-close-btn')
+    
+    closeUpdateBtn.addEventListener('click', function() {
+      updateRoomForm.style.display = "none"
+    })
+
+    editModes.forEach((editMode) => {
+      editMode.addEventListener('click', function (event) {
+        const roomId = editMode.getAttribute('data-room-id');
+        const roomNumber = editMode.getAttribute('data-room-number');
+        const updateRoomNumberInput = document.getElementById('updateroom-number')
+        const updateRoomIdInput = document.getElementById('updateroom-id')
+
+        updateRoomIdInput.value = roomId
+        updateRoomNumberInput.value = roomNumber
+        updateRoomForm.style.display = "block"
+        console.log(updateRoomIdInput)
+      })
+    })
+    //end
     const deleteCancelBtn = document.querySelector('.gray-cancel-button')
     deleteCancelBtn.addEventListener('click', function() {
       deleteForm.style.display = "none"
