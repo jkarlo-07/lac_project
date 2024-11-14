@@ -22,6 +22,7 @@
             <th>Age</th>
             <th>Address</th>
             <th>Phone Number</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +39,17 @@
             </td>
             <td>{{ guest.address|default:"" }}</td>
             <td>{{ guest.phone|default:"" }}</td>
+            <td>
+                <div class="dot-container">
+                    <div class="dot-size">
+                      <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action" />
+                      <div class="action-container">
+                        <p>Edit</p>
+                        <p>Delete</p>
+                      </div>
+                    </div>
+                  </div>
+            </td>
         </tr>
         {% endfor %}
 
@@ -53,6 +65,25 @@
         $(document).ready(function () {
             $('#myTable').DataTable();
         });
+        console.log("tests")
+        const dotsActions = document.querySelectorAll('.dots-action')
+        dotsActions.forEach((dotsAction) => {
+            dotsAction.addEventListener('click', function (event) {
+              console.log("testing") 
+              const actionContainer = dotsAction.nextElementSibling
+        
+              if (actionContainer.style.display === 'block') {
+                actionContainer.style.display = 'none'
+              } else {
+                document.querySelectorAll('.action-container').forEach((container) => {
+                  container.style.display = 'none'
+                })
+                actionContainer.style.display = 'block'
+              }
+        
+              event.stopPropagation()
+            })
+          })
     </script>
 
 {% endblock  %}

@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'lac.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "host_db",
+        "NAME": "lac_db",
         "USER": "postgres",
         "PASSWORD": "password",
         "HOST": "localhost",  
