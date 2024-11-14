@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm, NewRoomTypeForm
+from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
@@ -413,3 +413,76 @@ def update_room(request):
         switch_to_room = request.GET.get('switchToRoom') == 'false'
 
         return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })
+    
+def update_room_type(request):
+    if request.method == 'POST':
+        form = UpdateRoomTypeForm(request.POST, request.FILES)
+        if form.is_valid():
+            roomtype_id = request.POST.get("roomtype_id")
+            room_type = form.cleaned_data.get('room_type', '')
+            price = form.cleaned_data.get('price', '')
+            description = form.cleaned_data.get('description', '')
+            capacity = form.cleaned_data.get('capacity', '')
+            is_cottage_required = form.cleaned_data.get('is_cottage_required', '')
+            
+                
+            roomtype_model = get_object_or_404(RoomType,id=roomtype_id)
+            roomtype_model.room_type = room_type
+            roomtype_model.price = price
+            roomtype_model.description = description
+            roomtype_model.base_price = price
+            roomtype_model.capacity = capacity
+            print("isisi:", is_cottage_required)
+            if is_cottage_required == "on":
+                print("true")
+                roomtype_model.is_cottage_required = True
+            else:
+                print('false')
+                roomtype_model.is_cottage_required = False
+                
+            roomtype_model.picture = form.cleaned_data.get('picture')
+            print(form.cleaned_data.get('picture'))
+            if form.cleaned_data.get('picture'):
+                roomtype_model.save(update_fields=['room_type', 'price', 'description', 'base_price', 'capacity', 'is_cottage_required', 'picture'])
+            else:
+                roomtype_model.save(update_fields=['room_type', 'price', 'description', 'base_price', 'capacity', 'is_cottage_required'])
+
+
+            rooms = Room.objects.all()
+            roomtypes = RoomType.objects.all()
+            switch_to_room = request.GET.get('switchToRoom') == 'true'
+
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                html_content = render_to_string(
+                    'dashboard/room_table.html' if not switch_to_room else 'dashboard/room_type_table.html',
+                    {'rooms': rooms, 'roomtypes': roomtypes}
+                )
+                return JsonResponse({'html': html_content})
+            form = UpdateRoomTypeForm()
+            return render(request, "dashboard/room.html", 
+                          {'rooms': rooms, 
+                           'roomtypes': roomtypes, 
+                           'show_form': True, 
+                           'switchToRoom': "true", 
+                           "showUpdateType": False})
+        else:
+            rooms = Room.objects.all()
+            roomtypes = RoomType.objects.all()
+            switch_to_room = request.GET.get('switchToRoom') == 'true'
+
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                html_content = render_to_string(
+                    'dashboard/room_table.html' if not switch_to_room else 'dashboard/room_type_table.html',
+                    {'rooms': rooms, 'roomtypes': roomtypes}
+                )
+                return JsonResponse({'html': html_content})
+            
+            return render(request, "dashboard/room.html", 
+                          {'rooms': rooms, 
+                           'roomtypes': roomtypes, 
+                           'show_form': True, 
+                           'switchToRoom': "true", 
+                           "showUpdateType": True,
+                           "form": form,
+                           "room_id":request.POST.get("roomtype_id")}
+                           )

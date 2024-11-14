@@ -18,4 +18,5 @@ urlpatterns = [
     path('delete_room', views.delete_room, name='delete_room'),
     path('delete_roomtype', views.delete_roomtype, name='delete_roomtype'),
     path('update_room', views.update_room, name='update_room'),
+    path('update_room_type', views.update_room_type, name='update_room_type'),
 ]

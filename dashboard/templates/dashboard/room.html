@@ -16,30 +16,69 @@
   <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 {% endblock %}
 {% block in_body %}
-  <form class="booking-forms-walkin update_rtype_option" style="display: none;">
+  <form action="{% url "dashboard:update_room_type" %}"
+        method="post"
+        class="booking-forms-walkin update_rtype_option" 
+        style= "
+        {% if showUpdateType %}
+          display: block;
+        {% else %}
+          display: none;
+        {% endif %};"  
+        enctype="multipart/form-data"
+  >
+    {% csrf_token %}
     <div class="update-option-header">
       <h1>Update Room Type</h1>
       <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-exist-rtype-btn" />
     </div>
-
+      <input type="hidden" name="roomtype_id" id="update-type-id" value="{{ room_id |default:'' }}">
     <div class="update_exist_rtype_container">
       <div class="exist-input-rtype-price">
-        <input type="text" placeholder="Room Type" name="roomtype" id="update-type-rtype">
-        <input type="text" placeholder="Price" name="price" id="update-type-price">
+        <div>
+          <input type="text" placeholder="Room Type" name="room_type" id="update-type-rtype"  value="{{ form.room_type.value|default:'' }}">
+          {% if form.room_type.errors %}
+              <p class="errorlist">{{ form.room_type.errors }}</p>
+          {% endif %}
+        </div>
+        <div>
+          <input type="text" placeholder="Price" name="price" id="update-type-price"  value="{{ form.price.value|default:'' }}">
+          {% if form.price.errors %}
+              <p class="errorlist">{{ form.price.errors }}</p>
+          {% endif %}
+        </div>
+        
       </div>
-      <textarea name="description" class="no-resize" rows="5" name="description" id="update-type-description" placeholder="Description"></textarea>
-      <input class="cap-exist" type="text" placeholder="Capacity" name="capacity" id="update-type-capacity">
+      <div>
+        <textarea name="description" class="no-resize" rows="5" name="description" id="update-type-description" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
+        {% if form.description.errors %}
+              <p class="errorlist">{{ form.description.errors }}</p>
+          {% endif %}
+      </div>
+        <div>
+          {% if form.price.errors %}
+              <p class="errorlist">{{ form.price.errors }}</p>
+          {% endif %}
+        </div>
 
-      <div class="exist-file-group">
-        <p>Picture</p>
-        <input type="file" name="picture" id="update-dob-form" />
+        <div>
+          <input class="cap-exist" type="text" placeholder="Capacity" name="capacity" id="update-type-capacity"  value="{{ form.capacity.value|default:'' }}">
+          {% if form.capacity.errors %}
+              <p class="errorlist">{{ form.capacity.errors }}</p>
+          {% endif %}
+        </div>
+        
+
+        <div class="exist-file-group">
+          <p>Picture</p>
+          <input type="file" name="picture" id="update-dob-form" value="{{ form.picture.value|default:'' }}"/>
       </div>
 
       <div class="input-group update_cot_req">
-        <input type="checkbox" id="update-type-cottage-req" name="cottage-req" />
+        <input type="checkbox" id="update-type-cottage-req" name="is_cottage_required" {% if form.is_cottage_required.value %}checked{% endif %}/>
         <label for="exist_cottage_req">Cottage Required</label>
       </div>
-      <button class="btn-update_rtype" type="button">Update</button>
+      <button class="btn-update_rtype" type="submit">Update</button>
     </div>
   </form>
 {% endblock  %}
@@ -113,29 +152,9 @@
   <form action="{% url 'dashboard:add_new_room_type' %}"
     class="booking-forms-walkin add-new-room-type"
     style="{% if show_form2 %}
-      
-      
-      
-      
-      
       display: block;
-
-
-
-
-
     {% else %}
-      
-      
-      
-      
-
       display: none;
-
-
-
-
-
     {% endif %};"
     method="POST"
     enctype="multipart/form-data">
@@ -359,55 +378,93 @@
           $('#myTable2').DataTable({
             initComplete: function () {
               const roomTable = document.querySelector('.roomTable')
-              const roomTab = document.querySelector('.room-tab')
-              const dotsActions = document.querySelectorAll('.dots-action2')
-              const closeBtnDelete2 = document.querySelector('#close-update-exist-room-btn2')
-              const deleteModes2 = document.querySelectorAll('.delete-mode2')
-              const deleteForm2 = document.querySelector('.delete_option_roomtype')
-  
-              const deleteCancelBtn2 = document.querySelector('.cancel-roomtype')
-              deleteCancelBtn2.addEventListener('click', function () {
-                deleteForm2.style.display = 'none'
-              })
-  
-              closeBtnDelete2.addEventListener('click', function () {
-                console.log('jdfl')
-                deleteForm2.style.display = 'none'
-              })
-  
-              deleteModes2.forEach((deleteMode) => {
-                deleteMode.addEventListener('click', function (event) {
-                  deleteForm2.style.display = 'block'
-                  const roomId2 = deleteMode.getAttribute('data-room-id')
-                  console.log('Room ID:', roomId2)
-                  const deleteID2 = document.querySelector("#deleteID2")
-                  deleteID2.value = roomId2
-                  console.log(deleteID2)
+                const roomTab = document.querySelector('.room-tab')
+                const dotsActions = document.querySelectorAll('.dots-action2')
+                const closeBtnDelete2 = document.querySelector('#close-update-exist-room-btn2')
+                const deleteModes2 = document.querySelectorAll('.delete-mode2')
+                const deleteForm2 = document  .querySelector('.delete_option_roomtype')
+                // new
+
+                const updateNewTypeForm = document.querySelector('.update_rtype_option')
+                const closeUpdateNewType = document.getElementById('close-update-exist-rtype-btn')
+                closeUpdateNewType.addEventListener('click', function () {
+                  updateNewTypeForm.style.display = "none"
                 })
-              })
-  
-              dotsActions.forEach((dotsAction) => {
-                dotsAction.addEventListener('click', function (event) {
-                  const actionContainer = dotsAction.nextElementSibling
-  
-                  if (actionContainer.style.display === 'block') {
-                    actionContainer.style.display = 'none'
-                  } else {
-                    document.querySelectorAll('.action-container2').forEach((container) => {
-                      container.style.display = 'none'
-                    })
-                    actionContainer.style.display = 'block'
-                  }
-  
-                  event.stopPropagation()
+                const updateNewTypeBtns = document.querySelectorAll('.edit-new-type-mode')
+
+                updateNewTypeBtns.forEach((edit) => {
+                  edit.addEventListener('click', function(event) {
+                    const roomtype_id = edit.getAttribute('data-roomtype-id')
+                    const roomtype = document.getElementById('update-type-rtype')
+                    const price = document.getElementById('update-type-price')
+                    const description = document.getElementById('update-type-description')
+                    const capacity = document.getElementById('update-type-capacity')
+                    const roomtypeId = document.getElementById('update-type-id')
+                    const cottageReq = document.getElementById('update-type-cottage-req')
+                    const dataCottageReq = edit.getAttribute('data-roomtype-cottage-req')
+
+                    roomtypeId.value = roomtype_id
+                    console.log(roomtypeId)
+                    if (dataCottageReq == "True") {
+                      cottageReq.checked = true
+                    } else {
+                      cottageReq.checked = false
+                    }
+
+                    description.value = edit.getAttribute('data-roomtype-description')
+                    price.value = edit.getAttribute('data-roomtype-price')
+                    roomtype.value = edit.getAttribute('data-room-type')
+                    capacity.value = edit.getAttribute('data-roomtype-capacity')
+                    updateNewTypeForm.style.display = "block"
+                  })
                 })
-              })
-  
-              document.addEventListener('click', function () {
-                document.querySelectorAll('.action-container2').forEach((container) => {
-                  container.style.display = 'none'
+
+
+
+                // end
+                const deleteCancelBtn2 = document.querySelector('.cancel-roomtype')
+                deleteCancelBtn2.addEventListener('click', function () {
+                  deleteForm2.style.display = 'none'
                 })
-              })
+    
+                closeBtnDelete2.addEventListener('click', function () {
+                  console.log('jdfl')
+                  deleteForm2.style.display = 'none'
+                })
+    
+                deleteModes2.forEach((deleteMode) => {
+                  deleteMode.addEventListener('click', function (event) {
+                    deleteForm2.style.display = 'block'
+                    const roomId2 = deleteMode.getAttribute('data-room-id')
+                    console.log('Room ID:', roomId2)
+                    const deleteID2 = document.querySelector("#deleteID2")
+                    deleteID2.value = roomId2
+                    console.log(deleteID2)
+                  })
+                })
+    
+                dotsActions.forEach((dotsAction) => {
+                  dotsAction.addEventListener('click', function (event) {
+                    const actionContainer = dotsAction.nextElementSibling
+    
+                    if (actionContainer.style.display === 'block') {
+                      actionContainer.style.display = 'none'
+                    } else {
+                      document.querySelectorAll('.action-container2').forEach((container) => {
+                        container.style.display = 'none'
+                      })
+                      actionContainer.style.display = 'block'
+                    }
+    
+                    event.stopPropagation()
+                  })
+                })
+    
+                document.addEventListener('click', function () {
+                  document.querySelectorAll('.action-container2').forEach((container) => {
+                    container.style.display = 'none'
+                  })
+                })
             }
           })
         })
@@ -630,10 +687,12 @@
                     const price = document.getElementById('update-type-price')
                     const description = document.getElementById('update-type-description')
                     const capacity = document.getElementById('update-type-capacity')
+                    const roomtypeId = document.getElementById('update-type-id')
                     const cottageReq = document.getElementById('update-type-cottage-req')
                     const dataCottageReq = edit.getAttribute('data-roomtype-cottage-req')
 
-                    
+                    roomtypeId.value = roomtype_id
+                    console.log(roomtypeId)
                     if (dataCottageReq == "True") {
                       cottageReq.checked = true
                     } else {
