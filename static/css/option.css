@@ -132,3 +132,94 @@
     font-size: 15px;
     flex-direction: column;
 }
+
+/*UPDATE GUEST INFO CSS*/
+
+.update_guestinfo_option{
+    display: none;
+    z-index: 1000;
+}
+
+.input-guestinfo-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.update-name-container, .update-phone-dob-container{
+    display: flex;
+    gap: 10px;
+}
+
+.update-name-container input, .update-phone-dob-container input, 
+.input-guestinfo-container input {
+    border: none;
+    border-radius: 5px;
+    background-color: #e4e7eb;
+    height: 30px;
+    padding-left: 5px;
+}
+
+/*UPDATE BOOKING CSS*/
+
+.update_booking_option{
+    display: none;
+    z-index: 1000;
+}
+
+.input-booking-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #636363;
+}
+
+.update-select-option select{
+    height: 30px;
+    width: 100%;
+    background-color: #e4e7eb;
+    border-radius: 5px;
+}
+
+.input-booking-container input{
+    border: none;
+    border-radius: 5px;
+    background-color: #e4e7eb;
+    height: 30px;
+    padding-left: 5px;
+}
+
+.update-onight{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+/*ADD NEW BOOKING CSS*/
+
+.addnew-booking-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.addnew-booking-container input, .addnew-booking-container select{
+    height: 25px;
+}
+
+.add-name-container, .add-phone-dob-container,
+.add-check-inout, .add-count-adult-kid{
+    display: flex;
+    gap: 10px;
+}
+
+.add-select-option select{
+    height: 25px;
+    width: 100%;
+    background-color: #e4e7eb;
+    border-radius: 5px;
+}
+
+
+
