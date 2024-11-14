@@ -40,29 +40,6 @@
   </tbody>
 </table>
 
-<form class="booking-forms-walkin updateroom-form" style="display: z;">
-  <div class="updateroom-header">
-    <h1>Update Room</h1>
-    <img src="{% static 'images/icons/button-option.png' %}" alt="close icon" id="close-update-exist-room-btn" />
-  </div>
-
-  <div class="update-room-info">
-    <div class="update-input-group">
-      <label for="room-number">Room Number</label>
-      <input type="text" name="room_number" id="updateroom-number" required placeholder="Enter room number" />
-    </div>
-
-    <div class="update-input-group">
-      <label for="room-type-select">Room Type</label>
-      <select name="room_type" id="updateroom-type-select" required>
-        <option value="">--------------</option>
-      </select>
-    </div>
-    
-    <button type="submit">UPDATE</button>
-  </div>
-</form>
-
 <script>
     const closeBtnDelete = document.querySelector('#close-update-exist-room-btn')
     const dotsActions = document.querySelectorAll('.dots-action')
@@ -71,8 +48,6 @@
     
     const deleteConfirm = document.querySelector('.red-delete-button')
     const deleteID = document.querySelector('#deleteID')
-    
-
     //new 
 
     const editModes = document.querySelectorAll('.edit-mode')
@@ -87,8 +62,27 @@
       editMode.addEventListener('click', function (event) {
         const roomId = editMode.getAttribute('data-room-id');
         const roomNumber = editMode.getAttribute('data-room-number');
+        const roomType = editMode.getAttribute('data-room-type')
         const updateRoomNumberInput = document.getElementById('updateroom-number')
         const updateRoomIdInput = document.getElementById('updateroom-id')
+        const roomTypeSelect = document.getElementById('updateroom-type-select');
+        console.log(roomTypeSelect)
+        const options = [
+        {% for roomtype in roomtypes %}
+          {value: '{{roomtype.id}}', text: '{{roomtype.room_type}}'},
+        {% endfor %}
+        ]
+
+        options.forEach(optionData => {
+          const option = document.createElement('option');
+          option.value = optionData.value;
+          option.text = optionData.text;
+          if (optionData.text == roomType) {
+            option.selected = true
+          }
+          roomTypeSelect.add(option);
+        })
+
 
         updateRoomIdInput.value = roomId
         updateRoomNumberInput.value = roomNumber

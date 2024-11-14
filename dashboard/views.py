@@ -396,3 +396,20 @@ def delete_roomtype(request):
 
 
     return redirect('home')
+
+def update_room(request):
+    if request.method == "POST":
+        room_id = request.POST.get('room_id')
+        updated_room = request.POST.get('room_number')
+        updated_roomtype = request.POST.get('room_type')
+        roomtype = get_object_or_404(RoomType, id=updated_roomtype)
+        room = get_object_or_404(Room, id=room_id)
+        room.room_number = updated_room
+        room.room_type = roomtype
+        room.save()
+
+        rooms = Room.objects.all()
+        roomtypes = RoomType.objects.all()
+        switch_to_room = request.GET.get('switchToRoom') == 'false'
+
+        return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })

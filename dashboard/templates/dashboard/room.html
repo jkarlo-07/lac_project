@@ -15,12 +15,45 @@
   <link rel="stylesheet" href="{% static 'css/option.css' %}" />
   <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 {% endblock %}
+{% block in_body %}
+  <form class="booking-forms-walkin update_rtype_option" style="display: none;">
+    <div class="update-option-header">
+      <h1>Update Room Type</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-exist-rtype-btn" />
+    </div>
 
+    <div class="update_exist_rtype_container">
+      <div class="exist-input-rtype-price">
+        <input type="text" placeholder="Room Type" name="roomtype" id="update-type-rtype">
+        <input type="text" placeholder="Price" name="price" id="update-type-price">
+      </div>
+      <textarea name="description" class="no-resize" rows="5" name="description" id="update-type-description" placeholder="Description"></textarea>
+      <input class="cap-exist" type="text" placeholder="Capacity" name="capacity" id="update-type-capacity">
+
+      <div class="exist-file-group">
+        <p>Picture</p>
+        <input type="file" name="picture" id="update-dob-form" />
+      </div>
+
+      <div class="input-group update_cot_req">
+        <input type="checkbox" id="update-type-cottage-req" name="cottage-req" />
+        <label for="exist_cottage_req">Cottage Required</label>
+      </div>
+      <button class="btn-update_rtype" type="button">Update</button>
+    </div>
+  </form>
+{% endblock  %}
 {% block content %}
-  <form class="booking-forms-walkin updateroom-form" style="display: none;">
+
+  <form class="booking-forms-walkin updateroom-form" 
+        style="display: none;"
+        method="post"
+        action={% url "dashboard:update_room" %}
+  >
+  {% csrf_token %}
     <div class="updateroom-header">
       <h1>Update Room</h1>
-      <img src="{% static 'images/icons/button-option.png' %}" alt="close icon" id="update-close-btn" />
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="update-close-btn" />
     </div>
 
     <div class="update-room-info">
@@ -28,12 +61,10 @@
         <label for="room-number">Room Number</label>
         <input type="text" name="room_number" id="updateroom-number" required placeholder="Enter room number" />
       </div>
-        <input type="hidden" name="room_id" id="updateroom-id" value="">
+      <input type="hidden" name="room_id" id="updateroom-id" value="" />
       <div class="update-input-group">
         <label for="room-type-select">Room Type</label>
-        <select name="room_type" id="updateroom-type-select" required>
-          <option value="">--------------</option>
-        </select>
+        <select name="room_type" id="updateroom-type-select" required></select>
       </div>
 
       <button type="submit">UPDATE</button>
@@ -85,15 +116,23 @@
       
       
       
+      
+      
       display: block;
+
+
 
 
 
     {% else %}
       
       
+      
+      
 
       display: none;
+
+
 
 
 
@@ -174,10 +213,14 @@
       
       
       
+      
+      
     
       
       
       display: none;
+
+
 
 
 
@@ -209,7 +252,11 @@
       
       
       
+      
+      
       display: block;
+
+
 
 
 
@@ -461,9 +508,42 @@
 
                 const editModes = document.querySelectorAll('.edit-mode')
                 const updateRoomForm = document.querySelector('.updateroom-form')
+                const closeUpdateBtn = document.getElementById('update-close-btn')
+                
+                closeUpdateBtn.addEventListener('click', function() {
+                  updateRoomForm.style.display = "none"
+                })
+
                 editModes.forEach((editMode) => {
                   editMode.addEventListener('click', function (event) {
+                    const roomId = editMode.getAttribute('data-room-id');
+                    const roomNumber = editMode.getAttribute('data-room-number');
+                    const roomType = editMode.getAttribute('data-room-type')
+                    const updateRoomNumberInput = document.getElementById('updateroom-number')
+                    const updateRoomIdInput = document.getElementById('updateroom-id')
+                    const roomTypeSelect = document.getElementById('updateroom-type-select');
+                    console.log(roomTypeSelect)
+                    const options = [
+                    {% for roomtype in roomtypes %}
+                      {value: '{{roomtype.id}}', text: '{{roomtype.room_type}}'},
+                    {% endfor %}
+                    ]
+
+                    options.forEach(optionData => {
+                      const option = document.createElement('option');
+                      option.value = optionData.value;
+                      option.text = optionData.text;
+                      if (optionData.text == roomType) {
+                        option.selected = true
+                      }
+                      roomTypeSelect.add(option);
+                    })
+
+
+                    updateRoomIdInput.value = roomId
+                    updateRoomNumberInput.value = roomNumber
                     updateRoomForm.style.display = "block"
+                    console.log(updateRoomIdInput)
                   })
                 })
                 //end
@@ -533,8 +613,44 @@
                 const dotsActions = document.querySelectorAll('.dots-action2')
                 const closeBtnDelete2 = document.querySelector('#close-update-exist-room-btn2')
                 const deleteModes2 = document.querySelectorAll('.delete-mode2')
-                const deleteForm2 = document.querySelector('.delete_option_roomtype')
-    
+                const deleteForm2 = document  .querySelector('.delete_option_roomtype')
+                // new
+
+                const updateNewTypeForm = document.querySelector('.update_rtype_option')
+                const closeUpdateNewType = document.getElementById('close-update-exist-rtype-btn')
+                closeUpdateNewType.addEventListener('click', function () {
+                  updateNewTypeForm.style.display = "none"
+                })
+                const updateNewTypeBtns = document.querySelectorAll('.edit-new-type-mode')
+
+                updateNewTypeBtns.forEach((edit) => {
+                  edit.addEventListener('click', function(event) {
+                    const roomtype_id = edit.getAttribute('data-roomtype-id')
+                    const roomtype = document.getElementById('update-type-rtype')
+                    const price = document.getElementById('update-type-price')
+                    const description = document.getElementById('update-type-description')
+                    const capacity = document.getElementById('update-type-capacity')
+                    const cottageReq = document.getElementById('update-type-cottage-req')
+                    const dataCottageReq = edit.getAttribute('data-roomtype-cottage-req')
+
+                    
+                    if (dataCottageReq == "True") {
+                      cottageReq.checked = true
+                    } else {
+                      cottageReq.checked = false
+                    }
+
+                    description.value = edit.getAttribute('data-roomtype-description')
+                    price.value = edit.getAttribute('data-roomtype-price')
+                    roomtype.value = edit.getAttribute('data-room-type')
+                    capacity.value = edit.getAttribute('data-roomtype-capacity')
+                    updateNewTypeForm.style.display = "block"
+                  })
+                })
+
+
+
+                // end
                 const deleteCancelBtn2 = document.querySelector('.cancel-roomtype')
                 deleteCancelBtn2.addEventListener('click', function () {
                   deleteForm2.style.display = 'none'

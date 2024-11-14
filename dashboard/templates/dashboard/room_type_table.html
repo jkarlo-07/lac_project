@@ -26,7 +26,16 @@
             <div class="dot-size2">
               <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action2" />
               <div class="action-container2">
-                <p>Edit</p>
+                <p class="edit-new-type-mode" 
+                  data-roomtype-id="{{ roomtype.id }}"
+                  data-room-type="{{ roomtype.room_type }}"
+                  data-roomtype-price="{{roomtype.price}}"
+                  data-roomtype-description="{{roomtype.description}}"
+                  data-roomtype-capacity="{{roomtype.capacity}}"
+                  data-roomtype-cottage-req="{{roomtype.is_cottage_required}}"
+                >
+                  Edit
+                </p>
                 <p class="delete-mode2" data-room-id="{{ roomtype.id }}">Delete</p>
               </div>
             </div>

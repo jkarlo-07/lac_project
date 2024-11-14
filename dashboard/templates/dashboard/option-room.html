@@ -14,23 +14,30 @@
 {% endblock %}
 
 {% block content %}
-  <form class="booking-forms-walkin delete_option" style="display: block;">
-    <div class="image-delete-icon">
-      <img src="{% static 'images/icons/remove-del.png' %}" alt="exit icon" />
-    </div>
-    <div class="delete-option-header">
-      <h1>Are you sure?</h1>
-      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-exist-room-btn" />
+  <form class="booking-forms-walkin update_rtype_option" style="display: block;">
+    <div class="update-option-header">
+      <h1>Update Room Type</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-exist-rtype-btn" />
     </div>
 
-    <div class="delete-choose-container">
-      <p>
-        Do you really want to delete this record? This <br /> process cannot be undone.
-      </p>
-      <div class="button-choose-delete">
-        <button class="gray-cancel-button" type="submit">Cancel</button>
-        <button class="red-delete-button" type="submit">Delete</button>
+    <div class="update_exist_rtype_container">
+      <div class="exist-input-rtype-price">
+        <input type="text" placeholder="Room Type" name="roomtype" id="update-type-rtype">
+        <input type="text" placeholder="Price" name="price" id="update-type-price">
       </div>
+      <textarea name="description" class="no-resize" rows="5" id="rtype-exit-update" placeholder="Description"></textarea>
+      <input class="cap-exist" type="text" placeholder="Capacity">
+
+      <div class="exist-file-group">
+        <p>Picture</p>
+        <input type="file" name="picture" id="update-dob-form" />
+      </div>
+
+      <div class="input-group update_cot_req">
+        <input type="checkbox" id="update-type-cottage-req" name="cottage-req" />
+        <label for="exist_cottage_req">Cottage Required</label>
+      </div>
+      <button class="btn-update_rtype" type="button">Update</button>
     </div>
   </form>
 {% endblock %}

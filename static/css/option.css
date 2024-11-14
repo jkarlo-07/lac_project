@@ -67,3 +67,68 @@
     justify-self: center;
 }
 
+
+/*UPDATE EXIST RTYPE CSS*/
+
+.update_rtype_option{
+    display: none;
+    z-index: 1000;
+}
+
+.update-option-header img{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.update-option-header h1{
+    font-family: "Nunito";
+    color: #636363;
+}
+
+.update_cot_req{
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+}
+
+.update_exist_rtype_container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.exist-input-rtype-price{
+    display: flex;
+    gap: 10px;
+}
+
+.exist-input-rtype-price input, .cap-exist{
+    background-color: #e4e7eb;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+
+.update_exist_rtype_container textarea{
+    background-color: #e4e7eb;
+    border: none;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+
+
+.btn-update_rtype{
+    width: 100%;
+}
+
+.exist-file-group{
+    display: flex;
+    font-size: 15px;
+    flex-direction: column;
+}
