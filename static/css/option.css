@@ -204,6 +204,18 @@
     font-size: 15px;
 }
 
+.checkin-time-update{
+    width: 100%;
+    background-color: #e4e7eb;
+    border: none;
+    border-radius: 5px;
+}
+
+.check-inout-update{
+    display: flex;
+    gap: 10px;
+}
+
 /*ADD NEW BOOKING CSS*/
 
 .addnew-booking-container{

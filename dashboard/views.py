@@ -519,3 +519,11 @@ def update_guest(request):
         else:
             print("errors", form.errors )
             return render(request, "dashboard/guest.html", {'guests' : guests, 'form': form, 'show_form': True, 'id':guest_id})
+        
+def delete_booking(request):
+    bookings = Booking.objects.all().order_by('-check_in')
+    if request.method == 'POST':
+        book_id = request.POST.get('deleteID')
+        book_record = get_object_or_404(Booking, id=book_id)
+        book_record.delete()
+        return render(request, "dashboard/booking.html", {'booking': bookings})

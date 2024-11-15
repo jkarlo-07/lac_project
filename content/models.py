@@ -92,6 +92,7 @@ class Booking(models.Model):
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True)  # Allow NULL values
     check_in = models.DateTimeField()
     check_out = models.DateTimeField()
+    status = models.CharField(max_length=10, default="Booked")
     duration = models.DurationField(default=timedelta(hours=12))
     adult_count = models.IntegerField(default=1)
     kid_count = models.IntegerField(default=0)

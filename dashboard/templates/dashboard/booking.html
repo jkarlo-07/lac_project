@@ -7,48 +7,192 @@
 {% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static "lib/datatables/dataTables.css" %}">
-
+  <link rel="stylesheet" href="{% static "lib/datatables/dataTables.css" %}">
+  <link rel="stylesheet" href="{% static "css/option.css" %}">
 {% endblock %}
+
+{% block in_body %}
+<!-- Delete Form -->
+
+<form class="booking-forms-walkin delete_option" style="display: none;" method="post" action="{% url 'dashboard:delete_booking' %}">
+    {% csrf_token %}
+    <div class="image-delete-icon">
+      <img src="{% static 'images/icons/remove-del.png' %}" alt="exit icon" />
+    </div>
+    <div class="delete-option-header">
+      <h1>Are you sure?</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-delete-guest-btn" />
+    </div>
+    <input type="hidden" name="deleteID" id="deleteID" value="" />
+    <div class="delete-choose-container">
+      <p>
+        Do you really want to delete this record? This <br /> process cannot be undone.
+      </p>
+      <div class="button-choose-delete">
+        <button class="gray-cancel-button" id="cancel-delete-btn" type="button">Cancel</button>
+        <button class="red-delete-button" type="submit">Delete</button>
+      </div>
+    </div>
+  </form>
+
+<form class="booking-forms-walkin update_booking_option" style="display: none;">
+    <div class="update-option-header">
+      <h1>Update Booking</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-booking-btn" />
+    </div>
+
+    <div class="input-booking-container"> 
+      <div class="check-inout-update">
+        <input type="text" name="" id="" placeholder="Check in">
+        <select name="" id="" class="checkin-time-update">
+            <option value="8:00am">8:00am</option>
+            <option value="9:00am">9:00am</option>
+            <option value="10:00am">10:00am</option>
+        </select>
+      </div>
+      <input type="text" placeholder="Duration">
+      <div class="update-select-option">
+        <label for="update-room-booking">Room</label>
+        <select name="update-room-booking" id="update-room-booking">
+          <option value="">....</option>
+        </select>
+      </div>
+      <div class="count-adult-kid-update">
+        <input type="text" name="" id="" placeholder="Adult">
+        <input type="text" name="" id="" placeholder="Kid">
+      </div>
+
+      <button type="button">UPDATE</button>
+    </div>
+</form>
+{% endblock  %}
 
 {% block content %}
   <h1>Booking</h1>
+
+  <!-- Status filter dropdown -->
+  <label for="statusFilter">Status: </label>
+  <select id="statusFilter">
+      <option value="">All</option>
+      <option value="Booked">Booked</option>
+      <option value="Canceled">Canceled</option>
+  </select>
+
   <table id="myTable" class="display">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Room</th>
-            <th>Check_in</th>
-            <th>Check_out</th>
-            <th>Guest</th>
-            <th>Total Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-            {% for book in booking %}
-            <tr>
-                <td>{{ book.id }}</td>
-                <td>{{ book.room.room_type }}</td>
-                <td>{{ book.check_in|date:"m-d-Y" }}, {{ book.check_in|time:"g:i A" }}</td>
-                <td>{{ book.check_out|date:"m-d-Y" }}, {{ book.check_out|time:"g:i A" }}</td>
-                <td>{{ book.guest.first_name|add:" "|add:book.guest.last_name }}</td>
-                <td>{{ book.total_amount }}</td>
-            </tr>
-            {% endfor %}
-    </tbody>
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Room</th>
+              <th>Check_in</th>
+              <th>Check_out</th>
+              <th>Guest</th>
+              <th>Total Amount</th>
+              <th></th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for book in booking %}
+          <tr data-status="{{ book.status }}">
+              <td>{{ book.id }}</td>
+              <td>{{ book.room.room_type }}</td>
+              <td>{{ book.check_in|date:"m-d-Y" }}, {{ book.check_in|time:"g:i A" }}</td>
+              <td>{{ book.check_out|date:"m-d-Y" }}, {{ book.check_out|time:"g:i A" }}</td>
+              <td>{{ book.guest.first_name|add:" "|add:book.guest.last_name }}</td>
+              <td>{{ book.total_amount }}</td>
+              <td>
+                <div class="dot-container">
+                  <div class="dot-size">
+                    <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action" />
+                    <div class="action-container">
+                      <p class="edit-btn">Edit</p>
+                      <p class="delete-btn" data-book-id="{{ book.id }}">Delete</p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
 {% endblock %}
-{% block extra_script  %}
-    <script src="{% static "lib/jquery/jquery-3.7.1.js" %}"></script>
 
-    <script src="{% static "lib/datatables/dataTables.js" %}"></script>
+{% block extra_script %}
+<script src="{% static "lib/jquery/jquery-3.7.1.js" %}"></script>
+<script src="{% static "lib/datatables/dataTables.js" %}"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('#myTable').DataTable({
-                "order": [[2, "desc"]] 
-            });
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable
+        var table = $('#myTable').DataTable({
+            "order": [[2, "desc"]]
         });
-    </script>
-    
 
-{% endblock  %}
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var row = table.row(dataIndex).node(); // Get the row element
+                var status = $(row).data('status');   // Read the data-status attribute
+
+                var selectedStatus = $('#statusFilter').val(); // Get selected status
+                if (selectedStatus && status !== selectedStatus) {
+                    return false; // Exclude rows that don't match the selected status
+                }
+                return true; 
+            }
+        );
+
+        $('#statusFilter').on('change', function () {
+            table.draw(); 
+        });
+    });
+
+
+    // for dot actions
+    const dotsActions = document.querySelectorAll('.dots-action')
+    dotsActions.forEach((dotsAction) => {
+      dotsAction.addEventListener('click', function (event) {
+        console.log('testing')
+        const actionContainer = dotsAction.nextElementSibling
+    
+        if (actionContainer.style.display === 'block') {
+          actionContainer.style.display = 'none'
+        } else {
+          document.querySelectorAll('.action-container').forEach((container) => {
+            container.style.display = 'none'
+          })
+          actionContainer.style.display = 'block'
+        }
+    
+        event.stopPropagation()
+      })
+    })
+    
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.action-container').forEach((container) => {
+        container.style.display = 'none'
+      })
+    })
+
+    // for deleting records
+    const deleteForm = document.querySelector('.delete_option')
+    const deleteBtns = document.querySelectorAll('.delete-btn')
+    const closeDeleteFormBtn = document.getElementById('close-delete-guest-btn')
+    const cancelDeleteFormBtn = document.getElementById('cancel-delete-btn')
+    
+    deleteBtns.forEach((deleteBtn) => {
+      deleteBtn.addEventListener('click', function (event) {
+        const deleteID = document.getElementById('deleteID')
+        book_id = deleteBtn.getAttribute('data-book-id')
+        deleteID.value = book_id
+        console.log(deleteID)
+        deleteForm.style.display = 'block'
+      })
+    })
+    
+    const hideDeleteForm = () => {
+      deleteForm.style.display = 'none'
+    }
+    
+    closeDeleteFormBtn.addEventListener('click', hideDeleteForm)
+    cancelDeleteFormBtn.addEventListener('click', hideDeleteForm)
+</script>
+{% endblock %}
