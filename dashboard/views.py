@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm
+from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
@@ -486,3 +486,36 @@ def update_room_type(request):
                            "form": form,
                            "room_id":request.POST.get("roomtype_id")}
                            )
+
+def delete_guest(request):
+    if request.method == "POST":
+        guest_id = request.POST.get('deleteID')
+        guest = get_object_or_404(Guest,id=guest_id)
+        guest.delete()
+        guests = Guest.objects.all()
+        return render(request, "dashboard/guest.html", {'guests' : guests})
+    else:
+        return redirect("content:index")
+    
+def update_guest(request):
+    if request.method == "POST":
+        guest_id = request.POST.get('id')
+        guest = get_object_or_404(Guest, id=guest_id)
+        form = UpdateGuestForm(request.POST)
+        guests = Guest.objects.all()
+        if form.is_valid():
+            first_name = form.cleaned_data.get('first_name', '')
+            last_name = form.cleaned_data.get('last_name', '')
+            address = form.cleaned_data.get('address', '')
+            date_of_birth = form.cleaned_data.get('date_of_birth', '')
+            phone = form.cleaned_data.get('phone', '')
+            guest.first_name = first_name
+            guest.last_name = last_name
+            guest.address = address
+            guest.date_of_birth = date_of_birth
+            guest.phone = phone
+            guest.save(update_fields=['first_name', 'last_name', 'address', 'date_of_birth','phone'])
+            return render(request, "dashboard/guest.html", {'guests' : guests})
+        else:
+            print("errors", form.errors )
+            return render(request, "dashboard/guest.html", {'guests' : guests, 'form': form, 'show_form': True, 'id':guest_id})

@@ -49,13 +49,13 @@
         </div>
         
       </div>
-      <div>
+      <div class="input-container">
         <textarea name="description" class="no-resize" rows="5" name="description" id="update-type-description" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
         {% if form.description.errors %}
               <p class="errorlist">{{ form.description.errors }}</p>
           {% endif %}
       </div>
-        <div>
+        <div class="input-container">
           {% if form.price.errors %}
               <p class="errorlist">{{ form.price.errors }}</p>
           {% endif %}

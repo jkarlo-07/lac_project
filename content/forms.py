@@ -3,7 +3,6 @@ from .models import Guest
 from .models import Booking
 from django.core.validators import RegexValidator
 from django import forms
-from django.core.validators import RegexValidator
 from datetime import date
 
 class BookGuestForm(forms.Form):

@@ -75,6 +75,10 @@
     z-index: 1000;
 }
 
+.update_guest_form {
+    z-index: 10000;
+}
+
 .update-option-header img{
     position: absolute;
     top: 20px;
@@ -158,6 +162,10 @@
     background-color: #e4e7eb;
     height: 30px;
     padding-left: 5px;
+}
+
+.input-container input, .input-container textarea{
+    width: 100%;
 }
 
 /*UPDATE BOOKING CSS*/

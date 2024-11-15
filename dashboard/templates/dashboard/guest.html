@@ -1,4 +1,4 @@
-{% extends "admin_layout.html" %}
+{% extends 'admin_layout.html' %}
 
 {% load static %}
 {% load custom_filters %}
@@ -8,82 +8,257 @@
 {% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static "lib/datatables/dataTables.css" %}">
-
+  <link rel="stylesheet" href="{% static 'lib/datatables/dataTables.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/option.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 {% endblock %}
 
+{% block in_body %}
+  <form class="booking-forms-walkin delete_option" style="display: none;" method="post" action="{% url 'dashboard:delete_guest' %}">
+    {% csrf_token %}
+    <div class="image-delete-icon">
+      <img src="{% static 'images/icons/remove-del.png' %}" alt="exit icon" />
+    </div>
+    <div class="delete-option-header">
+      <h1>Are you sure?</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-delete-guest-btn" />
+    </div>
+    <input type="hidden" name="deleteID" id="deleteID" value="" />
+    <div class="delete-choose-container">
+      <p>
+        Do you really want to delete this record? This <br /> process cannot be undone.
+      </p>
+      <div class="button-choose-delete">
+        <button class="gray-cancel-button" id="cancel-delete-btn" type="button">Cancel</button>
+        <button class="red-delete-button" type="submit">Delete</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Update Guest Form -->
+  <form action="{% url 'dashboard:update_guest' %}"
+    method="POST"
+    class="booking-forms-walkin update_guest_form"
+    style="{% if show_form %}
+      
+      
+      
+      
+      
+      
+      
+      display: block;
+
+
+
+
+
+
+
+    {% else %}
+      
+      
+      
+      
+      
+      
+      
+      display: none;
+
+
+
+
+
+
+
+    {% endif %};">
+    {% csrf_token %}
+    <div class="update-option-header">
+      <h1>Update Guest Info</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-guestinfo-btn" />
+    </div>
+    <input type="hidden" name="id" id="guest-id" value="{{ id|default:'' }}" />
+    <div class="input-guestinfo-container">
+      <div class="update-name-container">
+        <div class="input-container">
+          <input type="text" name="first_name" id="guest-fname" placeholder="First name" value="{{ form.first_name.value|default:'' }}" />
+          {% if form.first_name.errors %}
+            <p class="errorlist">{{ form.first_name.errors }}</p>
+          {% endif %}
+        </div>
+        <div class="input-container">
+          <input type="text" name="last_name" id="guest-lname" placeholder="Last name" value="{{ form.last_name.value|default:'' }}" />
+          {% if form.last_name.errors %}
+            <p class="errorlist">{{ form.last_name.errors }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="input-container">
+        <input type="text" name="address" id="guest-address" placeholder="Address" value="{{ form.address.value|default:'' }}" />
+        {% if form.address.errors %}
+          <p class="errorlist">{{ form.address.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div class="update-phone-dob-container">
+        <div class="input-container">
+          <input type="text" name="phone" id="guest-phone" placeholder="Phone" value="{{ form.phone.value|default:'' }}" />
+          {% if form.phone.errors %}
+            <p class="errorlist">{{ form.phone.errors }}</p>
+          {% endif %}
+        </div>
+        <div class="input-container">
+          <input type="text" name="date_of_birth" id="guest-dob" placeholder="Date of birth" value="{{ form.date_of_birth.value|default:'' }}" />
+          {% if form.date_of_birth.errors %}
+            <p class="errorlist">{{ form.date_of_birth.errors }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit">UPDATE</button>
+    </div>
+  </form>
+{% endblock %}
 {% block content %}
   <h1>Guests</h1>
   <table id="myTable" class="display">
     <thead>
-        <tr>
-            <th>Guest ID</th>
-            <th>Full Name</th>
-            <th>Age</th>
-            <th>Address</th>
-            <th>Phone Number</th>
-            <th></th>
-        </tr>
+      <tr>
+        <th>Guest ID</th>
+        <th>Full Name</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+        <th></th>
+      </tr>
     </thead>
     <tbody>
-        {% for guest in guests %}
+      {% for guest in guests %}
         <tr>
-            <td>{{ guest.id|default:"" }}</td>
-            <td>{{ guest.first_name|default:"" }} {{ guest.last_name|default:"" }}</td>
-            <td>
-                {% if guest.date_of_birth %}
-                    {{ guest.date_of_birth|age }}
-                {% else %}
-               
-                {% endif %}
-            </td>
-            <td>{{ guest.address|default:"" }}</td>
-            <td>{{ guest.phone|default:"" }}</td>
-            <td>
-                <div class="dot-container">
-                    <div class="dot-size">
-                      <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action" />
-                      <div class="action-container">
-                        <p>Edit</p>
-                        <p>Delete</p>
-                      </div>
-                    </div>
-                  </div>
-            </td>
+          <td>{{ guest.id|default:'' }}</td>
+          <td>{{ guest.first_name|default:'' }} {{ guest.last_name|default:'' }}</td>
+          <td>
+            {% if guest.date_of_birth %}
+              {{ guest.date_of_birth|age }}
+            {% else %}
+
+            {% endif %}
+          </td>
+          <td>{{ guest.address|default:'' }}</td>
+          <td>{{ guest.phone|default:'' }}</td>
+          <td>
+            <div class="dot-container">
+              <div class="dot-size">
+                <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action" />
+                <div class="action-container">
+                  <p class="edit-btn" data-guest-id="{{ guest.id }}" data-guest-fname="{{ guest.first_name }}" data-guest-lname="{{ guest.last_name }}" data-guest-address="{{ guest.address }}" data-guest-phone="{{ guest.phone }}" data-guest-dob="{{ guest.date_of_birth }}">Edit</p>
+                  <p class="delete-btn" data-guest-id="{{ guest.id }}">Delete</p>
+                </div>
+              </div>
+            </div>
+          </td>
         </tr>
-        {% endfor %}
-
-
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
 
-{% block extra_script  %}
-    <script src="{% static "lib/jquery/jquery-3.7.1.js" %}"></script>
+{% block extra_script %}
+  <script src="{% static 'lib/jquery/jquery-3.7.1.js' %}"></script>
 
-    <script src="{% static "lib/datatables/dataTables.js" %}"></script>
+  <script src="{% static 'lib/datatables/dataTables.js' %}"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('#myTable').DataTable();
-        });
-        console.log("tests")
-        const dotsActions = document.querySelectorAll('.dots-action')
-        dotsActions.forEach((dotsAction) => {
-            dotsAction.addEventListener('click', function (event) {
-              console.log("testing") 
-              const actionContainer = dotsAction.nextElementSibling
-        
-              if (actionContainer.style.display === 'block') {
-                actionContainer.style.display = 'none'
-              } else {
-                document.querySelectorAll('.action-container').forEach((container) => {
-                  container.style.display = 'none'
-                })
-                actionContainer.style.display = 'block'
-              }
-        
-              event.stopPropagation()
-            })
+  <script>
+    $(document).ready(function () {
+      $('#myTable').DataTable()
+    })
+    
+    // For showing action
+    console.log('tests')
+    const dotsActions = document.querySelectorAll('.dots-action')
+    dotsActions.forEach((dotsAction) => {
+      dotsAction.addEventListener('click', function (event) {
+        console.log('testing')
+        const actionContainer = dotsAction.nextElementSibling
+    
+        if (actionContainer.style.display === 'block') {
+          actionContainer.style.display = 'none'
+        } else {
+          document.querySelectorAll('.action-container').forEach((container) => {
+            container.style.display = 'none'
           })
-    </script>
-
-{% endblock  %}
+          actionContainer.style.display = 'block'
+        }
+    
+        event.stopPropagation()
+      })
+    })
+    
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.action-container').forEach((container) => {
+        container.style.display = 'none'
+      })
+    })
+    
+    // for deleting record
+    const deleteForm = document.querySelector('.delete_option')
+    const deleteBtns = document.querySelectorAll('.delete-btn')
+    const closeDeleteFormBtn = document.getElementById('close-delete-guest-btn')
+    const cancelDeleteFormBtn = document.getElementById('cancel-delete-btn')
+    
+    deleteBtns.forEach((deleteBtn) => {
+      deleteBtn.addEventListener('click', function (event) {
+        const deleteID = document.getElementById('deleteID')
+        guest_id = deleteBtn.getAttribute('data-guest-id')
+        deleteID.value = guest_id
+        console.log(deleteID)
+        deleteForm.style.display = 'block'
+      })
+    })
+    
+    const hideDeleteForm = () => {
+      deleteForm.style.display = 'none'
+    }
+    
+    closeDeleteFormBtn.addEventListener('click', hideDeleteForm)
+    cancelDeleteFormBtn.addEventListener('click', hideDeleteForm)
+    
+    // Edit Form
+    
+    const editForm = document.querySelector('.update_guest_form')
+    const editBtns = document.querySelectorAll('.edit-btn')
+    const closeEditFormBtn = document.getElementById('close-update-guestinfo-btn')
+    
+    editBtns.forEach((editBtn) => {
+      editBtn.addEventListener('click', function () {
+        editForm.style.display = 'block'
+        guest_id = document.getElementById('guest-id')
+        first_name = document.getElementById('guest-fname')
+        last_name = document.getElementById('guest-lname')
+        address = document.getElementById('guest-address')
+        phone = document.getElementById('guest-phone')
+        date_of_birth = document.getElementById('guest-dob')
+    
+        guest_id.value = editBtn.getAttribute('data-guest-id')
+        first_name.value = editBtn.getAttribute('data-guest-fname')
+        last_name.value = editBtn.getAttribute('data-guest-lname')
+        address.value = editBtn.getAttribute('data-guest-address')
+        phone.value = editBtn.getAttribute('data-guest-phone')
+    
+        if (editBtn.getAttribute('data-guest-dob') != 'None') {
+          const date = new Date(editBtn.getAttribute('data-guest-dob'))
+          const formattedDate = date.toISOString().split('T')[0]
+          console.log(formattedDate)
+          date_of_birth.value = formattedDate
+        } else {
+          date_of_birth.value = ''
+        }
+      })
+    })
+    
+    closeEditFormBtn.addEventListener('click', function () {
+      editForm.style.display = 'none'
+    })
+  </script>
+{% endblock %}

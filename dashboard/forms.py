@@ -1,6 +1,6 @@
 from django import forms
 from content.models import Room, RoomType
-
+from django.core.validators import RegexValidator
 
 class ExistingRoomForm(forms.ModelForm):
     class Meta:
@@ -22,4 +22,20 @@ class UpdateRoomTypeForm(forms.Form):
     capacity = forms.IntegerField()
     picture = forms.ImageField(required=False)
     is_cottage_required = forms.CharField(max_length=10, required=False)
-    
+
+class UpdateGuestForm(forms.Form):
+    first_name = forms.CharField(max_length=75)
+    last_name = forms.CharField(max_length=75)
+    address = forms.CharField(max_length=200)
+    phone_validator = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',  
+        message="Please enter a valid phone number."
+    )
+    phone = forms.CharField(max_length=30, validators=[phone_validator])
+    date_of_birth = forms.DateField(
+        input_formats=['%Y-%m-%d'],  
+        widget=forms.DateInput(
+            attrs={'placeholder': 'YYYY-MM-DD'}
+        ),
+        error_messages={'invalid': 'Enter date in YYYY-MM-DD format.'}
+    )
