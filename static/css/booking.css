@@ -836,6 +836,10 @@
 }
 
 @media screen and (max-width: 1024px) {
+    .calendar-container {
+        margin: 40px;
+    }
+
     .booking3-wrapper {
         margin: 80px 20px;
     }
@@ -926,6 +930,10 @@
 @media screen and (max-width: 568px) {
     .booking-page-wrapper {
         margin: 20px 10px;
+    }
+
+    .calendar-container {
+        margin: 40px 10px;
     }
 
     .room-input {
