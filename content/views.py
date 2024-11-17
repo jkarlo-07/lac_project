@@ -379,43 +379,127 @@ def book_view4(request, temp_id):
 
 @login_required(login_url="users:login")
 def calendar_view(request):
-    return render(request, "content/calendar.html")
+    fullyBookDates = getFullyBookDates()
+    print(fullyBookDates)
+    context = {
+        "fullBookDates": fullyBookDates
+    }
+    return render(request, "content/calendar.html", context)
 
 
 from datetime import datetime, timedelta
+from django.utils import timezone
 from django.db.models import Q
+
+def getFullyBookDates():
+    now = timezone.localtime(timezone.now())
+    
+    if now.minute > 0:
+        start_time = now.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+    else:
+        start_time = now
+    
+    target_end_time = start_time.replace(hour=22, minute=0, second=0, microsecond=0)
+    target_end_date = (start_time + timedelta(days=30)).replace(hour=22, minute=0, second=0, microsecond=0)
+
+    start_date = start_time
+    initial_date = start_date
+
+    fully_booked_dates = []
+
+    while start_date <= target_end_date:    
+        if start_date != initial_date:
+            loop_start_time = start_date.replace(hour=8, minute=0, second=0, microsecond=0)
+        else:
+            loop_start_time = start_date  
+        
+        loop_end_time = loop_start_time.replace(hour=22, minute=0, second=0, microsecond=0)
+
+        check_count = 0
+        while loop_start_time <= loop_end_time:
+            rooms = Room.objects.all()
+            end_datetime = loop_start_time + timedelta(hours=12)
+
+            booked_rooms = Booking.objects.filter(
+                Q(check_in__lt=end_datetime) & Q(check_out__gt=loop_start_time)
+            ).values_list('room', flat=True)
+            available_rooms = rooms.exclude(id__in=booked_rooms)
+
+            print(f"Current start_time: {loop_start_time}, end_datetime: {end_datetime}")
+            print(f"Available rooms for {loop_start_time}: {available_rooms}")
+
+
+            if available_rooms.count() != 0:
+                check_count += 1
+            loop_start_time += timedelta(hours=1)
+        
+        if check_count == 0:
+            fully_booked_dates.append(loop_start_time.date().strftime('%Y-%m-%d')) 
+
+        start_date += timedelta(days=1)
+    
+    return fully_booked_dates
+    
+
+from datetime import datetime, timedelta
+from django.db.models import Q
+from django.shortcuts import render
 
 def search_room(request):
     if request.method == 'GET':
+        # Get and format the check-in date
         check_in_unformat = request.GET.get('check_in_date')
-        date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
-        check_in_date = date_object.strftime('%Y-%m-%d')
-        capacity = request.GET.get("capacity")
-        checkin_time = request.GET.get("checkin_time", "12:00") 
-        duration = request.GET.get("duration", 8)  
+        try:
+            date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
+            check_in_date = date_object.date()  # Convert to date object
+        except (ValueError, TypeError):
+            return render(request, 'content/booking.html', {'error': 'Invalid check-in date format.'})
 
-        check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d').date() if check_in_date else None
+        # Get other parameters
+        capacity = request.GET.get("capacity", 1)
+        try:
+            capacity = int(capacity)
+        except ValueError:
+            capacity = 1  # Default to 1 if invalid
 
-        duration = int(duration) if isinstance(duration, str) and duration.isdigit() else 8
+        checkin_time = request.GET.get("checkin_time", "12:00")
+        try:
+            start_time = datetime.strptime(checkin_time, '%H:%M').time()
+        except ValueError:
+            return render(request, 'content/booking.html', {'error': 'Invalid check-in time format.'})
 
+        duration = request.GET.get("duration", 8)
+        try:
+            duration = int(duration)
+        except ValueError:
+            duration = 8  # Default to 8 hours if invalid
+
+        # Compute start and end datetime
+        start_datetime = datetime.combine(check_in_date, start_time)
+        end_datetime = start_datetime + timedelta(hours=duration)
+
+        # Filter rooms by capacity
         rooms = Room.objects.filter(room_type__capacity__gte=capacity)
 
-        if check_in_date and checkin_time:
-            start_time = datetime.strptime(checkin_time, '%H:%M').time()  
-            start_datetime = datetime.combine(check_in_date, start_time)
-            end_datetime = start_datetime + timedelta(hours=duration)
+        # Filter out booked rooms during the specified time range
+        booked_rooms = Booking.objects.filter(
+            Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime)
+        ).values_list('room', flat=True)
 
-            
-            rooms = rooms.exclude(
-                Q(booking__check_in__lt=end_datetime) & Q(booking__check_out__gt=start_datetime)
-            )
+        # Exclude booked rooms
+        available_rooms = rooms.exclude(id__in=booked_rooms)
 
-        rooms = rooms.distinct('room_type')
+        # Optional debug outputs
+        print("Start Time:", start_datetime)
+        print("End Time:", end_datetime)
+        print("Available Rooms:", available_rooms)
 
-        check_in_date_str = date_object.strftime('%b. %d, %Y')  
+        # Format check-in date for the template
+        check_in_date_str = date_object.strftime('%b. %d, %Y')
 
+        # Context for the template
         context = {
-            'rooms': rooms,
+            'rooms': available_rooms.distinct('room_type'),  # Ensure unique room types
             'capacity': capacity,
             'check_in_date': check_in_date_str,
             'duration': duration,

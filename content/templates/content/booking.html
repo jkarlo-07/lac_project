@@ -15,7 +15,7 @@
 <div class="booking-page-wrapper">
     <div class="booking_container_main">
         <div class="btn-image-back">
-            <img src="{% static "images/icons/left-arrow.png" %}" alt="back icon">
+            <img src="{% static "images/icons/left-arrow.png" %}" alt="back icon" class="back-btn">
           </div>
         <div class="booking-step-wrapper clearfix">
             <div class="booking-step active">
@@ -195,8 +195,6 @@
     const duration = document.getElementById("book-duration").value
     const checkInTime = document.getElementById("book-checkin-time").value
 
-    durationInput.value = duration
-    checkInTimeInput.value = checkInTime
 		
 
 		document.querySelectorAll(".accomodation-select-room").forEach(button => {
@@ -210,5 +208,10 @@
 				form.submit();
 			});
 		});
+
+        backButton = document.querySelector(".back-btn")
+        backButton.addEventListener('click', function() {
+            window.location.href = "{% url "content:get_fully_book" %}"
+        })
 	</script>
 {% endblock  %}
