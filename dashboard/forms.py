@@ -39,3 +39,7 @@ class UpdateGuestForm(forms.Form):
         ),
         error_messages={'invalid': 'Enter date in YYYY-MM-DD format.'}
     )
+
+class UpdateBookingForm(forms.Form):
+    adult_count = forms.IntegerField()
+    kid_count = forms.IntegerField()

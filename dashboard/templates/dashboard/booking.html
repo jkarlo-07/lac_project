@@ -40,35 +40,52 @@
 </form>
 
 <!-- Update Form -->
-<form class="booking-forms-walkin update_booking_option" style="display: block;">
+<form 
+  action="{% url "dashboard:update_booking" %}"
+  method="POST"
+  class="booking-forms-walkin update_booking_option" 
+  style="display: none;"
+>
+  {% csrf_token %}
     <div class="update-option-header">
       <h1>Update Booking</h1>
       <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-booking-btn" />
     </div>
-
+    <input type="hidden" id="book-update-id" name="id">
     <div class="input-booking-container"> 
+
+      <div class="booking-data-display-container">
+        <div class="data-display-box">
+          <p>Name: <span class="update-name"></span></p>
+          <p>Booking ID: <span class="update-id"></span></p>
+        </div>
+        <div class="data-display-box">
+          <p>Check in Date: <span class="update-checkin_date"></span></p>
+          <p>Check in Time: <span class="update-checkin_time"></span></p>
+        </div>
+      </div>
       <div class="check-inout-update">
-        <input type="text" name="" id="datepicker" placeholder="Check in" readonly>
-        <select name="" id="checkin-time-update" class="checkin-time-update">
+        <input type="text" name="checkin_date" id="datepicker" placeholder="Check in" readonly>
+        <select id="checkin-time-update" class="checkin-time-update" name="checkin_time">
             <option value="8:00am">---Select Date---</option>
         </select>
       </div>
-      <select name="" id="edit-duration-input" class="checkin-time-update">
+      <select name="duration" id="edit-duration-input" class="checkin-time-update">
         <option value="12">12 hrs</option>
-        <option value="12">24 hrs</option>
+        <option value="24">24 hrs</option>
     </select>
       <div class="update-select-option">
         <label for="update-room-booking">Room</label>
-        <select name="update-room-booking" id="update-room-booking">
+        <select name="room" id="update-room-booking">
           <option value="">....</option>
         </select>
       </div>
       <div class="count-adult-kid-update">
-        <input type="text" name="" id="" placeholder="Adult">
-        <input type="text" name="" id="" placeholder="Kid">
+        <input type="text" name="adult_count" id="" placeholder="Adult">
+        <input type="text" name="kid_count" id="" placeholder="Kid">
       </div>
 
-      <button type="button">UPDATE</button>
+      <button type="submit">UPDATE</button>
     </div>
 </form>
 {% endblock %}
@@ -110,7 +127,12 @@
                   <div class="dot-size">
                     <img src="{% static 'images/icons/dots.png' %}" alt="option" width="100" class="dots-action" />
                     <div class="action-container">
-                      <p class="edit-btn">Edit</p>
+                      <p class="edit-btn" 
+                         data-book-id="{{ book.id }}" 
+                         data-book-name="{{ book.guest.first_name|add:" "|add:book.guest.last_name }}"
+                         data-check-in="{{ book.check_in }}">
+                          Edit
+                        </p>
                       <p class="delete-btn" data-book-id="{{ book.id }}">Delete</p>
                     </div>
                   </div>
@@ -264,14 +286,36 @@
         });
     });
 
-    // Close delete form
     document.getElementById('close-delete-guest-btn').addEventListener('click', () => deleteForm.style.display = 'none');
     document.getElementById('cancel-delete-btn').addEventListener('click', () => deleteForm.style.display = 'none');
 
     // Edit form handlers
     const editBookingForm = document.querySelector('.update_booking_option');
     const editBtns = document.querySelectorAll('.edit-btn');
-    editBtns.forEach(editBtn => editBtn.addEventListener('click', () => editBookingForm.style.display = "block"));
+    editBtns.forEach(editBtn => editBtn.addEventListener('click', () => {
+      book_id = document.getElementById("book-update-id")
+      book_name = document.querySelector('.update-name')
+      book_update_id = document.querySelector('.update-id')
+      check_in = editBtn.getAttribute('data-check-in')
+      checkin_date_display = document.querySelector('.update-checkin_date')
+      checkin_time_display = document.querySelector('.update-checkin_time')
+      let parts = check_in.split(", ");
+      let checkin_date = parts[0] + ", " + parts[1]; 
+      let checkin_time = parts[2]; 
+
+      checkin_date_display.textContent = checkin_date
+      checkin_time_display.textContent = checkin_time
+
+      book_update_id.textContent = editBtn.getAttribute('data-book-id')
+      book_id.value = editBtn.getAttribute('data-book-id');
+      book_name.textContent = editBtn.getAttribute('data-book-name')
+      
+
+
+      
+      editBookingForm.style.display = "block"
+    }
+));
 
     // Close edit form
     document.getElementById('close-update-booking-btn').addEventListener('click', () => editBookingForm.style.display = "none");

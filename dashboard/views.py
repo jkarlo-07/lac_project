@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm
+from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
@@ -613,3 +613,38 @@ def get_rooms(request):
             return JsonResponse({'error': f"Error parsing date/time: {e}"}, status=400)
     else:
         return JsonResponse({'error': 'Date and time are required!'}, status=400)
+    
+def update_booking(request):
+    if request.method == "POST":
+        book_id = request.POST.get('id')
+        booking = get_object_or_404(Booking, id=book_id)
+        form = UpdateBookingForm(request.POST)
+
+        if form.is_valid():
+            kid_count = form.cleaned_data["kid_count"]
+            adult_count = form.cleaned_data["adult_count"]
+
+            checkin_date = request.POST.get("checkin_date")
+            checkin_time = request.POST.get("checkin_time")
+            duration = request.POST.get("duration")
+            room = request.POST.get("room")
+            room = get_object_or_404(Room, id=room)
+            datetime_str = f"{checkin_date} {checkin_time}"
+            check_in = datetime.strptime(datetime_str, "%m/%d/%Y %I:%M %p")
+            check_out = check_in + timedelta(hours=int(duration))
+
+            booking.check_in = check_in
+            booking.check_out = check_out
+            booking.duration = timedelta(hours=int(duration)) 
+            booking.room = room
+            booking.adult_count = int(adult_count)
+            booking.kid_count = int(kid_count)
+            booking.save(update_fields=['check_in', 'check_out', 'duration', 'room','kid_count', 'adult_count'])
+            
+            print("duration:", duration)
+            print("room:", room)
+            print("kid:", kid_count)
+            print("adult:", adult_count)
+
+            bookings = Booking.objects.all().order_by('-check_in')
+            return render(request, "dashboard/booking.html", {'booking': bookings})

@@ -209,12 +209,40 @@
     background-color: #e4e7eb;
     border: none;
     border-radius: 5px;
+    height: 30px;
 }
 
 .check-inout-update{
     display: flex;
     gap: 10px;
 }
+
+.booking-data-display-container{
+    display: flex;
+    gap: 90px;
+    border: 1.5px solid #e4e7eb;
+    border-radius: 5px;
+}
+
+.count-adult-kid-update{
+    display: flex;
+    gap: 10px;
+}
+
+.count-adult-kid-update input{
+    width: 100%;
+}
+
+.data-display-box{
+    display: flex;
+    flex-direction: column;
+    padding-left: 5px;
+}
+
+.data-display-box p{
+    font-size: 14px;
+}
+
 
 /*ADD NEW BOOKING CSS*/
 
