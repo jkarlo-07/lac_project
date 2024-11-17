@@ -211,16 +211,86 @@ footer {
 /* design for welcome section or cover in index */
 .welcome-section {
   position: relative;
-  height: 800px;
+  height: 100vh;
   width: 100%;
+  line-height: 1;
+}
+
+.front-txt-title{
+  background-color: transparent;
+  color: #fff;
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+
+.front-txt-title h1{
+  font-size: 7rem;
+  font-weight: 300;
+  font-family: "Italianno", "Arial";
+  line-height: 0.8;
+}
+
+.front-txt-title p{
+  font-family: "Poppins", "Arial";
+  font-size: 1.2rem;
+  font-weight: 200;
+}
+
+.front-txt-p{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.front-txt-p p{
+  background-color: var(--secondary-text-color);
+  width: fit-content;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 400;
+}
+
+.front-txt-p p:hover{
+  background-color: var(--main-hover-color);
+}
+
+.front-box-container{
+  position: absolute;
+  z-index: 1000;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.front-box-container p{
+  background-color: #444;
+  padding: 15px 35px;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-radius: 5px 5px 0 0;
+}
+
+.front-box-container p:hover{
+  background-color: #575656;
 }
 
 .main-cover-img {
   position: absolute;
   width: 100%;
   height: 100%;
+  top: 0;
   object-fit: cover;
-  filter: brightness(70%);
+  filter: brightness(60%);
 }
 
 /* for the form container */
@@ -243,17 +313,7 @@ footer {
   margin-bottom: 20px;
 }
 
-.welcome-form-container h4 {
-  color: var(--secondary-text-color);
-  font-size: 2rem;
-  font-weight: 500;
-}
 
-.welcome-form-container label {
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--input-color-text);
-}
 
 .input-date {
   font-size: 1rem;
@@ -300,28 +360,6 @@ footer {
   left: 50%;
   bottom: 40px;
   cursor: pointer;
-}
-
-.welcome-text {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 100px;
-  color: var(--main-text-color);
-  text-align: right;
-}
-
-.welcome-text h1 {
-  font-size: 4.5rem;
-  font-weight: 400;
-}
-
-.welcome-small-text {
-  font-size: 1.2rem;
-}
-
-.welcome-xsmall-text {
-  font-size: 1rem;
 }
 
 /* for index room section */
@@ -1042,10 +1080,6 @@ footer {
     left: 40px;
   }
 
-  .welcome-text {
-    right: 40px;
-  }
-
   .index-room,
   .index-feature,
   .index-service, .about-main {
@@ -1103,10 +1137,6 @@ footer {
     left: 20px;
   }
 
-  .welcome-text {
-    right: 20px;
-    width: 50%;
-  }
 
   .index-room__price {
     position: absolute;
@@ -1272,9 +1302,6 @@ footer {
     left: 10px;
   }
 
-  .welcome-text {
-    right: 10px;
-  }
 
   /* for title */
   .title {
@@ -1376,22 +1403,8 @@ footer {
     width: 100%;
   }
 
-  .welcome-text {
-    position: relative;
-    text-align: center;
-    width: 100%;
-    transform: none;
-    top: 0;
-    right: 0;
-  }
 
-  .welcome-text h1 {
-    font-size: 4rem;
-  }
 
-  .main-cover-img {
-    margin-top: -80px;
-  }
 
   .index-room {
     margin-top: 0;
@@ -1509,18 +1522,14 @@ footer {
   .about-picture-container {
     width: 100%;
   }
+
+  .index-room{
+    margin-top: 40px;
+  }
 }
 
 
 @media screen and (max-width: 568px) {
-  .welcome-text h1 {
-    font-size: 2rem;
-    font-weight: 600;
-  }
-
-  .welcome-text p {
-    font-size: 1rem;
-  }
 
   .index-room__title {
     font-size: 1.3em;
@@ -1543,4 +1552,19 @@ footer {
   #modalMessage {
     font-size: 1rem;
   }
+
+  .front-txt-title h1{
+    font-size: 4.5rem;
+  }
+
+  .front-txt-title p{
+    font-size: 1rem;
+  }
+
+  .welcome-section{
+    height: 80vh;
+  }
+
+
+
 }

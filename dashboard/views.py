@@ -527,3 +527,89 @@ def delete_booking(request):
         book_record = get_object_or_404(Booking, id=book_id)
         book_record.delete()
         return render(request, "dashboard/booking.html", {'booking': bookings})
+
+def get_time(request):
+    selected_date = request.GET.get('date')
+
+    if selected_date:
+        try:
+            selected_date_obj = datetime.strptime(selected_date, "%m/%d/%Y")
+            current_time = datetime.now()
+
+            if current_time.date() == selected_date_obj.date():
+                if current_time.time() > selected_date_obj.time():
+                    start_datetime = selected_date_obj.replace(hour=(current_time.hour + 1) % 24, minute=0, second=0)
+                else:
+                    start_datetime = selected_date_obj.replace(hour=current_time.hour, minute=current_time.minute, second=0)
+            else:
+                start_datetime = selected_date_obj.replace(hour=8, minute=0, second=0)
+            
+            end_datetime = start_datetime.replace(hour=22, minute=0, second=0, microsecond=0)
+
+
+            available_times = []
+            while start_datetime <= end_datetime:
+                rooms = Room.objects.all()
+                
+                booked_rooms = Booking.objects.filter(
+                Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
+                ).values_list('room', flat=True)
+                available_rooms = rooms.exclude(id__in=booked_rooms)
+
+                if available_rooms.count() != 0:
+                    available_times.append(start_datetime.strftime("%I:%M %p"))
+                print(available_rooms)
+                print("date:", start_datetime)
+                start_datetime += timedelta(hours=1)  
+
+            print(available_times)
+
+            return JsonResponse({'available_times': available_times})
+
+        except ValueError:
+            return JsonResponse({'error': 'Invalid date format'}, status=400)
+
+    return JsonResponse({'error': 'No date provided'}, status=400)
+
+def get_rooms(request):
+    selected_date = request.GET.get('date')
+    selected_time = request.GET.get('time')
+    duration = request.GET.get('duration')
+    print("duration:", duration)
+    if selected_date and selected_time:
+        try:
+            combined_datetime_str = f"{selected_date} {selected_time}"
+            
+            start_datetime = datetime.strptime(combined_datetime_str, "%m/%d/%Y %I:%M %p")
+            duration_hours = int(duration) if duration else 0
+            end_datetime = start_datetime + timedelta(hours=duration_hours)
+            
+            rooms = Room.objects.all()
+            booked_rooms = Booking.objects.filter(
+                Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
+            ).values_list('room', flat=True)
+            available_rooms = rooms.exclude(id__in=booked_rooms)
+            available_rooms = available_rooms.distinct('room_type')
+
+            # Print the available rooms with unique room types
+            available_rooms_array = []
+
+            for room in available_rooms:
+                available_rooms_array.append({
+                    'room_type': room.room_type.room_type,  # Assuming 'room_type' is a related model
+                    'room_id': room.id
+                })
+
+            # Print the array of available rooms with their types
+            print(available_rooms_array)
+
+            
+            data = {
+                'combined_datetime': start_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                'available_rooms': available_rooms_array
+            }
+            return JsonResponse(data)
+        except ValueError as e:
+            return JsonResponse({'error': f"Error parsing date/time: {e}"}, status=400)
+    else:
+        return JsonResponse({'error': 'Date and time are required!'}, status=400)

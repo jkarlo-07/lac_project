@@ -4,53 +4,34 @@
   Home
 {%endblock%} 
 
+{% block extra_head %}
+  <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 
 <section class="welcome-section atAbove">
+  <div class="front-txt-title">
+    <h1>L.A.C. Resort</h1>
+    <p>A place to experience and enjoy the life.</p>
+    <div class="front-txt-p">
+      <a href="{% url "content:rooms" %}"><p>View Rooms</p></a>
+    </div>
+
+
+  </div>
+  <div class="front-box-container">
+    <a href="{% url "content:calendar" %}"><p>Book Now</p></a>
+  </div>
+
   <img
     src="{% static 'images/photos/main-cover.jpg' %}"
     alt="cover-page"
     class="main-cover-img"
   />
-  <form action="" class="welcome-form-container">
-    <h4>Booking</h4>
-    <label for="check-in">Arrival Date</label><br />
-    <input
-      type="text"
-      name="check-in "
-      id="check-in"
-      class="input-date"
-      readonly
-      value="yyyy/mm/dd"
-    /><br />
-    <label for="check-out">Departure Date</label><br />
-    <input
-      type="text"
-      name="check-out"
-      id="check-out"
-      class="input-date"
-      readonly
-      value="yyyy/mm/dd"
-    />
-    <div class="person-room-container">
-      <div class="index-room-container">
-        <label for="room-type">Room</label><br />
-        <select name="room-type" id="room-type"></select>
-      </div>
-    </div>
-    <a href=""
-      ><img
-        src="{% static 'images/icons/check.png' %}"
-        alt="checkbutton"
-        id="check-btn"
-      />
-    </a>
-  </form>
-    <div class="welcome-text">
-      <p class="welcome-small-text">Welcome to</p>
-      <h1>L.A.C Resort</h1>
-      <p class="welcome-xsmall-text">A place to experience and enjoy the life.</p>
-    </div>
+ 
+
 </section>
 <section class="index-room">
   <div class="index-room__text">
@@ -193,56 +174,7 @@
 {% endblock %}
 
 {% block add_script %}
-<script>
-  console.log("sdlf")
-  function handleResize() {
-    window.addEventListener("resize", function () {
-      const section = document.querySelector(".welcome-section");
-      const bookingContainer = document.querySelector(".welcome-form-container");
-      const welcomeText = document.querySelector(".welcome-text");
-      if (
-        window.innerWidth < 767 &&
-        section.classList.contains("atBelow")
-      ) {
-        putAbove();
-      } else if (
-        window.innerWidth > 767 &&
-        section.classList.contains("atAbove")
-      ) {
-        putBelow();
-      }
-    });
-  }
 
-  function putBelow() {
-    console.log("putbelow")
-    const section = document.querySelector(".welcome-section");
-    const bookingContainer = document.querySelector(".welcome-form-container");
-    const welcomeText = document.querySelector(".welcome-text");
-    section.classList.add("atBelow");
-    section.classList.remove("atAbove");
-    section.removeChild(bookingContainer);
-    section.removeChild(welcomeText);
-    section.appendChild(bookingContainer);
-    section.appendChild(welcomeText)
-  }
 
-  function putAbove() {
-    console.log("putAbove")
-    const section = document.querySelector(".welcome-section");
-    const bookingContainer = document.querySelector(".welcome-form-container");
-    const welcomeText = document.querySelector(".welcome-text");
-    welcomeText.style.margin = "80px auto";
-    section.classList.add("atAbove");
-    section.classList.remove("atBelow");
-    section.removeChild(bookingContainer);
-    section.removeChild(welcomeText);
-    section.appendChild(welcomeText);
-    section.appendChild(bookingContainer)
-  }
-
-  handleResize()
-
-</script>
 
 {% endblock add_script %}

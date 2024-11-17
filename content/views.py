@@ -421,7 +421,7 @@ def getFullyBookDates():
             end_datetime = loop_start_time + timedelta(hours=12)
 
             booked_rooms = Booking.objects.filter(
-                Q(check_in__lt=end_datetime) & Q(check_out__gt=loop_start_time)
+                Q(check_in__lt=end_datetime) & Q(check_out__gt=loop_start_time) & Q(status="Booked")
             ).values_list('room', flat=True)
             available_rooms = rooms.exclude(id__in=booked_rooms)
 
@@ -483,7 +483,7 @@ def search_room(request):
 
         # Filter out booked rooms during the specified time range
         booked_rooms = Booking.objects.filter(
-            Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime)
+            Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
         ).values_list('room', flat=True)
 
         # Exclude booked rooms

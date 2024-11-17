@@ -22,4 +22,6 @@ urlpatterns = [
     path('delete_guest', views.delete_guest, name='delete_guest'),
     path('update_guest', views.update_guest, name='update_guest'),
     path('delete_booking', views.delete_booking, name='delete_booking'),
+    path('get_time', views.get_time, name='get_time'),
+    path('get_rooms', views.get_rooms, name='get_rooms'),
 ]

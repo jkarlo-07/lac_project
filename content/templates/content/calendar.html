@@ -20,7 +20,7 @@
       selectMirror: false,
       validRange: {
         start: new Date().toISOString().split('T')[0], // Today's date
-        end: new Date(new Date().setDate(new Date().getDate() + 60)).toISOString().split('T')[0] // 30 days from now
+        end: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().split('T')[0] // 30 days from now
       },
       events: fullyBookedDates.map(date => ({
         start: date,
@@ -51,12 +51,15 @@
   .fc-event.fc-bg, .fc-daygrid-event.fc-daygrid-block-event.fc-event {
     opacity: 1;
   }
+
+  .fc .fc-bg-event{
+    background-color: #000;
+  }
   .fc-event.fc-bg.fully-booked {
-    background-color: rgba(255, 0, 0, 0.2); /* Light red background */
     border: 1px solid red; /* Optional border */
   }
   .fc-daygrid-day.fc-day-future .fully-booked {
-    color: red; /* Red text for Fully Booked label */
+    color: #fff; /* Red text for Fully Booked label */
     font-weight: bold;
   }
 </style>
