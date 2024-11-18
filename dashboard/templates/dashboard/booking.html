@@ -44,45 +44,67 @@
   action="{% url "dashboard:update_booking" %}"
   method="POST"
   class="booking-forms-walkin update_booking_option" 
-  style="display: none;"
+  style="
+  {% if show_form %}
+    display: block
+  {% else %}
+    display: none
+  {% endif %}"
 >
   {% csrf_token %}
     <div class="update-option-header">
       <h1>Update Booking</h1>
       <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-booking-btn" />
     </div>
-    <input type="hidden" id="book-update-id" name="id">
+    <input type="hidden" id="book-update-id" name="id" value="{{id|default:''}}">
     <div class="input-booking-container"> 
 
       <div class="booking-data-display-container">
         <div class="data-display-box">
-          <p>Name: <span class="update-name"></span></p>
-          <p>Booking ID: <span class="update-id"></span></p>
+          <p>Name: <span class="update-name">{{ book.guest.first_name|default:"" }} {{ book.guest.last_name|default:"" }}</span></p>
+          <p>Booking ID: <span class="update-id">{{ book.id|default:"" }}</span></p>
         </div>
         <div class="data-display-box">
-          <p>Check in Date: <span class="update-checkin_date"></span></p>
-          <p>Check in Time: <span class="update-checkin_time"></span></p>
+          <p>Check in Date: <span class="update-checkin_date">{{ book.check_in|date:"M. d, Y"|default:"" }}</span></p>
+          <p>Check in Time: <span class="update-checkin_time">{{ book.check_in|time:"g a"|default:"" }}</span></p>
         </div>
       </div>
       <div class="check-inout-update">
-        <input type="text" name="checkin_date" id="datepicker" placeholder="Check in" readonly>
+        <input type="text" name="checkin_date" id="datepicker" placeholder="Check In Date" readonly>
         <select id="checkin-time-update" class="checkin-time-update" name="checkin_time">
-            <option value="8:00am">---Select Date---</option>
+            <option value="8:00am">---Select Check In Date First---</option>
         </select>
       </div>
-      <select name="duration" id="edit-duration-input" class="checkin-time-update">
+      <select name="duration" id="edit-duration-input">
         <option value="12">12 hrs</option>
         <option value="24">24 hrs</option>
     </select>
       <div class="update-select-option">
         <label for="update-room-booking">Room</label>
-        <select name="room" id="update-room-booking">
-          <option value="">....</option>
-        </select>
+        <div class="input-container">
+          <select name="room" id="update-room-booking">
+            <option value="">....</option>
+          </select>
+          {% if form.room.errors %}
+            <p class="errorlist">{{ form.room.errors }}</p>
+          {% endif %}
+        </div>
+        
       </div>
       <div class="count-adult-kid-update">
-        <input type="text" name="adult_count" id="" placeholder="Adult">
-        <input type="text" name="kid_count" id="" placeholder="Kid">
+        <div class="input-container">
+          <input type="text" name="adult_count" id="" placeholder="Adult" value="{{ form.adult_count.value|default:'' }}">
+          {% if form.adult_count.errors %}
+            <p class="errorlist">{{ form.adult_count.errors }}</p>
+          {% endif %}
+        </div>
+        <div class="input-container">
+          <input type="text" name="kid_count" id="" placeholder="Kid" value="{{ form.kid_count.value|default:'' }}">
+          {% if form.kid_count.errors %}
+            <p class="errorlist">{{ form.kid_count.errors }}</p>
+          {% endif %}
+        </div>
+        
       </div>
 
       <button type="submit">UPDATE</button>
@@ -153,88 +175,38 @@
         console.log("Selected date: " + dateText);
 
         fetch("{% url 'dashboard:get_time' %}?date=" + encodeURIComponent(dateText))
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
+            .then(response => response.json())
+            .then(data => {
                 console.log('Available times:', data.available_times);
-                const available_times = data.available_times;
-
-                const selectTimeInput = document.querySelector('.checkin-time-update');
-
-                selectTimeInput.innerHTML = '';  
-
-                available_times.forEach(time => {
-                    const option = document.createElement('option');
-                    option.value = time;
-                    option.textContent = time;
-                    selectTimeInput.appendChild(option);
+                const selectTimeInput = $('.checkin-time-update');
+                selectTimeInput.empty();
+                data.available_times.forEach(time => {
+                    selectTimeInput.append(new Option(time, time));
                 });
-
-                const changeEvent = new Event('change');
-                selectTimeInput.dispatchEvent(changeEvent);
+                selectTimeInput.trigger('change');
             })
-            .catch((error) => {
-                console.error('Error fetching time data:', error);
-            });
+            .catch(error => console.error('Error fetching time data:', error));
     }
 
-    function handleTimeSelect(event) {
-        const selectedTime = document.getElementById('checkin-time-update').value;
-        // selectedTime = event.target.value;
-
-        const selectedDate = document.getElementById('datepicker').value;
-        const duration = document.getElementById('edit-duration-input').value;
-        console.log(duration);
-
-        // Log both date and time
-        console.log("Selected date: " + selectedDate);
-        console.log("Selected time: " + selectedTime);
-
-        // Ensure selectedTime, selectedDate, and duration are not empty before making the fetch request
+    function handleTimeSelect() {
+        const selectedTime = $('#checkin-time-update').val();
+        const selectedDate = $('#datepicker').val();
+        const duration = $('#edit-duration-input').val();
+        
         if (selectedTime && selectedDate && duration) {
             fetch("{% url 'dashboard:get_rooms' %}?date=" + encodeURIComponent(selectedDate) + "&time=" + encodeURIComponent(selectedTime) + "&duration=" + encodeURIComponent(duration))
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    available_rooms = data.available_rooms;
-                    console.log(available_rooms);
-                    const selectRoomInput = document.getElementById('update-room-booking');
-                    selectRoomInput.innerHTML = '';
-
-                    available_rooms.forEach(room => {
-                        const option = document.createElement('option');
-                        option.value = room.room_id; // Set the room_id as the value
-                        option.textContent = room.room_type; // Set the room_type as the text
-                        selectRoomInput.appendChild(option); // Append the option to the select element
+                .then(response => response.json())
+                .then(data => {
+                    const selectRoomInput = $('#update-room-booking');
+                    selectRoomInput.empty();
+                    data.available_rooms.forEach(room => {
+                        selectRoomInput.append(new Option(room.room_type, room.room_id));
                     });
                 })
-                .catch((error) => {
-                    console.error('Error fetching time data:', error);
-                });
+                .catch(error => console.error('Error fetching room data:', error));
         } else {
             console.error("All fields (date, time, and duration) are required.");
         }
-    }
-
-    const selectTimeInput = document.querySelector('.checkin-time-update');
-    const durationInput = document.getElementById('edit-duration-input');
-
-    // Add event listener for the time change
-    if (selectTimeInput) {
-        selectTimeInput.addEventListener('change', handleTimeSelect);
-    }
-
-    // Add event listener for the duration change
-    if (durationInput) {
-        durationInput.addEventListener('change', handleTimeSelect);
     }
 
     $("#datepicker").datepicker({
@@ -243,83 +215,61 @@
         onSelect: handleDateSelect
     });
 
-    var table = $('#myTable').DataTable({
+    const table = $('#myTable').DataTable({
         "order": [[2, "desc"]]
     });
 
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-        var row = table.row(dataIndex).node();
-        var status = $(row).data('status');
-        var selectedStatus = $('#statusFilter').val();
-        return !selectedStatus || status === selectedStatus;
+        const status = $(table.row(dataIndex).node()).data('status');
+        return !$('#statusFilter').val() || status === $('#statusFilter').val();
     });
 
     $('#statusFilter').on('change', function () {
         table.draw();
     });
 
-    const dotsActions = document.querySelectorAll('.dots-action');
-    dotsActions.forEach(dotsAction => {
-        dotsAction.addEventListener('click', function (event) {
-            const actionContainer = dotsAction.nextElementSibling;
-            if (actionContainer.style.display === 'block') {
-                actionContainer.style.display = 'none';
-            } else {
-                document.querySelectorAll('.action-container').forEach(container => container.style.display = 'none');
-                actionContainer.style.display = 'block';
-            }
-            event.stopPropagation();
-        });
+    $('#myTable').on('click', '.dots-action', function (event) {
+        const actionContainer = $(this).next('.action-container');
+        $('.action-container').hide(); // Hide other open action containers
+        actionContainer.toggle();      // Toggle the clicked action container
+        event.stopPropagation();
     });
 
-    document.addEventListener('click', function () {
-        document.querySelectorAll('.action-container').forEach(container => container.style.display = 'none');
+    $(document).on('click', function () {
+        $('.action-container').hide(); // Close all action containers on outside click
     });
 
-    // Deletion form handlers
-    const deleteForm = document.querySelector('.delete_option');
-    const deleteBtns = document.querySelectorAll('.delete-btn');
-    deleteBtns.forEach(deleteBtn => {
-        deleteBtn.addEventListener('click', function () {
-            document.getElementById('deleteID').value = deleteBtn.getAttribute('data-book-id');
-            deleteForm.style.display = 'block';
-        });
+    const deleteForm = $('.delete_option');
+    $('.delete-btn').on('click', function () {
+        $('#deleteID').val($(this).data('book-id'));
+        deleteForm.show();
     });
 
-    document.getElementById('close-delete-guest-btn').addEventListener('click', () => deleteForm.style.display = 'none');
-    document.getElementById('cancel-delete-btn').addEventListener('click', () => deleteForm.style.display = 'none');
+    $('#close-delete-guest-btn, #cancel-delete-btn').on('click', function () {
+        deleteForm.hide();
+    });
 
-    // Edit form handlers
-    const editBookingForm = document.querySelector('.update_booking_option');
-    const editBtns = document.querySelectorAll('.edit-btn');
-    editBtns.forEach(editBtn => editBtn.addEventListener('click', () => {
-      book_id = document.getElementById("book-update-id")
-      book_name = document.querySelector('.update-name')
-      book_update_id = document.querySelector('.update-id')
-      check_in = editBtn.getAttribute('data-check-in')
-      checkin_date_display = document.querySelector('.update-checkin_date')
-      checkin_time_display = document.querySelector('.update-checkin_time')
-      let parts = check_in.split(", ");
-      let checkin_date = parts[0] + ", " + parts[1]; 
-      let checkin_time = parts[2]; 
+    const updateForm = $('.update_booking_option');
+    $('.edit-btn').on('click', function () {
+        const bookID = $(this).data('book-id');
+        const bookName = $(this).data('book-name');
+        const checkinDate = $(this).data('check-in').split(', ')[0] + ",   " +  $(this).data('check-in').split(', ')[1];;
+        const checkinTime = $(this).data('check-in').split(', ')[2];
+        
+        $('#book-update-id').val(bookID);
+        $('.update-name').text(bookName);
+        $('.update-id').text(bookID);
+        $('.update-checkin_date').text(checkinDate);
+        $('.update-checkin_time').text(checkinTime);
+        updateForm.show();
+    });
 
-      checkin_date_display.textContent = checkin_date
-      checkin_time_display.textContent = checkin_time
+    $('#close-update-booking-btn').on('click', function () {
+        updateForm.hide();
+    });
 
-      book_update_id.textContent = editBtn.getAttribute('data-book-id')
-      book_id.value = editBtn.getAttribute('data-book-id');
-      book_name.textContent = editBtn.getAttribute('data-book-name')
-      
-
-
-      
-      editBookingForm.style.display = "block"
-    }
-));
-
-    // Close edit form
-    document.getElementById('close-update-booking-btn').addEventListener('click', () => editBookingForm.style.display = "none");
-});
+    $('#checkin-time-update').on('change', handleTimeSelect);
+    $('#edit-duration-input').on('change', handleTimeSelect);
+  });
 </script>
-
 {% endblock %}

@@ -3,11 +3,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from content.models import Booking, Room, Guest, RoomType
 from django.http import JsonResponse
 from django.db.models import Count, Sum
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
+from decimal import Decimal
 
 
 def is_staff(user):
@@ -619,7 +620,7 @@ def update_booking(request):
         book_id = request.POST.get('id')
         booking = get_object_or_404(Booking, id=book_id)
         form = UpdateBookingForm(request.POST)
-
+        bookings = Booking.objects.all().order_by('-check_in')
         if form.is_valid():
             kid_count = form.cleaned_data["kid_count"]
             adult_count = form.cleaned_data["adult_count"]
@@ -633,18 +634,41 @@ def update_booking(request):
             check_in = datetime.strptime(datetime_str, "%m/%d/%Y %I:%M %p")
             check_out = check_in + timedelta(hours=int(duration))
 
+            total = room.room_type.price
+            # Total price calculation
+            if room.room_type.is_cottage_required:
+                total += room.room_type.cottage_price
+            
+            start_time = time(14, 0)  
+            end_time = time(22, 0) 
+            check_in_time = check_in.time()
+
+            if start_time <= check_in_time <= end_time or int(duration) == 24:
+                entrance_fee = (Decimal(adult_count)*150) + (Decimal(kid_count)*100)
+                print("it is overnight")
+                is_overnight = True
+            else:
+                entrance_fee = (Decimal(adult_count)*100) + (Decimal(kid_count)*50)
+                is_overnight = False
+                print("its is not overnight")
+
+            total += entrance_fee
+            print("total:", total)
+            booking.total_amount = float(total)
+            booking.is_overnight = is_overnight
             booking.check_in = check_in
             booking.check_out = check_out
             booking.duration = timedelta(hours=int(duration)) 
             booking.room = room
             booking.adult_count = int(adult_count)
             booking.kid_count = int(kid_count)
-            booking.save(update_fields=['check_in', 'check_out', 'duration', 'room','kid_count', 'adult_count'])
+            booking.save(update_fields=['check_in', 'check_out', 'duration', 'room','kid_count', 'adult_count', 'is_overnight', 'total_amount'])
             
             print("duration:", duration)
             print("room:", room)
             print("kid:", kid_count)
             print("adult:", adult_count)
 
-            bookings = Booking.objects.all().order_by('-check_in')
             return render(request, "dashboard/booking.html", {'booking': bookings})
+        else:
+            return render(request, "dashboard/booking.html", {'booking': bookings, 'show_form': True, 'form': form,'id': book_id, 'book': booking})

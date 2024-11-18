@@ -43,3 +43,4 @@ class UpdateGuestForm(forms.Form):
 class UpdateBookingForm(forms.Form):
     adult_count = forms.IntegerField()
     kid_count = forms.IntegerField()
+    room = forms.CharField(max_length=25)

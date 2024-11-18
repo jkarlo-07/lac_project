@@ -162,11 +162,24 @@
     background-color: #e4e7eb;
     height: 30px;
     padding-left: 5px;
-}
-
-.input-container input, .input-container textarea{
     width: 100%;
 }
+
+.input-container{
+    width: 100%;
+}
+
+select:focus, textarea:focus{
+    outline: none;
+}
+
+select{
+    border: none;
+}
+
+input:focus {
+    outline: none;
+  }
 
 /*UPDATE BOOKING CSS*/
 
@@ -241,6 +254,17 @@
 
 .data-display-box p{
     font-size: 14px;
+}
+
+.check-inout-update input, .check-inout-update select{
+    width: 100%;
+}
+
+#edit-duration-input{
+    background-color: #e4e7eb;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
 }
 
 
