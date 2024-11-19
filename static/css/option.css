@@ -148,6 +148,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #e4e7eb;
 }
 
 .update-name-container, .update-phone-dob-container{
@@ -169,7 +172,7 @@
     width: 100%;
 }
 
-select:focus, textarea:focus{
+select:focus, textarea:focus, input:focus{
     outline: none;
 }
 
@@ -177,9 +180,7 @@ select{
     border: none;
 }
 
-input:focus {
-    outline: none;
-  }
+
 
 /*UPDATE BOOKING CSS*/
 
@@ -193,21 +194,18 @@ input:focus {
     flex-direction: column;
     gap: 10px;
     color: #636363;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #e4e7eb;
 }
+
+
 
 .update-select-option select{
     height: 30px;
     width: 100%;
     background-color: #e4e7eb;
     border-radius: 5px;
-}
-
-.input-booking-container input{
-    border: none;
-    border-radius: 5px;
-    background-color: #e4e7eb;
-    height: 30px;
-    padding-left: 5px;
 }
 
 .update-onight{
@@ -270,6 +268,12 @@ input:focus {
 
 /*ADD NEW BOOKING CSS*/
 
+.add_booking_option{
+    display: none;
+    z-index: 1000;
+    padding-top: 50px;
+}
+
 .addnew-booking-container{
     display: flex;
     flex-direction: column;
@@ -281,16 +285,42 @@ input:focus {
 }
 
 .add-name-container, .add-phone-dob-container,
-.add-check-inout, .add-count-adult-kid{
+.add-count-adult-kid, .add-select-option{
     display: flex;
     gap: 10px;
 }
 
-.add-select-option select{
+.add-select-option select, .add-select-option input{
     height: 25px;
     width: 100%;
     background-color: #e4e7eb;
     border-radius: 5px;
+}
+
+.add-room-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-booking-container input, .input-booking-container select{
+    border: none;
+    border-radius: 5px;
+    background-color: #e4e7eb;
+    height: 25px;
+    padding-left: 5px;
+}
+
+.input-booking-container label{
+    font-size: .8rem;
+}
+
+.add-count-adult-kid input{
+    width: 100%;
+}
+
+.input-booking-container select{
+    width: 100%;
 }
 
 

@@ -17,6 +17,78 @@
 {% endblock %}
 
 {% block in_body %}
+<!-- Add Form -->
+<form class="booking-forms-walkin add_booking_option" style="display: block;">
+  <div class="update-option-header">
+    <h1>Add New Booking</h1>
+    <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-addnew-booking-btn" />
+  </div>
+
+  <div class="addnew-booking-container">
+    <div class="input-guestinfo-container">
+      <div class="add-name-container">
+        <div class="input-container">
+          <input type="text" name="fname" id="" placeholder="First name">
+        </div>
+        <div class="input-container">
+          <input type="text" name="lname" id="" placeholder="Last name">
+        </div>
+      </div>
+      <div class="input-container">
+        <input type="text" name="add-address" placeholder="Address">
+      </div>
+      <div class="add-phone-dob-container">
+        <div class="input-container">
+          <input type="text" name="add-phone" placeholder="Phone">
+        </div>
+        <div class="input-container">
+          <input type="text" name="dob" placeholder="Date of birth">
+        </div>
+      </div>
+    </div>
+
+    <div class="input-booking-container"> 
+      <div class="add-select-option">
+        <div class="input-container">
+          <input type="text" name="add-checkin-date" placeholder="Check In Date">
+        </div>
+        <div class="input-container">
+          <select name="check-in-time" id="">
+            <option value="">---Select Check In Date First---</option>
+          </select>
+        </div>
+      </div>
+      <label for="add-duration">Duration</label>
+      <div class="input-container">
+        <select name="add-duration" id="add-duration">
+          <option value="12">12hrs</option>
+          <option value="24">24hrs</option>
+        </select>
+      </div>
+
+      <div class="input-container add-room-container">
+        <label for="add-room">Room</label>
+        <div class="input-container">
+          <select name="add-room-booking" id="add-room-booking">
+            <option value="">----</option>
+          </select>
+        </div>
+
+      </div>
+      <div class="add-count-adult-kid">
+        <div class="input-container">
+          <input type="text" name="" id="" placeholder="Adult">
+        </div>
+        <div class="input-container">
+          <input type="text" name="" id="" placeholder="Kid">
+        </div>
+      </div>
+    </div>
+    <button type="button">SUMBIT</button>
+  </div>
+
+</form>
+
 <!-- Delete Form -->
 <form class="booking-forms-walkin delete_option" style="display: none;" method="post" action="{% url 'dashboard:delete_booking' %}">
     {% csrf_token %}
@@ -122,7 +194,8 @@
       <option value="Booked">Booked</option>
       <option value="Canceled">Canceled</option>
   </select>
-
+  
+  <p class="dashboard-add-booking">+ New Booking</p>
   <table id="myTable" class="display">
       <thead>
           <tr>
@@ -270,6 +343,19 @@
 
     $('#checkin-time-update').on('change', handleTimeSelect);
     $('#edit-duration-input').on('change', handleTimeSelect);
+
+    // Add Form
+    const closeAddFormBtn = document.getElementById('close-addnew-booking-btn')
+    const addFormBtn = document.querySelector('.dashboard-add-booking')
+    const addForm = document.querySelector('.add_booking_option')
+    
+    addFormBtn.addEventListener('click', function() {
+      addForm.style.display = "block"
+    })
+
+    closeAddFormBtn.addEventListener('click', function() {
+      addForm.style.display = "none"
+    })
   });
 </script>
 {% endblock %}

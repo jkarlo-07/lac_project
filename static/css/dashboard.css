@@ -491,7 +491,7 @@ canvas {
   display: none;
 }
 
-.dashboard-add-room {
+.dashboard-add-room, .dashboard-add-booking{
   float: right;
   margin-bottom: 10px;
   padding: 0.5rem 1rem;
@@ -502,7 +502,7 @@ canvas {
   cursor: pointer;
 }
 
-.dashboard-add-room:hover{
+.dashboard-add-room:hover, .dashboard-add-booking:hover{
   background-color: var(--main-hover-color);
 }
 
