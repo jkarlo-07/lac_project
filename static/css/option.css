@@ -149,6 +149,7 @@
     flex-direction: column;
     gap: 10px;
     padding: 5px;
+    color: #636363;
     border-radius: 5px;
     border: 1px solid #e4e7eb;
 }
@@ -272,11 +273,11 @@ select{
     display: none;
     z-index: 1000;
     padding-top: 50px;
+    padding-bottom: 30px;
 }
 
 .addnew-booking-container{
     display: flex;
-    flex-direction: column;
     gap: 10px
 }
 
@@ -311,7 +312,7 @@ select{
     padding-left: 5px;
 }
 
-.input-booking-container label{
+.input-booking-container label, .input-guestinfo-container label{
     font-size: .8rem;
 }
 
@@ -321,6 +322,13 @@ select{
 
 .input-booking-container select{
     width: 100%;
+}
+
+.container-btn-submit{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 10px;
 }
 
 

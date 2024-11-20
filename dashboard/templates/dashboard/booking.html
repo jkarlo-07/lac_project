@@ -18,75 +18,134 @@
 
 {% block in_body %}
 <!-- Add Form -->
-<form class="booking-forms-walkin add_booking_option" style="display: block;">
+<form 
+  action="{% url "dashboard:add_booking" %}"
+  method="POST"
+  class="booking-forms-walkin add_booking_option" 
+  style="
+  {% if show_add_form %}
+    display: block
+  {% else %}
+    display:none
+  {% endif %}"
+>
+  {% csrf_token %}
   <div class="update-option-header">
     <h1>Add New Booking</h1>
     <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-addnew-booking-btn" />
   </div>
 
   <div class="addnew-booking-container">
+    <div>
+
+    
     <div class="input-guestinfo-container">
       <div class="add-name-container">
         <div class="input-container">
-          <input type="text" name="fname" id="" placeholder="First name">
+          <label for="add-fname">First name</label>
+          <input type="text" name="first_name" id="add-fname" value="{{ form.first_name.value|default:'' }}">
+          {% if form.first_name.errors %}
+            <p class="errorlist">{{ form.first_name.errors }}</p>
+          {% endif %}
         </div>
         <div class="input-container">
-          <input type="text" name="lname" id="" placeholder="Last name">
+          <label for="add-lname">Last name</label>
+          <input type="text" name="last_name" id="add-lname" value="{{ form.last_name.value|default:'' }}">
+          {% if form.last_name.errors %}
+            <p class="errorlist">{{ form.last_name.errors }}</p>
+          {% endif %}
         </div>
       </div>
       <div class="input-container">
-        <input type="text" name="add-address" placeholder="Address">
+        <label for="add-address">Address</label>
+        <input type="text" id="add-address" name="address" value="{{ form.address.value|default:'' }}">
+        {% if form.address.errors %}
+            <p class="errorlist">{{ form.address.errors }}</p>
+        {% endif %}
       </div>
       <div class="add-phone-dob-container">
         <div class="input-container">
-          <input type="text" name="add-phone" placeholder="Phone">
+          <label for="add-phone">Phone</label>
+          <input type="text" id="add-phone" name="phone" value="{{ form.phone.value|default:'' }}">
+          {% if form.phone.errors %}
+            <p class="errorlist">{{ form.phone.errors }}</p>
+          {% endif %}
         </div>
         <div class="input-container">
-          <input type="text" name="dob" placeholder="Date of birth">
+          <label for="add-dob">Date of birth</label>
+          <input type="text" id="add-dob" name="dob" placeholder="yyyy-mm-dd" value="{{ form.dob.value|default:'' }}">
+          {% if form.dob.errors %}
+            <p class="errorlist">{{ form.dob.errors }}</p>
+          {% endif %}
         </div>
       </div>
     </div>
-
+  </div>
+    <div class="container-btn-submit">
     <div class="input-booking-container"> 
       <div class="add-select-option">
         <div class="input-container">
-          <input type="text" name="add-checkin-date" placeholder="Check In Date">
+          <label for="checkin-datepicker">Check In Date</label>
+          <input type="text" id="checkin-datepicker" name="checkin_date" placeholder="yyyy-mm-dd" readonly >
+          {% if form.checkin_date.errors %}
+            <p class="errorlist">{{ form.checkin_date.errors }}</p>
+          {% endif %}
         </div>
         <div class="input-container">
-          <select name="check-in-time" id="">
+          <label for="add-time-input">Check In Time</label>
+          <select name="checkin_time" id="add-time-input">
             <option value="">---Select Check In Date First---</option>
           </select>
+          {% if form.checkin_time.errors %}
+            <p class="errorlist">{{ form.checkin_time.errors }}</p>
+          {% endif %}
         </div>
       </div>
-      <label for="add-duration">Duration</label>
-      <div class="input-container">
-        <select name="add-duration" id="add-duration">
-          <option value="12">12hrs</option>
-          <option value="24">24hrs</option>
-        </select>
-      </div>
-
-      <div class="input-container add-room-container">
-        <label for="add-room">Room</label>
+        
         <div class="input-container">
-          <select name="add-room-booking" id="add-room-booking">
-            <option value="">----</option>
+          <label for="add-duration">Duration</label>
+          <select name="duration" id="add-duration">
+            <option value="12">12hrs</option>
+            <option value="24">24hrs</option>
           </select>
+          {% if form.duration.errors %}
+              <p class="errorlist">{{ form.duration.errors }}</p>
+            {% endif %}
         </div>
 
-      </div>
-      <div class="add-count-adult-kid">
-        <div class="input-container">
-          <input type="text" name="" id="" placeholder="Adult">
+        <div class="input-container add-room-container">
+          <div class="input-container">
+            <label for="add-room-booking">Room</label>
+            <select name="room" id="add-room-booking">
+              <option value="">----</option>
+            </select>
+            {% if form.room.errors %}
+              <p class="errorlist">{{ form.room.errors }}</p>
+            {% endif %}
+          </div>
+
         </div>
-        <div class="input-container">
-          <input type="text" name="" id="" placeholder="Kid">
+        <div class="add-count-adult-kid">
+          <div class="input-container">
+            <label for="add-adult-count">Adult</label>
+            <input type="text" name="adult_count" id="add-adult-count" value="{{ form.adult_count.value|default:'' }}">
+            {% if form.adult_count.errors %}
+              <p class="errorlist">{{ form.adult_count.errors }}</p>
+            {% endif %}
+          </div>
+          <div class="input-container">
+            <label for="add-kid-count">Kid</label>
+            <input type="text" name="kid_count" id="add-kid-count" value="{{ form.kid_count.value|default:'' }}">
+            {% if form.name.errors %}
+              <p class="errorlist">{{ form.name.errors }}</p>
+            {% endif %}
+          </div>
         </div>
+        
       </div>
+      <button type="submit">SUBMIT</button>
     </div>
-    <button type="button">SUMBIT</button>
   </div>
-
 </form>
 
 <!-- Delete Form -->
@@ -130,7 +189,7 @@
     </div>
     <input type="hidden" id="book-update-id" name="id" value="{{id|default:''}}">
     <div class="input-booking-container"> 
-
+    
       <div class="booking-data-display-container">
         <div class="data-display-box">
           <p>Name: <span class="update-name">{{ book.guest.first_name|default:"" }} {{ book.guest.last_name|default:"" }}</span></p>
@@ -244,118 +303,155 @@
 
 <script>
   $(document).ready(function () {
-    function handleDateSelect(dateText) {
-        console.log("Selected date: " + dateText);
+    function handleDateSelect(dateText, className) {
+      console.log("Selected date: " + dateText);
+      console.log(className);
 
-        fetch("{% url 'dashboard:get_time' %}?date=" + encodeURIComponent(dateText))
-            .then(response => response.json())
-            .then(data => {
-                console.log('Available times:', data.available_times);
-                const selectTimeInput = $('.checkin-time-update');
-                selectTimeInput.empty();
-                data.available_times.forEach(time => {
-                    selectTimeInput.append(new Option(time, time));
-                });
-                selectTimeInput.trigger('change');
-            })
-            .catch(error => console.error('Error fetching time data:', error));
+      fetch("{% url 'dashboard:get_time' %}?date=" + encodeURIComponent(dateText))
+        .then(response => response.json())
+        .then(data => {
+          console.log("Available times:", data.available_times);
+          const selectTimeInput = $(className);
+          selectTimeInput.empty();
+          data.available_times.forEach(time => {
+            selectTimeInput.append(new Option(time, time));
+          });
+          selectTimeInput.trigger("change");
+        })
+        .catch(error => console.error("Error fetching time data:", error));
     }
 
-    function handleTimeSelect() {
-        const selectedTime = $('#checkin-time-update').val();
-        const selectedDate = $('#datepicker').val();
-        const duration = $('#edit-duration-input').val();
-        
-        if (selectedTime && selectedDate && duration) {
-            fetch("{% url 'dashboard:get_rooms' %}?date=" + encodeURIComponent(selectedDate) + "&time=" + encodeURIComponent(selectedTime) + "&duration=" + encodeURIComponent(duration))
-                .then(response => response.json())
-                .then(data => {
-                    const selectRoomInput = $('#update-room-booking');
-                    selectRoomInput.empty();
-                    data.available_rooms.forEach(room => {
-                        selectRoomInput.append(new Option(room.room_type, room.room_id));
-                    });
-                })
-                .catch(error => console.error('Error fetching room data:', error));
-        } else {
-            console.error("All fields (date, time, and duration) are required.");
-        }
+    function handleTimeSelect(timeInput, dateInput, durationInput, roomInput) {
+      const selectedTime = $(timeInput).val();
+      const selectedDate = $(dateInput).val();
+      const duration = $(durationInput).val();
+      console.log(selectedTime, selectedDate, duration);
+
+      if (selectedTime && selectedDate && duration) {
+        fetch(
+          "{% url 'dashboard:get_rooms' %}?date=" +
+            encodeURIComponent(selectedDate) +
+            "&time=" +
+            encodeURIComponent(selectedTime) +
+            "&duration=" +
+            encodeURIComponent(duration)
+        )
+          .then(response => response.json())
+          .then(data => {
+            const selectRoomInput = $(roomInput);
+            selectRoomInput.empty();
+            data.available_rooms.forEach(room => {
+              selectRoomInput.append(new Option(room.room_type, room.room_id));
+            });
+            if (selectRoomInput.find("option").length === 0) {
+              selectRoomInput.append('<option value="">--No available room--</option>');
+            }
+          })
+          .catch(error => console.error("Error fetching room data:", error));
+      } else {
+        const selectRoomInput = $(roomInput);
+        selectRoomInput.empty();
+        selectRoomInput.append('<option value="">--No available room--</option>');
+        console.error("All fields (date, time, and duration) are required.");
+      }
     }
 
+    const updateTimeSelect = ".checkin-time-update";
     $("#datepicker").datepicker({
-        minDate: 0,
-        maxDate: 30,
-        onSelect: handleDateSelect
+      minDate: 0,
+      maxDate: 30,
+      onSelect: function (dateText) {
+        handleDateSelect(dateText, updateTimeSelect);
+      }
     });
 
-    const table = $('#myTable').DataTable({
-        "order": [[2, "desc"]]
+    const addTimeSelect = "#add-time-input";
+    $("#checkin-datepicker").datepicker({
+      minDate: 0,
+      maxDate: 30,
+      onSelect: function (dateText) {
+        handleDateSelect(dateText, addTimeSelect);
+      }
+    });
+
+    const table = $("#myTable").DataTable({
+      order: [[2, "desc"]]
     });
 
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-        const status = $(table.row(dataIndex).node()).data('status');
-        return !$('#statusFilter').val() || status === $('#statusFilter').val();
+      const status = $(table.row(dataIndex).node()).data("status");
+      return !$("#statusFilter").val() || status === $("#statusFilter").val();
     });
 
-    $('#statusFilter').on('change', function () {
-        table.draw();
+    $("#statusFilter").on("change", function () {
+      table.draw();
     });
 
-    $('#myTable').on('click', '.dots-action', function (event) {
-        const actionContainer = $(this).next('.action-container');
-        $('.action-container').hide(); // Hide other open action containers
-        actionContainer.toggle();      // Toggle the clicked action container
-        event.stopPropagation();
+    $("#myTable").on("click", ".dots-action", function (event) {
+      const actionContainer = $(this).next(".action-container");
+      $(".action-container").hide();
+      actionContainer.toggle();
+      event.stopPropagation();
     });
 
-    $(document).on('click', function () {
-        $('.action-container').hide(); // Close all action containers on outside click
+    $(document).on("click", function () {
+      $(".action-container").hide();
     });
 
-    const deleteForm = $('.delete_option');
-    $('.delete-btn').on('click', function () {
-        $('#deleteID').val($(this).data('book-id'));
-        deleteForm.show();
+    // Delete functionality
+    const deleteForm = $(".delete_option");
+    $(document).on("click", ".delete-btn", function () {
+      $("#deleteID").val($(this).data("book-id"));
+      deleteForm.show();
     });
 
-    $('#close-delete-guest-btn, #cancel-delete-btn').on('click', function () {
-        deleteForm.hide();
+    $("#close-delete-guest-btn, #cancel-delete-btn").on("click", function () {
+      deleteForm.hide();
     });
 
-    const updateForm = $('.update_booking_option');
-    $('.edit-btn').on('click', function () {
-        const bookID = $(this).data('book-id');
-        const bookName = $(this).data('book-name');
-        const checkinDate = $(this).data('check-in').split(', ')[0] + ",   " +  $(this).data('check-in').split(', ')[1];;
-        const checkinTime = $(this).data('check-in').split(', ')[2];
-        
-        $('#book-update-id').val(bookID);
-        $('.update-name').text(bookName);
-        $('.update-id').text(bookID);
-        $('.update-checkin_date').text(checkinDate);
-        $('.update-checkin_time').text(checkinTime);
-        updateForm.show();
+    // Update functionality
+    const updateForm = $(".update_booking_option");
+    $(document).on("click", ".edit-btn", function () {
+      const bookID = $(this).data("book-id");
+      const bookName = $(this).data("book-name");
+      const checkinDate = $(this).data("check-in").split(", ")[0] + ",   " + $(this).data("check-in").split(", ")[1];
+      const checkinTime = $(this).data("check-in").split(", ")[2];
+
+      $("#book-update-id").val(bookID);
+      $(".update-name").text(bookName);
+      $(".update-id").text(bookID);
+      $(".update-checkin_date").text(checkinDate);
+      $(".update-checkin_time").text(checkinTime);
+      updateForm.show();
     });
 
-    $('#close-update-booking-btn').on('click', function () {
-        updateForm.hide();
+    $("#close-update-booking-btn").on("click", function () {
+      updateForm.hide();
     });
 
-    $('#checkin-time-update').on('change', handleTimeSelect);
-    $('#edit-duration-input').on('change', handleTimeSelect);
+    // Time and duration changes
+    function addChangeHandler(timeInput, dateInput, durationInput, roomInput) {
+      $(timeInput + ", " + durationInput).on("change", function () {
+        handleTimeSelect(timeInput, dateInput, durationInput, roomInput);
+      });
+    }
+
+    addChangeHandler("#checkin-time-update", "#datepicker", "#edit-duration-input", "#update-room-booking");
+    addChangeHandler("#add-time-input", "#checkin-datepicker", "#add-duration", "#add-room-booking");
 
     // Add Form
-    const closeAddFormBtn = document.getElementById('close-addnew-booking-btn')
-    const addFormBtn = document.querySelector('.dashboard-add-booking')
-    const addForm = document.querySelector('.add_booking_option')
-    
-    addFormBtn.addEventListener('click', function() {
-      addForm.style.display = "block"
-    })
+    const addFormBtn = $(".dashboard-add-booking");
+    const addForm = $(".add_booking_option");
+    const closeAddFormBtn = $("#close-addnew-booking-btn");
 
-    closeAddFormBtn.addEventListener('click', function() {
-      addForm.style.display = "none"
-    })
+    addFormBtn.on("click", function () {
+      addForm.show();
+    });
+
+    closeAddFormBtn.on("click", function () {
+      addForm.hide();
+    });
   });
 </script>
+
 {% endblock %}

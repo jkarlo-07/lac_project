@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm
+from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
@@ -494,7 +494,7 @@ def delete_guest(request):
         guest = get_object_or_404(Guest,id=guest_id)
         guest.delete()
         guests = Guest.objects.all()
-        return render(request, "dashboard/guest.html", {'guests' : guests})
+        return redirect("dashboard:guest")
     else:
         return redirect("content:index")
     
@@ -516,7 +516,7 @@ def update_guest(request):
             guest.date_of_birth = date_of_birth
             guest.phone = phone
             guest.save(update_fields=['first_name', 'last_name', 'address', 'date_of_birth','phone'])
-            return render(request, "dashboard/guest.html", {'guests' : guests})
+            return redirect("dashboard:guest")
         else:
             print("errors", form.errors )
             return render(request, "dashboard/guest.html", {'guests' : guests, 'form': form, 'show_form': True, 'id':guest_id})
@@ -669,6 +669,66 @@ def update_booking(request):
             print("kid:", kid_count)
             print("adult:", adult_count)
 
-            return render(request, "dashboard/booking.html", {'booking': bookings})
+            return redirect("dashboard:booking")
         else:
             return render(request, "dashboard/booking.html", {'booking': bookings, 'show_form': True, 'form': form,'id': book_id, 'book': booking})
+        
+
+def add_booking(request):
+    if request.method == 'POST':
+        bookings = Booking.objects.all().order_by('-check_in')
+        form = AddBookingForm(request.POST)
+        if form.is_valid():
+            guest = Guest(  
+                first_name=form.cleaned_data.get('first_name'),
+                last_name=form.cleaned_data.get('last_name'),
+                address=form.cleaned_data.get('address'),
+                phone=form.cleaned_data.get('phone'),
+                user_id=None,
+                date_of_birth=form.cleaned_data.get('dob')  
+            )
+            guest.save()
+            room = get_object_or_404(Room, pk=form.cleaned_data.get('room'))
+            
+            datetime_str = f"{form.cleaned_data.get('checkin_date')} {form.cleaned_data.get('checkin_time')}"
+            print(datetime_str)
+            check_in = datetime.strptime(datetime_str, "%m/%d/%Y %I:%M %p")
+            check_out = check_in + timedelta(hours=int(form.cleaned_data.get('duration')))
+            duration = form.cleaned_data.get('duration')
+            adult_count = form.cleaned_data.get('adult_count')
+            kid_count = form.cleaned_data.get('kid_count')
+
+            start_time = time(14, 0)  
+            end_time = time(22, 0) 
+            check_in_time = check_in.time()
+
+
+            if start_time <= check_in_time <= end_time or int(duration) == 24:
+                entrance_fee = (Decimal(adult_count)*150) + (Decimal(kid_count)*100)
+                print("it is overnight")
+                is_overnight = True
+            else:
+                entrance_fee = (Decimal(adult_count)*100) + (Decimal(kid_count)*50)
+                is_overnight = False
+                print("its is not overnight")
+            total = room.room_type.price
+            total += entrance_fee
+
+            book = Booking(
+            guest=guest,
+            room=room,
+            check_in=check_in,
+            check_out=check_out,
+            duration=timedelta(hours=int(duration)),
+            adult_count=form.cleaned_data.get('adult_count'),
+            kid_count=form.cleaned_data.get('kid_count'),
+            is_overnight=is_overnight,
+            total_amount=float(total))
+            
+            book.save()
+            form = AddBookingForm()
+            return redirect("dashboard:booking")
+        else:
+            return render(request, "dashboard/booking.html", {'booking': bookings, 'show_add_form': True, 'form': form})
+    
+    return render(request, "dashboard/booking.html", {'booking': bookings, 'show_add_form': False, 'form': form})

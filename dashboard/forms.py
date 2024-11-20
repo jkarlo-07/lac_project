@@ -44,3 +44,26 @@ class UpdateBookingForm(forms.Form):
     adult_count = forms.IntegerField()
     kid_count = forms.IntegerField()
     room = forms.CharField(max_length=25)
+
+class AddBookingForm(forms.Form):
+    first_name = forms.CharField(max_length=75)
+    last_name = forms.CharField(max_length=75)
+    address = forms.CharField(max_length=200)
+    phone_validator = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',  
+        message="Please enter a valid phone number."
+    )
+    phone = forms.CharField(max_length=30, validators=[phone_validator])
+    dob = forms.DateField(
+        input_formats=['%Y-%m-%d'],  
+        widget=forms.DateInput(
+            attrs={'placeholder': 'YYYY-MM-DD'}
+        ),
+        error_messages={'invalid': 'Enter date in YYYY-MM-DD format.'}
+    )
+    checkin_date = forms.CharField(max_length=12)
+    checkin_time = forms.CharField(max_length=12)
+    duration = forms.CharField(max_length=5)
+    room = forms.CharField(max_length=25)
+    adult_count = forms.IntegerField()
+    kid_count = forms.IntegerField()

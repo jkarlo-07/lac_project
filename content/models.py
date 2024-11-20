@@ -98,6 +98,7 @@ class Booking(models.Model):
     kid_count = models.IntegerField(default=0)
     is_overnight = models.BooleanField(default=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    booking_method = models.CharField(max_length=15, default="online")
    
 
     @property
