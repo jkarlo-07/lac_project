@@ -282,9 +282,7 @@ def add_new_room_type(request):
         form2 = ExistingRoomForm(request.POST)
 
         if form.is_valid() and form2.is_valid():
-            print('Both forms are valid')
             roomtype = form.save(commit=False)  
-            print('RoomType instance created')
 
             is_cottage_required = request.POST.get('cottage_req')
             if is_cottage_required == "on":
@@ -300,19 +298,16 @@ def add_new_room_type(request):
 
             with transaction.atomic():
                 roomtype.save() 
-                print('RoomType saved:', roomtype.id)
 
                 room = form2.save(commit=False)
                 room.room_type = roomtype
                 room.room_number = form2.cleaned_data.get('room_number')
                 room.save() 
-                print('Room instance saved')
 
                 form = NewRoomTypeForm()
                 form2 = ExistingRoomForm()
 
         else:
-            print('One or both forms are not valid')
             if not form.is_valid():
                 print('Form errors:', form.errors)
             if not form2.is_valid():
@@ -364,7 +359,7 @@ def fetch_all_rooms(request):
 def delete_room(request):
     if request.method == "POST":
         room_id = request.POST.get('deleteID')
-        print("Room_id: ", room_id)
+        
         room = get_object_or_404(Room, id=room_id)
         room.delete()
         
@@ -378,7 +373,6 @@ def delete_room(request):
 def delete_roomtype(request):
     if request.method == "POST":
         room_id = request.POST.get('deleteID2')
-        print("Room_id: ", room_id)
         room = get_object_or_404(RoomType, id=room_id)
         room.delete()
         
@@ -433,16 +427,12 @@ def update_room_type(request):
             roomtype_model.description = description
             roomtype_model.base_price = price
             roomtype_model.capacity = capacity
-            print("isisi:", is_cottage_required)
             if is_cottage_required == "on":
-                print("true")
                 roomtype_model.is_cottage_required = True
             else:
-                print('false')
                 roomtype_model.is_cottage_required = False
                 
             roomtype_model.picture = form.cleaned_data.get('picture')
-            print(form.cleaned_data.get('picture'))
             if form.cleaned_data.get('picture'):
                 roomtype_model.save(update_fields=['room_type', 'price', 'description', 'base_price', 'capacity', 'is_cottage_required', 'picture'])
             else:
@@ -518,7 +508,6 @@ def update_guest(request):
             guest.save(update_fields=['first_name', 'last_name', 'address', 'date_of_birth','phone'])
             return redirect("dashboard:guest")
         else:
-            print("errors", form.errors )
             return render(request, "dashboard/guest.html", {'guests' : guests, 'form': form, 'show_form': True, 'id':guest_id})
         
 def delete_booking(request):
@@ -559,11 +548,7 @@ def get_time(request):
 
                 if available_rooms.count() != 0:
                     available_times.append(start_datetime.strftime("%I:%M %p"))
-                print(available_rooms)
-                print("date:", start_datetime)
                 start_datetime += timedelta(hours=1)  
-
-            print(available_times)
 
             return JsonResponse({'available_times': available_times})
 
@@ -576,7 +561,6 @@ def get_rooms(request):
     selected_date = request.GET.get('date')
     selected_time = request.GET.get('time')
     duration = request.GET.get('duration')
-    print("duration:", duration)
     if selected_date and selected_time:
         try:
             combined_datetime_str = f"{selected_date} {selected_time}"
@@ -592,7 +576,6 @@ def get_rooms(request):
             available_rooms = rooms.exclude(id__in=booked_rooms)
             available_rooms = available_rooms.distinct('room_type')
 
-            # Print the available rooms with unique room types
             available_rooms_array = []
 
             for room in available_rooms:
@@ -601,8 +584,6 @@ def get_rooms(request):
                     'room_id': room.id
                 })
 
-            # Print the array of available rooms with their types
-            print(available_rooms_array)
 
             
             data = {
@@ -645,15 +626,12 @@ def update_booking(request):
 
             if start_time <= check_in_time <= end_time or int(duration) == 24:
                 entrance_fee = (Decimal(adult_count)*150) + (Decimal(kid_count)*100)
-                print("it is overnight")
                 is_overnight = True
             else:
                 entrance_fee = (Decimal(adult_count)*100) + (Decimal(kid_count)*50)
                 is_overnight = False
-                print("its is not overnight")
 
             total += entrance_fee
-            print("total:", total)
             booking.total_amount = float(total)
             booking.is_overnight = is_overnight
             booking.check_in = check_in
@@ -664,10 +642,6 @@ def update_booking(request):
             booking.kid_count = int(kid_count)
             booking.save(update_fields=['check_in', 'check_out', 'duration', 'room','kid_count', 'adult_count', 'is_overnight', 'total_amount'])
             
-            print("duration:", duration)
-            print("room:", room)
-            print("kid:", kid_count)
-            print("adult:", adult_count)
 
             return redirect("dashboard:booking")
         else:
@@ -691,7 +665,6 @@ def add_booking(request):
             room = get_object_or_404(Room, pk=form.cleaned_data.get('room'))
             
             datetime_str = f"{form.cleaned_data.get('checkin_date')} {form.cleaned_data.get('checkin_time')}"
-            print(datetime_str)
             check_in = datetime.strptime(datetime_str, "%m/%d/%Y %I:%M %p")
             check_out = check_in + timedelta(hours=int(form.cleaned_data.get('duration')))
             duration = form.cleaned_data.get('duration')
@@ -705,12 +678,10 @@ def add_booking(request):
 
             if start_time <= check_in_time <= end_time or int(duration) == 24:
                 entrance_fee = (Decimal(adult_count)*150) + (Decimal(kid_count)*100)
-                print("it is overnight")
                 is_overnight = True
             else:
                 entrance_fee = (Decimal(adult_count)*100) + (Decimal(kid_count)*50)
                 is_overnight = False
-                print("its is not overnight")
             total = room.room_type.price
             total += entrance_fee
 
@@ -741,6 +712,5 @@ def change_booking_status(request):
             book_record.status = "Canceled"
         else:
             book_record.status = "Booked"
-        print(book_record.status)
         book_record.save(update_fields=['status'])
         return redirect('dashboard:booking')
