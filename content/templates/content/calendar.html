@@ -7,9 +7,17 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    var fullyBookedDates = {{ fullBookDates|safe }};
     
-    var fullyBookedDates = {{ fullBookDates|safe }}
+    var currentDate = new Date(); 
+    
+    var currentTime = currentDate.getHours();
+    
+    var startDate = currentTime >= 22 ? new Date(currentDate.setDate(currentDate.getDate() + 1)) : currentDate;
 
+    var validRangeStart = startDate.toLocaleDateString('en-CA'); 
+    var validRangeEnd = new Date(new Date().setDate(new Date().getDate() + 30)).toLocaleDateString('en-CA');  // 30 days from now
+    
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
@@ -19,8 +27,8 @@
       longPressDelay: 1,
       selectMirror: false,
       validRange: {
-        start: new Date().toISOString().split('T')[0], // Today's date
-        end: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().split('T')[0] // 30 days from now
+        start: validRangeStart,  // Dynamically calculated start date
+        end: validRangeEnd  // 30 days from now
       },
       events: fullyBookedDates.map(date => ({
         start: date,
@@ -39,7 +47,7 @@
           console.log('Check-in Date:', window.checkInDate);
         }
         if (window.checkInDate) {
-          window.location.href = '{% url "content:book_1" %}?check_in=' + encodeURIComponent(window.checkInDate);
+          window.location.href = '{% url "content:initial_search" %}?check_in=' + encodeURIComponent(window.checkInDate);
         }
         window.checkInDate = null;
       },
@@ -47,6 +55,9 @@
     calendar.render();
   });
 </script>
+
+
+
 <style>
   .fc-event.fc-bg, .fc-daygrid-event.fc-daygrid-block-event.fc-event {
     opacity: 1;

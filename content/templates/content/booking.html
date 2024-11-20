@@ -24,7 +24,7 @@
             </div>
             <div class="booking-step">
               <a class="step-number">2</a>
-              <a class="step-label">Add-Ons</a>
+              <a class="step-label">Guest Info</a>
             </div>
             <div class="booking-step">
               <a class="step-number">3</a>
@@ -43,7 +43,7 @@
                 <img src="{% static 'images/icons/calendar-1.png' %}" alt="">
                 <div>
                     <label>Check In</label>
-                    <p class="checkin-display">{{ check_in_date }}</p>
+                    <p class="checkin-display">{{ check_in_date|date:"b. d, Y" }}</p>
                 </div>  
             </div>
             <div class="booking-form">
@@ -61,21 +61,12 @@
                 <div>
                     <label>Check-In Time</label>
                     <select name="checkin_time" id="book-checkin-time">
-                        <option value="8:00" {% if checkin_time == "8:00" %}selected{% endif %}>8:00 am</option>
-						<option value="9:00" {% if checkin_time == "9:00" %}selected{% endif %}>9:00 am</option>
-						<option value="10:00" {% if checkin_time == "10:00" %}selected{% endif %}>10:00 am</option>
-						<option value="11:00" {% if checkin_time == "11:00" %}selected{% endif %}>11:00 am</option>
-						<option value="12:00" {% if checkin_time == "12:00" %}selected{% endif %}>12:00 pm</option>
-						<option value="13:00" {% if checkin_time == "13:00" %}selected{% endif %}>1:00 pm</option>
-						<option value="14:00" {% if checkin_time == "14:00" %}selected{% endif %}>2:00 pm</option>
-						<option value="15:00" {% if checkin_time == "15:00" %}selected{% endif %}>3:00 pm</option>
-						<option value="16:00" {% if checkin_time == "16:00" %}selected{% endif %}>4:00 pm</option>
-						<option value="17:00" {% if checkin_time == "17:00" %}selected{% endif %}>5:00 pm</option>
-						<option value="18:00" {% if checkin_time == "18:00" %}selected{% endif %}>6:00 pm</option>
-						<option value="19:00" {% if checkin_time == "19:00" %}selected{% endif %}>7:00 pm</option>
-						<option value="20:00" {% if checkin_time == "20:00" %}selected{% endif %}>8:00 pm</option>
-						<option value="21:00" {% if checkin_time == "21:00" %}selected{% endif %}>9:00 pm</option>
-						<option value="22:00" {% if checkin_time == "22:00" %}selected{% endif %}>10:00 pm</option>
+                        {% if available_times %}
+                          {% for time, time_value in available_times.items %}
+                            <option value="{{time_value}}">{{time}}</option>
+                          {% endfor %}
+                        {% else %}
+                        {% endif %}
 					</select>									
                 </div>
             </div>
@@ -83,7 +74,7 @@
                 <img src="{% static 'images/icons/user-1.png' %}" alt="">
                 <div>
                     <label>Capacity</label>
-                    <input name="capacity" class="input-capacity" type="text" value="{{capacity|default:''}}">
+                    <input name="capacity" class="input-capacity" type="text" value="{{capacity|default:'1'}}">
                 </div>
             </div>
             <div class="booking-form-button-wrapper">
@@ -92,7 +83,8 @@
                 <p>Search</p>
             </div>
         </form>
-        {% for room in rooms  %}
+				<div id="all-rooms-container">
+					{% for room in rooms  %}
 				<form action="{% url 'content:book_3' %}" method="GET">
 					<div class="booking-room-container">
 						<div class="room-image">
@@ -114,16 +106,20 @@
 												<div class="room-clearfix buttons">
 														<input type="hidden" name="roomtype" value="{{ room.id }}">
 														<input type="hidden" name="book_check_in_date" id="book_check_in_date" value="{{ check_in_date }}">
-														<input type="hidden" name="book_duration" id="book_duration" value="{{ duration }}">
+														<input type="hidden" name="book_duration" id="book_duration" value="{{ capacity|default:'12' }}">
                             <input type="hidden" name="book_check_in_time" id="book_check_in_time" value="{{ checkin_time }}">
 														<input type="submit" value="Select Room" class="accomodation-select-room">
 												</div>
 										</div>
 								</div>
+							</div>
+						</div>
 							</form>
-          </div>
-        </div>
-        {% endfor %}
+							{% endfor %}
+				</div>
+        
+          
+       
         
     </div>
     <div class="booking-page-sidebar atWrapper">
@@ -195,16 +191,12 @@
     const duration = document.getElementById("book-duration").value
     const checkInTime = document.getElementById("book-checkin-time").value
 
-		
-
 		document.querySelectorAll(".accomodation-select-room").forEach(button => {
 			button.addEventListener("click", function(event) {
 				event.preventDefault();
 
 				const form = this.closest("form");
 	
-	
-
 				form.submit();
 			});
 		});
@@ -213,5 +205,60 @@
         backButton.addEventListener('click', function() {
             window.location.href = "{% url "content:calendar" %}"
         })
+
+				function searchRooms() {
+					const checkInDate = document.querySelector('.checkin-display').textContent
+					const duration = document.getElementById("book-duration").value
+					const checkInTime = document.getElementById("book-checkin-time").value
+					const capacity = document.querySelector('.input-capacity').value
+					const url = `{% url 'content:dynamic_search' %}?checkin_date=${encodeURIComponent(checkInDate)}&duration=${encodeURIComponent(duration)}&checkin_time=${encodeURIComponent(checkInTime)}&capacity=${encodeURIComponent(capacity)}`;
+					fetch(url)
+						.then(response => response.json())
+						.then(data => {
+							console.log(data)
+							const roomsContainer = document.getElementById("all-rooms-container");
+            	roomsContainer.innerHTML = ''; // Clear current content
+							data.rooms.forEach(room => {
+                const roomHTML = `
+                    <form action="{% url 'content:book_3' %}" method="GET">
+											<div class="booking-room-container">
+												<div class="room-image">
+													<a href="#"><img src="${room.picture_url}" alt="Room Image"></a>
+												</div>
+												<div class="room-accomodation-wrapper">
+													<div class="room-accomodation-info">
+														<h3>${room.roomtype}</h3>
+															<ul>
+																<li><span>Capacity:</span> ${ room.capacity}pax</li>
+																<li><span>Price:</span> ₱ ${room.price}</li>
+																<li>
+																	<h4>Description:</h4>
+																</li>
+																<li><p> ${room.description} </p></li>
+															</ul>
+															<input type="submit" value="Select Room" class="accomodation-select-room">
+													</div>
+												</div>
+											</div>
+										</form>
+                `;
+                roomsContainer.innerHTML += roomHTML; 
+            });
+							
+						})
+						.catch(error => console.error("Error fetching time data:", error));
+				}
+
+				function addChangeHandler() {
+					const durationElement = document.querySelector('#book-duration'); 
+					const timeElement = document.querySelector('#book-checkin-time'); 
+					const capacityElement = document.querySelector('.input-capacity'); 
+				
+					durationElement.addEventListener("change", searchRooms);
+					timeElement.addEventListener("change", searchRooms);
+					capacityElement.addEventListener("input", searchRooms);
+				}
+
+				addChangeHandler()
 	</script>
 {% endblock  %}

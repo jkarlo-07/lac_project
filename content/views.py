@@ -1,4 +1,5 @@
 from django.core.mail import BadHeaderError
+from django.core import serializers
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -411,7 +412,13 @@ def getFullyBookDates():
         if start_date != initial_date:
             loop_start_time = start_date.replace(hour=8, minute=0, second=0, microsecond=0)
         else:
-            loop_start_time = start_date  
+            loop_start_time = start_date
+            condition_time = loop_start_time.time()
+            eight_am = time(8, 0) 
+            if condition_time < eight_am:
+                loop_start_time = start_date.replace(hour=8, minute=0, second=0, microsecond=0)
+            else:
+                loop_start_time = start_date
         
         loop_end_time = loop_start_time.replace(hour=22, minute=0, second=0, microsecond=0)
 
@@ -439,11 +446,6 @@ def getFullyBookDates():
         start_date += timedelta(days=1)
     
     return fully_booked_dates
-    
-
-from datetime import datetime, timedelta
-from django.db.models import Q
-from django.shortcuts import render
 
 def search_room(request):
     if request.method == 'GET':
@@ -507,3 +509,123 @@ def search_room(request):
         }
 
         return render(request, 'content/booking.html', context)
+
+def initial_search(request):
+    if request.method == "GET":
+        print("call initial")
+        check_in_date = request.GET.get('check_in', None) 
+        print("check_in", check_in_date)
+
+        available_times = get_time(check_in_date)
+        initial_time = available_times[0]
+        available_times = {
+            time: datetime.strptime(time, "%I:%M %p").strftime("%H:%M")
+            for time in available_times
+        }
+
+        date_obj = datetime.strptime(check_in_date, "%Y-%m-%d").date()
+        initial_time = datetime.strptime(initial_time, "%I:%M %p").time()
+
+        capacity = 1
+        check_in = datetime.combine(date_obj, initial_time)
+        print(check_in)
+
+        rooms = get_rooms(check_in, capacity)
+        print(rooms)
+
+        context = {
+            'check_in_date': check_in_date,
+            'available_times': available_times,
+            'rooms': rooms
+        }
+        return render(request, 'content/booking.html', context)
+
+
+def get_time(check_in_date):
+    selected_date = check_in_date
+    if selected_date:
+        selected_date_obj = datetime.strptime(selected_date, "%Y-%m-%d")
+        current_time = datetime.now()
+        if current_time.date() == selected_date_obj.date():
+            if current_time.time() < time(8, 0):
+                current_time = current_time.replace(hour=8, minute=0, second=0, microsecond=0)
+                start_datetime = current_time
+            elif current_time.time() > selected_date_obj.time():
+                start_datetime = selected_date_obj.replace(hour=(current_time.hour + 1) % 24, minute=0, second=0)
+            else:
+                start_datetime = selected_date_obj.replace(hour=current_time.hour, minute=current_time.minute, second=0)
+        else:
+            start_datetime = selected_date_obj.replace(hour=8, minute=0, second=0)
+            
+        end_datetime = start_datetime.replace(hour=22, minute=0, second=0, microsecond=0)
+        
+        available_times = []
+
+        while start_datetime <= end_datetime:
+                rooms = Room.objects.all()
+                
+                booked_rooms = Booking.objects.filter(
+                Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
+                ).values_list('room', flat=True)
+                available_rooms = rooms.exclude(id__in=booked_rooms)
+
+                if available_rooms.count() != 0:
+                    available_times.append(start_datetime.strftime("%I:%M %p"))
+                start_datetime += timedelta(hours=1)  
+        
+        return available_times
+    
+def get_rooms(check_in, capacity, duration=None):
+        if duration:
+            duration = duration
+        else:
+            duration = 12
+        start_datetime = check_in
+        end_datetime = check_in + timedelta(hours=duration)
+
+        rooms = Room.objects.filter(room_type__capacity__gte=capacity)
+
+        booked_rooms = Booking.objects.filter(
+            Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
+        ).values_list('room', flat=True)
+
+        available_rooms = rooms.exclude(id__in=booked_rooms)
+        filtered_rooms = available_rooms.distinct('room_type')
+        return filtered_rooms
+
+def get_dynamic_rooms(check_in, capacity, duration):
+        duration = duration
+        start_datetime = check_in
+        end_datetime = check_in + timedelta(hours=duration)
+
+        rooms = Room.objects.filter(room_type__capacity__gte=capacity)
+
+        booked_rooms = Booking.objects.filter(
+            Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
+        ).values_list('room', flat=True)
+
+        available_rooms = rooms.exclude(id__in=booked_rooms)
+        available_rooms = available_rooms.distinct('room_type')
+        return available_rooms
+
+def dynamic_search(request):
+    try:
+        checkin_date_str = request.GET.get('checkin_date')
+        duration = request.GET.get('duration')
+        checkin_time_str = request.GET.get('checkin_time')
+        capacity = request.GET.get('capacity')
+
+        checkin_date = datetime.strptime(checkin_date_str, "%b. %d, %Y")
+        checkin_time = datetime.strptime(checkin_time_str, "%H:%M").time()
+        check_in = datetime.combine(checkin_date, checkin_time)
+
+        rooms = get_rooms(check_in, capacity, int(duration))
+        rooms_data = [{'id': room.id, 'name': room.room_number, 'capacity': room.room_type.capacity, 'picture_url': room.room_type.picture.url, 'price': room.room_type.price, 'description': room.room_type.description, 'roomtype': room.room_type.room_type} for room in rooms]
+
+        return JsonResponse({'rooms': rooms_data, 'checkin_date': checkin_date,
+        'duration': duration,
+        'checkin_time': checkin_time,
+        'capacity': capacity,
+        'check_in':check_in})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
