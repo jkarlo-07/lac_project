@@ -33,19 +33,19 @@
     gap: 10px;
 }
 
-.gray-cancel-button{
+.gray-cancel-button, .gray-btn-bg{
     background-color: #C1C1C1 !important;
 }
 
-.red-delete-button{
+.red-delete-button, .red-btn-bg{    
     background-color: #FF225D !important;
 }
 
-.gray-cancel-button:hover{
+.gray-cancel-button:hover, .gray-btn-bg:hover{
     background-color: #acabab !important;
 }
 
-.red-delete-button:hover{
+.red-delete-button:hover, .red-btn-bg:hover{
     background-color: #f7698f !important;
 }
 
@@ -331,5 +331,41 @@ select{
     gap: 10px;
 }
 
+.canceled-status-container{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+}
+
+.canceled-status-container p{
+    color: #B3B4B6;
+}
+
+.canceled-btn-option{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.canceled-option-header p{
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.canceled-option-header img{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.canceled_booking_option{
+    display: none;
+    z-index: 1000;
+}
 
 

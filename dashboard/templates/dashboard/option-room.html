@@ -14,45 +14,24 @@
 {% endblock %}
 
 {% block in_body %}
-  <form class="booking-forms-walkin update_booking_option" style="display: block;">
-    <div class="update-option-header">
-      <h1>Add New Booking</h1>
+  <form class="booking-forms-walkin canceled_booking_option" style="display: block;">
+    <div class="image-delete-icon">
+      <img src="{% static 'images/icons/calendar-canceled.png' %}" alt="exit icon" />
+    </div>
+    <div class="canceled-option-header">
+      <h1>Are you sure?</h1>
       <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-addnew-booking-btn" />
     </div>
 
-    <div class="addnew-booking-container">
-
-      <div class="input-guestinfo-container">
-        <div class="add-name-container">
-          <input type="text" name="fname" id="" placeholder="First name">
-          <input type="text" name="lname" id="" placeholder="Last name">
-        </div>
-        <input type="text" name="add-address" placeholder="Address">
-        <div class="add-phone-dob-container">
-          <input type="text" name="add-phone" placeholder="Phone">
-          <input type="text" name="dob" placeholder="Date of birth">
-        </div>
+    <div class="canceled-status-container">
+      <p>Do you really want to change the status <br> to <span>Canceled?</span></p>
+      <div class="canceled-btn-option">
+        <button class="red-btn-bg" type="button">Yes</button>
+        <button class="gray-btn-bg" type="button">No</button>
       </div>
-
-      <div class="input-booking-container"> 
-        <div class="add-select-option">
-          <label for="add-room-booking">Room</label>
-          <select name="add-room-booking" id="add-room-booking">
-            <option value="">....</option>
-          </select>
-        </div>
-        <div class="add-check-inout">
-          <input type="text" name="" id="" placeholder="Check in">
-          <input type="text" name="" id="" placeholder="Check out">
-        </div>
-        <input type="text" placeholder="Duration">
-        <div class="add-count-adult-kid">
-          <input type="text" name="" id="" placeholder="Adult">
-          <input type="text" name="" id="" placeholder="Kid">
-        </div>
-      </div>
-      <button type="button">SUMBIT</button>
     </div>
+
+   
 
   </form>
 

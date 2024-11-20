@@ -99,12 +99,23 @@ li {
   right: 0;
   top: 100%; /* Position at the very bottom of .dot-size */
   z-index: 100;
-  transform: translateY(0); /* Remove any vertical translation */
+  transform: translateY(0); 
 }
 
 .action-container p, .action-container2 p{
-  padding: 0 70px 0 10px; 
+  padding: 0 15px 0 10px; 
   cursor: pointer;
+}
+
+
+.change-status-btn {
+  width: max-content;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.label-status-id {
+  font-weight: 800;
 }
 
 .action-container p:hover, .action-container2 p:hover {

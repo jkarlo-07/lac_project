@@ -732,3 +732,15 @@ def add_booking(request):
             return render(request, "dashboard/booking.html", {'booking': bookings, 'show_add_form': True, 'form': form})
     
     return render(request, "dashboard/booking.html", {'booking': bookings, 'show_add_form': False, 'form': form})
+
+def change_booking_status(request):
+    if request.method == 'POST':
+        book_id = request.POST.get('id')
+        book_record = get_object_or_404(Booking, id=book_id)
+        if book_record.status == "Booked":
+            book_record.status = "Canceled"
+        else:
+            book_record.status = "Booked"
+        print(book_record.status)
+        book_record.save(update_fields=['status'])
+        return redirect('dashboard:booking')

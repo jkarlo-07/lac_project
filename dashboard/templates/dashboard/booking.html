@@ -17,6 +17,26 @@
 {% endblock %}
 
 {% block in_body %}
+<!-- Cancel Form -->
+<form action="change_booking_status" method="POST" class="booking-forms-walkin canceled_booking_option" style="display: none;">
+  {% csrf_token %}
+  <input type="hidden" id="status-book-id" name="id">
+  <div class="image-delete-icon">
+    <img src="{% static 'images/icons/calendar-canceled.png' %}" alt="exit icon" />
+  </div>
+  <div class="canceled-option-header">
+    <h1>Are you sure?</h1>
+    <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-change-booking-btn" />
+  </div>
+  <div class="canceled-status-container">
+    <p>Do you want to change the status of booking ID <br/><span class="label-status-id">id</span> to '<span class="label-status">Cancelled</span>'?</p>
+    <div class="canceled-btn-option">
+      <button class="red-btn-bg" type="submit">Yes</button>
+      <button class="gray-btn-bg" type="button">No</button>
+    </div>
+  </div>
+</form>
+
 <!-- Add Form -->
 <form 
   action="{% url "dashboard:add_booking" %}"
@@ -288,6 +308,12 @@
                           Edit
                         </p>
                       <p class="delete-btn" data-book-id="{{ book.id }}">Delete</p>
+                      <p class="change-status-btn" 
+                         data-book-id="{{ book.id }}"
+                         data-book-status="{{ book.status }}"
+                      >
+                        Change Status
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -452,6 +478,31 @@
       addForm.hide();
     });
   });
+
+
+  // Cancel Form
+  const cancelForm = $(".canceled_booking_option");
+    $(document).on("click", ".change-status-btn", function () {
+      const bookID = $(this).data("book-id");
+      const status = $(this).data("book-status");
+
+      $(".label-status-id").text(bookID);
+      $("#status-book-id").val(bookID);
+      
+      if ($(this).data("book-status") == "Booked") {
+        $(".label-status").text("Canceled")
+      } else {
+        $(".label-status").text("Booked")
+      }
+
+      console.log($("#status-book-id").val())
+      
+      cancelForm.show();
+    });
+
+    $(".gray-btn-bg, #close-change-booking-btn").on("click", function () {
+      cancelForm.hide();
+    });
 </script>
 
 {% endblock %}
