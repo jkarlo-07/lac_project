@@ -156,8 +156,8 @@
           <div class="input-container">
             <label for="add-kid-count">Kid</label>
             <input type="text" name="kid_count" id="add-kid-count" value="{{ form.kid_count.value|default:'' }}">
-            {% if form.name.errors %}
-              <p class="errorlist">{{ form.name.errors }}</p>
+            {% if form.kid_count.errors %}
+              <p class="errorlist">{{ form.kid_count.errors }}</p>
             {% endif %}
           </div>
         </div>

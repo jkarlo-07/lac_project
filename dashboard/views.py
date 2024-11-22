@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from content.models import Booking, Room, Guest, RoomType
+from content.models import Booking, Room, Guest, RoomType, FullyBookedDates
 from django.http import JsonResponse
 from django.db.models import Count, Sum
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta, time, date
 from dateutil.relativedelta import relativedelta
 from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm
 from django.contrib import messages
@@ -515,7 +515,9 @@ def delete_booking(request):
     if request.method == 'POST':
         book_id = request.POST.get('deleteID')
         book_record = get_object_or_404(Booking, id=book_id)
+        checkin_date = book_record.check_in.date()
         book_record.delete()
+        check_remove_fullbook(checkin_date)
         return render(request, "dashboard/booking.html", {'booking': bookings})
 
 def get_time(request):
@@ -600,6 +602,7 @@ def update_booking(request):
     if request.method == "POST":
         book_id = request.POST.get('id')
         booking = get_object_or_404(Booking, id=book_id)
+        past_checkin_date = booking.check_in.date()
         form = UpdateBookingForm(request.POST)
         bookings = Booking.objects.all().order_by('-check_in')
         if form.is_valid():
@@ -641,6 +644,8 @@ def update_booking(request):
             booking.adult_count = int(adult_count)
             booking.kid_count = int(kid_count)
             booking.save(update_fields=['check_in', 'check_out', 'duration', 'room','kid_count', 'adult_count', 'is_overnight', 'total_amount'])
+            check_add_fullbook(check_in.date())
+            check_remove_fullbook(past_checkin_date)
             
 
             return redirect("dashboard:booking")
@@ -697,6 +702,9 @@ def add_booking(request):
             total_amount=float(total))
             
             book.save()
+            checkin_date = check_in.date()
+            check_add_fullbook(checkin_date)
+
             form = AddBookingForm()
             return redirect("dashboard:booking")
         else:
@@ -704,13 +712,99 @@ def add_booking(request):
     
     return render(request, "dashboard/booking.html", {'booking': bookings, 'show_add_form': False, 'form': form})
 
+def check_add_fullbook(checkin_date):
+    if checkin_date == datetime.now().date():
+        current_time = datetime.now()
+        if current_time.minute != 0:
+            start_time = (current_time + timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
+        else:
+            start_time = current_time
+    else:
+        start_time = datetime.combine(checkin_date, time(8, 0))
+    
+    end_time = datetime.combine(checkin_date, time(22, 0))
+
+    check_count = 0
+    while start_time <= end_time:
+        rooms = Room.objects.all()
+        print(start_time)
+
+        booked_rooms = Booking.objects.filter(
+            Q(check_in__lt=end_time) & Q(check_out__gt=start_time) & Q(status="Booked")
+        ).values_list('room', flat=True)
+        available_rooms = rooms.exclude(id__in=booked_rooms)
+
+        print(f"Current start_time: {start_time}, end_datetime: {end_time}")
+        print(f"Available rooms for {start_time}: {available_rooms}")
+
+
+        if available_rooms.count() != 0:
+                check_count += 1
+            
+        start_time += timedelta(hours=1)
+        
+    print(check_count)
+
+    print("it is not now", check_count)
+    if check_count == 0:
+            fullybook = FullyBookedDates(date=checkin_date)
+            fullybook.save()
+
+
+def check_remove_fullbook(checkin_date):
+    if checkin_date == datetime.now().date():
+        current_time = datetime.now()
+        if current_time.minute != 0:
+            start_time = (current_time + timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
+        else:
+            start_time = current_time
+    else:
+        start_time = datetime.combine(checkin_date, time(8, 0))
+    
+    end_time = datetime.combine(checkin_date, time(22, 0))
+
+    check_count = 0
+    while start_time <= end_time:
+        rooms = Room.objects.all()
+        print(start_time)
+
+        booked_rooms = Booking.objects.filter(
+            Q(check_in__lt=end_time) & Q(check_out__gt=start_time) & Q(status="Booked")
+        ).values_list('room', flat=True)
+        available_rooms = rooms.exclude(id__in=booked_rooms)
+
+        print(f"Current start_time: {start_time}, end_datetime: {end_time}")
+        print(f"Available rooms for {start_time}: {available_rooms}")
+
+
+        if available_rooms.count() != 0:
+                check_count += 1
+            
+        start_time += timedelta(hours=1)
+        
+    print(check_count)
+
+    print("it is not now", check_count)
+    if check_count != 0:
+        is_date_exist = FullyBookedDates.objects.filter(date=checkin_date).exists()
+        if is_date_exist:
+            fullbook = FullyBookedDates.objects.get(date=checkin_date)
+            fullbook.delete()
+        else:
+            print("The date does not exist.")
+
 def change_booking_status(request):
     if request.method == 'POST':
         book_id = request.POST.get('id')
         book_record = get_object_or_404(Booking, id=book_id)
+        checkin_date = book_record.check_in.date()
         if book_record.status == "Booked":
             book_record.status = "Canceled"
+            book_record.save(update_fields=['status'])
+            check_remove_fullbook(checkin_date)
         else:
             book_record.status = "Booked"
-        book_record.save(update_fields=['status'])
+            book_record.save(update_fields=['status'])
+            check_add_fullbook(checkin_date)
+        
         return redirect('dashboard:booking')

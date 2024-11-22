@@ -12,7 +12,8 @@ from paypal.standard.models import ST_PP_COMPLETED
 from paypal.standard.ipn.models import PayPalIPN
 from paypal.standard.ipn.signals import valid_ipn_received
 from datetime import timedelta, time, datetime
-from .models import RoomType, Room, Guest, TempGuest, Booking
+from dashboard.views import check_add_fullbook
+from .models import RoomType, Room, Guest, TempGuest, Booking, FullyBookedDates
 from users.models import CustomUser
 from .forms import GuestForm, BookingForm, BookGuestForm
 from .controllers import create_payment_link
@@ -77,6 +78,7 @@ def paypal_ipn(request):
             is_overnight=temp_guest.is_overnight
         )
         book.save()
+        check_add_fullbook(book.check_in.date())
         name =  "hoihoi"
         email = "camalig.j29@gmail.com"
         subject = "L.A.C Resort: Booking Confirmation and Receipt"
@@ -453,7 +455,11 @@ def book_view4(request, temp_id):
 
 @login_required(login_url="users:login")
 def calendar_view(request):
-    fullyBookDates = getFullyBookDates()
+    fullyBookDates = []
+    dates = FullyBookedDates.objects.all()
+    for date in dates:
+        formatted_date = date.date.strftime('%Y-%m-%d')
+        fullyBookDates.append(formatted_date)
     print(fullyBookDates)
     context = {
         "fullBookDates": fullyBookDates

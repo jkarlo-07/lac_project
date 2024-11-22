@@ -118,3 +118,6 @@ class SeasonalData(models.Model):
         years_range = f"{min(self.years)}-{max(self.years)}" if self.years else "Unknown"
         return f"Seasonal Data for {years_range}"
 
+
+class FullyBookedDates(models.Model):
+    date = models.DateField()
