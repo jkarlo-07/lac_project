@@ -924,6 +924,16 @@
     .booking-page4-wrapper {
         margin: 50px 10px;
     }
+
+    .paypal-btn input{
+        margin-top: 40px;
+        max-width: 90%;
+        align-items: center;
+    }
+
+    .book3-pay-summ {
+        margin: 40px 20px;
+    }
 }
 
 @media screen and (max-width: 568px) {

@@ -77,11 +77,7 @@
                     <input name="capacity" class="input-capacity" type="text" value="{{capacity|default:'1'}}">
                 </div>
             </div>
-            <div class="booking-form-button-wrapper">
-                <input type="hidden" name="check_in_date" value="{{ check_in_date}}" id="check_in_date">
-                <input type="image" src="{% static 'images/icons/search-2.png' %}" alt="Search" class="img-search-btn" />
-                <p>Search</p>
-            </div>
+            <input type="hidden" name="check_in_date" value="{{ check_in_date}}" id="check_in_date">
         </form>
 				<div id="all-rooms-container">
 					{% for room in rooms  %}
