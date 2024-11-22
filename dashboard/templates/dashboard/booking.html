@@ -93,7 +93,7 @@
         </div>
         <div class="input-container">
           <label for="add-dob">Date of birth</label>
-          <input type="text" id="add-dob" name="dob" placeholder="yyyy-mm-dd" value="{{ form.dob.value|default:'' }}">
+          <input type="text" id="add-dob" name="dob" placeholder="yyyy-mm-dd" value="{{ form.dob.value|default:'' }}" readonly>
           {% if form.dob.errors %}
             <p class="errorlist">{{ form.dob.errors }}</p>
           {% endif %}
@@ -390,6 +390,17 @@
         handleDateSelect(dateText, updateTimeSelect);
       }
     });
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 120;
+    $(document).ready(function() {
+      $("#add-dob").datepicker({
+        dateFormat: "yy-mm-dd",  
+        yearRange: `${startYear}:${currentYear}`, 
+        changeMonth: true,       
+        changeYear: true
+      });
+    });
+    
 
     const addTimeSelect = "#add-time-input";
     $("#checkin-datepicker").datepicker({

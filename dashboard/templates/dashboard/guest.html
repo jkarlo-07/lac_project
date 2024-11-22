@@ -10,9 +10,19 @@
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'lib/datatables/dataTables.css' %}" />
   <link rel="stylesheet" href="{% static 'css/option.css' %}" />
+
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  
+  <!-- jQuery and jQuery UI JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
+  
 {% endblock %}
 
 {% block in_body %}
@@ -103,7 +113,7 @@
           {% endif %}
         </div>
         <div class="input-container">
-          <input type="text" name="date_of_birth" id="guest-dob" placeholder="Date of birth" value="{{ form.date_of_birth.value|default:'' }}" />
+          <input type="text" name="date_of_birth" id="guest-dob" placeholder="Date of birth" value="{{ form.date_of_birth.value|default:'' }}" readonly />
           {% if form.date_of_birth.errors %}
             <p class="errorlist">{{ form.date_of_birth.errors }}</p>
           {% endif %}
@@ -158,14 +168,23 @@
 {% endblock %}
 
 {% block extra_script %}
-  <script src="{% static 'lib/jquery/jquery-3.7.1.js' %}"></script>
 
   <script src="{% static 'lib/datatables/dataTables.js' %}"></script>
 
   <script>
     $(document).ready(function () {
       $('#myTable').DataTable()
+      const currentYear = new Date().getFullYear();
+      const startYear = currentYear - 120;
+      $("#guest-dob").datepicker({
+        dateFormat: "yy-mm-dd",  
+        yearRange: `${startYear}:${currentYear}`, 
+        changeMonth: true,       
+        changeYear: true
+      });
     })
+
+    
     
     // For showing action
     console.log('tests')

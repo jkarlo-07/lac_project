@@ -710,7 +710,18 @@ header {
 .header-icon-container {
   display: flex;
   justify-content: space-between;
-  gap: 2.25rem;
+  gap: 10px;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.header-icon-container a{
+  color: #B58A60;
+  font-weight: 600;
+}
+
+.header-icon-container a:hover{
+  color: #d4a475;
 }
 
 .header-icons {

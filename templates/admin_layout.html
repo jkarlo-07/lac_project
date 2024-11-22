@@ -37,11 +37,15 @@
       <div class="header-icon-container">
       
         <img
-          src="{% static 'images/icons/account.png' %}"
+          src="{% static 'images/icons/logout-button.png' %}"
           alt="profile"
           class="header-icons"
           width="100"
         />
+        <form id="logoutForm" action="{% url 'users:logout' %}" method="post">
+          {% csrf_token %}
+          <a href="#" class="nav-link" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+      </form>
       </div>
     </header>
     {% block in_body %}
