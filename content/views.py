@@ -76,6 +76,26 @@ def paypal_ipn(request):
             is_overnight=temp_guest.is_overnight
         )
         book.save()
+        name =  "hoihoi"
+        email = "camalig.j29@gmail.com"
+        subject = "ewam"
+        message = "hoy"
+        if name and email and subject and message:
+            try:
+                result = send_email_contact(name, email, subject, message, 'camalig.j29@gmail.com', 'content/email_template.html')
+                
+                if result['success']:
+                    return JsonResponse({"message": result['message']}) 
+                else:
+                     return JsonResponse({'error': result['error']}, status=500)             
+            except BadHeaderError:
+                return JsonResponse({'error': 'Invalid header found.'}, status=400)
+            
+            except Exception as e:
+                return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
+        
+        else:
+            return JsonResponse({'error': 'Make sure all fields are entered and valid.'}, status=400)
     else:
         print("Payment not completed.")
 
@@ -220,7 +240,7 @@ def book_view2(request):
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://267b-122-55-226-102.ngrok-free.app/paypal-ipn/",
+        'notify_url': "https://d310-2001-4453-6c4-6400-d52b-aa8c-4cae-1ecc.ngrok-free.app/paypal-ipn/",
         'return_url': f"http://{host}/booking/step4/{temp_guest.id}",
         'custom': json.dumps({
             'tg': str(temp_guest.id),
