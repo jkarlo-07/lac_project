@@ -137,6 +137,10 @@
     flex-direction: column;
 }
 
+.input-container textarea, .update-capacity-rooms input{
+    width: 100%;
+}
+
 /*UPDATE GUEST INFO CSS*/
 
 .update_guestinfo_option{

@@ -61,7 +61,7 @@
           {% endif %}
         </div>
 
-        <div>
+        <div class="update-capacity-rooms">
           <input class="cap-exist" type="text" placeholder="Capacity" name="capacity" id="update-type-capacity"  value="{{ form.capacity.value|default:'' }}">
           {% if form.capacity.errors %}
               <p class="errorlist">{{ form.capacity.errors }}</p>

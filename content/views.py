@@ -17,6 +17,7 @@ from users.models import CustomUser
 from .forms import GuestForm, BookingForm, BookGuestForm
 from .controllers import create_payment_link
 from lac.utils.email_utils import send_email_contact
+from lac.utils.email_booking_utils import send_booking_details
 import uuid
 import urllib.parse
 import json
@@ -78,11 +79,10 @@ def paypal_ipn(request):
         book.save()
         name =  "hoihoi"
         email = "camalig.j29@gmail.com"
-        subject = "ewam"
-        message = "hoy"
-        if name and email and subject and message:
+        subject = "L.A.C Resort: Booking Confirmation and Receipt"
+        if name and email and subject:
             try:
-                result = send_email_contact(name, email, subject, message, 'camalig.j29@gmail.com', 'content/email_template.html')
+                result = send_booking_details(name, email, subject, 'lacresortfarm@gmail.com', 'content/email_booking.html', book.id,)
                 
                 if result['success']:
                     return JsonResponse({"message": result['message']}) 
@@ -240,7 +240,7 @@ def book_view2(request):
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://d310-2001-4453-6c4-6400-d52b-aa8c-4cae-1ecc.ngrok-free.app/paypal-ipn/",
+        'notify_url': "https://df40-2001-4453-6c4-6400-c83f-d6e2-9454-16f9.ngrok-free.app/paypal-ipn/",
         'return_url': f"http://{host}/booking/step4/{temp_guest.id}",
         'custom': json.dumps({
             'tg': str(temp_guest.id),

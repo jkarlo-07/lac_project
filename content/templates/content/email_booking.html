@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 8px; padding: 20px;">
+        <tr>
+            <td style="text-align: center; padding-bottom: 20px;">
+                <h1 style="color: #444;">L.A.C Resort: Booking Confirmation and Receipt</h1>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 20px;">
+                <p style="color: #333;">Dear {{name}},</p>
+                <p style="color: #333;">Thank you for booking your stay with <strong>L.A.C. Resort</strong>. We are excited to welcome you! Below are the details of your reservation:</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 20px;">
+                <h2 style="color: #555; font-size: 18px;">Reservation Details</h2>
+                <ul style="list-style: none; padding: 0; color: #333;">
+                    <li><strong>Booking ID:</strong> {{ book_id }}</li>
+                    <li><strong>Check-in:</strong> {{ check_in }}</li>
+                    <li><strong>Check-out:</strong> {{ check_out }}</li>
+                    <li><strong>Number of Guests:</strong> {{ num_guests}}</li>
+                    <li><strong>Room Type:</strong> {{ room_type }}</li>
+                    <li><strong>Room Number:</strong> {{ room_number }}</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 20px;">
+                <h2 style="color: #555; font-size: 18px;">Payment Summary</h2>
+                <ul style="list-style: none; padding: 0; color: #333;">
+                    <li><strong>Room Price:</strong> {{room_amount}}</li>
+                    <li><strong>Adult Count:</strong> {{adult_count}}</li>
+                    <li><strong>Kid Count:</strong> {{kid_count}}</li>
+                    <li><strong>Entrance Fee{{ entrance_prompt }}:</strong> ₱{{entrance_fee}}</li>
+                    <li><strong>Booking Online Fee:</strong> ₱200.00</li>
+                    <li><strong>Total Paid:</strong> {{total_amount}}</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 20px;">
+                <p style="color: #333;">Your transaction has been successfully processed, and no further action is needed.</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 20px;">
+                <h2 style="color: #555; font-size: 18px;">Contact Information</h2>
+                <ul style="list-style: none; padding: 0; color: #333;">
+                    <li><strong>Email:</strong> <a href="mailto:lacresortfarm@gmail.com" style="color: #007bff; text-decoration: none;">lacresortfarm@gmail.com</a></li>
+                    <li><strong>Phone:</strong> 0939-819-4499</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="color: #333;">We look forward to making your stay at <strong>L.A.C. Resort</strong> a memorable one.</p>
+                <p style="color: #888; font-size: 14px;">Warm regards,<br>L.A.C Team</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
