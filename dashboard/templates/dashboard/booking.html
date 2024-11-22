@@ -385,7 +385,7 @@
     const updateTimeSelect = ".checkin-time-update";
     $("#datepicker").datepicker({
       minDate: 0,
-      maxDate: 30,
+      maxDate: 365,
       onSelect: function (dateText) {
         handleDateSelect(dateText, updateTimeSelect);
       }
@@ -405,7 +405,7 @@
     const addTimeSelect = "#add-time-input";
     $("#checkin-datepicker").datepicker({
       minDate: 0,
-      maxDate: 30,
+      maxDate: 365,
       onSelect: function (dateText) {
         handleDateSelect(dateText, addTimeSelect);
       }

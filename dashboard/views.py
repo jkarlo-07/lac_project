@@ -542,9 +542,9 @@ def get_time(request):
             available_times = []
             while start_datetime <= end_datetime:
                 rooms = Room.objects.all()
-                
+                loop_end_datetime = start_datetime + timedelta(hours=12)
                 booked_rooms = Booking.objects.filter(
-                Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
+                Q(check_in__lt=loop_end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
                 ).values_list('room', flat=True)
                 available_rooms = rooms.exclude(id__in=booked_rooms)
 
@@ -728,9 +728,9 @@ def check_add_fullbook(checkin_date):
     while start_time <= end_time:
         rooms = Room.objects.all()
         print(start_time)
-
+        loop_end_datetime = start_time + timedelta(hours=12)
         booked_rooms = Booking.objects.filter(
-            Q(check_in__lt=end_time) & Q(check_out__gt=start_time) & Q(status="Booked")
+            Q(check_in__lt=loop_end_datetime) & Q(check_out__gt=start_time) & Q(status="Booked")
         ).values_list('room', flat=True)
         available_rooms = rooms.exclude(id__in=booked_rooms)
 
@@ -767,9 +767,9 @@ def check_remove_fullbook(checkin_date):
     while start_time <= end_time:
         rooms = Room.objects.all()
         print(start_time)
-
+        loop_end_datetime = start_time + timedelta(hours=12)
         booked_rooms = Booking.objects.filter(
-            Q(check_in__lt=end_time) & Q(check_out__gt=start_time) & Q(status="Booked")
+            Q(check_in__lt=loop_end_datetime) & Q(check_out__gt=start_time) & Q(status="Booked")
         ).values_list('room', flat=True)
         available_rooms = rooms.exclude(id__in=booked_rooms)
 
