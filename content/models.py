@@ -35,14 +35,11 @@ class RoomType(models.Model):
         if month in peak_months:
             return Decimal('1.1')  
         else:
-            return Decimal('1')  # Convert the multiplier to Decimal
+            return Decimal('1') 
 
     def get_seasonal_price(self, check_in):
         multiplier = self.get_seasonal_multiplier(check_in)
-        seasonal_price = self.base_price * multiplier  # This will now work with Decimal
-        
-        if self.is_cottage_required:
-            seasonal_price += self.cottage_price
+        seasonal_price = self.base_price * multiplier  
         
         return seasonal_price
 

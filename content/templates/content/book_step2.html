@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 {% load static %}
 {% load humanize %}
 {% block title %}
@@ -6,94 +6,104 @@
 {% endblock %}
 
 {% block extra_head %}
-  <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+  <link rel="stylesheet" href="{% static 'css/booking.css' %}" />
 {% endblock %}
 
 {% block content %}
-<div class="booking-page-wrapper">
-  <div class="booking_container_main">
-    <div class="btn-image-back">
-      <img src="{% static "images/icons/left-arrow.png" %}" alt="back icon" class="back-step-form">
-      
+  <div class="booking-page-wrapper">
+    <div class="booking_container_main">
+      <div class="btn-image-back">
+        <img src="{% static 'images/icons/left-arrow.png' %}" alt="back icon" class="back-step-form" />
+      </div>
+
+      <div class="booking-step-wrapper clearfix">
+        <div class="booking-step active">
+          <a class="step-number">1</a>
+          <a class="step-label">Rooms</a>
+        </div>
+        <div class="booking-step active">
+          <a class="step-number">2</a>
+          <a class="step-label">Guest Info</a>
+        </div>
+        <div class="booking-step active">
+          <a class="step-number">3</a>
+          <a class="step-label">Payment</a>
+        </div>
+        <div class="booking-step">
+          <a class="step-number">4</a>
+          <a class="step-label">Complete</a>
+        </div>
+        <div class="booking-step-line">
+          <div style="width: 25%;"></div>
+        </div>
+      </div>
+      <div class="book3-pay-summ">
+        <h2 class="book3-heading">Booking Summary</h2>
+        <div class="book3-totals">
+          <div class="book3-totals-row">
+            <p class="white-border-bottom black-fg">Guest</p>
+            <p class="white-border black-fg">{{ first_name }} {{ last_name }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="brown-bg white-fg">Room Number</p>
+            <p class="white-border-nobot">{{ room_id.room_number }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="white-border-bottom">Room Type</p>
+            <p class="white-border">{{ room_id.room_type }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="brown-bg white-fg white-border-bottom">Check In</p>
+            <p class="white-border">{{ check_in }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="white-border-bottom">Check Out</p>
+            <p class="white-border">{{ check_out }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="white-border-bottom">Adult Count</p>
+            <p class="white-border">{{ adult_count }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="white-border-bottom">Kid Count</p>
+            <p class="white-border">{{ kid_count }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="white-border-bottom">Entrance Fee(Kid:₱{{ kid_price|floatformat:2|intcomma }} / Adult ₱{{ adult_price|floatformat:2|intcomma }})</p>
+            <p class="white-border">₱ {{ entrance_fee|floatformat:2|intcomma }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="white-border-bottom">Room Price ({{ room_id.room_type }})</p>
+            <p class="white-border">₱ {{ room_price|floatformat:2|intcomma }}</p>
+          </div>
+          <div class="book3-totals-row">
+            <p class="white-border-bottom">Booking Online Fee</p>
+            <p class="white-border">₱200.00</p>
+          </div>
+          {% if is_cottage_required %}
+            <div class="book3-totals-row">
+              <p class="white-border-bottom">Cottage(Required) Price</p>
+              <p class="white-border">₱ {{ 750|floatformat:2|intcomma }}</p>
+            </div>
+          {% endif %}
+          <div class="book3-totals-row">
+            <p class="brown-bg white-fg totaltxt">Total</p>
+            <p class="white-border-bottom totaltxt">₱ {{ total_amount|floatformat:2|intcomma }}</p>
+          </div>
+        </div>
+        <div class="paypal-btn">{{ paypal.render }}</div>
+      </div>
     </div>
-    
-    <div class="booking-step-wrapper clearfix">
-      <div class="booking-step active">
-        <a class="step-number">1</a>
-        <a class="step-label">Rooms</a>
-      </div>
-      <div class="booking-step active">
-        <a class="step-number">2</a>
-        <a class="step-label">Guest Info</a>
-      </div>
-      <div class="booking-step active">
-        <a class="step-number">3</a>
-        <a class="step-label">Payment</a>
-      </div>
-      <div class="booking-step">
-        <a class="step-number">4</a>
-        <a class="step-label">Complete</a>
-      </div>
-      <div class="booking-step-line">
-        <div style="width: 25%;"></div>
-      </div>
-    </div>
-    <div class="book3-pay-summ">
-      <h2 class="book3-heading">Booking Summary</h2>
-      <div class="book3-totals">
-        <div class="book3-totals-row">
-          <p class="white-border-bottom black-fg">Guest</p>
-          <p class="white-border black-fg">{{ first_name }} {{ last_name }}</p>
-        </div>
-        <div class="book3-totals-row">
-          <p class="brown-bg white-fg">Room Number</p>
-          <p class="white-border-nobot">{{room_id.room_number}}</p>
-        </div>
-        <div class="book3-totals-row">
-          <p class=" white-border-bottom">Room Type</p>
-          <p class="white-border">{{room_id.room_type}}</p>
-        </div>
-        <div class="book3-totals-row">
-          <p class="brown-bg white-fg white-border-bottom">Check In</p>
-          <p class="white-border">{{check_in}}</p>
-        </div>
-        <div class="book3-totals-row">
-          <p class="white-border-bottom">Check Out</p>
-          <p class="white-border">{{check_out}}</p>
-        </div>
-        <div class="book3-totals-row">
-          <p class="white-border-bottom">Adult Count</p>
-          <p class="white-border">{{adult_count}}</p>
-        </div>
-        <div class="book3-totals-row">
-          <p class="white-border-bottom">Kid Count</p>
-          <p class="white-border">{{kid_count}}</p>
-        </div>
-        <div class="book3-totals-row">
-          <p class="white-border-bottom">Entrance Fee(Kid:₱{{ kid_price|floatformat:2|intcomma }} / Adult ₱{{ adult_price|floatformat:2|intcomma }})</p>
-          <p class="white-border">₱ {{ entrance_fee|floatformat:2|intcomma }}</p>
-        </div>
-        <div class="book3-totals-row">
-          <p class="white-border-bottom">Room Price ({{ room_id.room_type }})</p>
-          <p class="white-border">₱ {{ room_price|floatformat:2|intcomma }}</p>
-        </div>
-        {% if is_cottage_required %}
-        <div class="book3-totals-row">
-          <p class="white-border-bottom">Cottage(Required) Price</p>
-          <p class="white-border">₱ {{ 750|floatformat:2|intcomma }}</p>
-        </div>
-        {% endif %}
-        <div class="book3-totals-row">
-          <p class="brown-bg white-fg totaltxt">Total</p>
-          <p class="white-border-bottom totaltxt">₱ {{ total_amount|floatformat:2|intcomma }}</p>
-        </div>
-      </div>
-      <div class="paypal-btn">
-        {{paypal.render}}
-      </div>
-    </div>
-    
   </div>
-</div>
-  
+{% endblock %}
+
+{% block add_script %}
+  <script>
+    backBtn = document.querySelector('.back-step-form')
+    backBtn.addEventListener('click', function () {
+      let check_in_date = "{{ check_in }}";  
+      check_in_date = check_in_date.split(' ')[0];  
+      window.location.href = `{% url "content:book_3" %}?back=true&book_check_in_date=${encodeURIComponent(check_in_date)}`;
+    })
+  </script>
 {% endblock %}

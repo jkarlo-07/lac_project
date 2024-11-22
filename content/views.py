@@ -179,6 +179,7 @@ def book_view2(request):
     room_price = room.room_type.price
 
     total_amount = float(room_price) + float(entrance_fee)
+    total_amount = total_amount + float(200)
     print(total_amount)
     if room.room_type.is_cottage_required:
         cottage_price = 750
@@ -219,7 +220,7 @@ def book_view2(request):
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://b903-2001-4453-6c4-6400-c504-8880-84f9-55e0.ngrok-free.app/paypal-ipn/",
+        'notify_url': "https://267b-122-55-226-102.ngrok-free.app/paypal-ipn/",
         'return_url': f"http://{host}/booking/step4/{temp_guest.id}",
         'custom': json.dumps({
             'tg': str(temp_guest.id),
@@ -268,6 +269,7 @@ def book_view3(request):
         check_in = request.POST.get('check_in')
         room_id = request.POST.get('room_id')
         check_in_time = request.POST.get('check_in_time')
+        request.session['check_in_time'] = check_in_time
         check_in_unformat = request.POST.get('check_in_date')
         duration = request.POST.get('duration')
         duration = int(duration)
@@ -279,7 +281,7 @@ def book_view3(request):
         date_object = datetime.strptime(formatted_check_in_date, '%b. %d, %Y')
 
         check_in_time = check_in_time.replace('.', '')
-
+        
         check_in_date = date_object.strftime('%Y-%m-%d')
         request.session['check_in_date'] = str(check_in_date)
         check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d')
@@ -309,16 +311,19 @@ def book_view3(request):
             request.session['check_out'] = check_out.strftime('%Y-%m-%d') if check_out else None
 
             room_id = request.POST.get('room_id')
+            print(room_id)
             room = get_object_or_404(Room, id=room_id)
 
             request.session['room'] = str(room.id) 
             request.session['total_amount'] = str(room.room_type.price) 
-            request.session['duration'] = str(duration) 
+            request.session['duration'] = str(duration)
+            print("line 318") 
             return redirect('content:book_2')
 
         else:
             check_in_date = check_in_date.date()
             check_out_time = check_out.time()
+            print("else in the form valid")
             print(form.errors)  
             return render(request, "content/book_step3.html", {
                 "form": form,
@@ -331,6 +336,54 @@ def book_view3(request):
                 'check_out_time': check_out_time,
                 'duration': duration
             })
+    elif 'back' in request.GET and request.GET.get('back') == 'true':
+        address = request.session.get('address', '')  
+        first_name = request.session.get('first_name', '')  
+        last_name = request.session.get('last_name', '')  
+        date_of_birth = request.session.get('date_of_birth', '')  
+        phone = request.session.get('phone', '')  
+        adult_count = request.session.get('adult_count', '')  
+        kid_count = request.session.get('kid_count', '')  
+        duration = request.session.get('duration', '') 
+        check_in_time = request.session.get('check_in_time', '')
+        room_id = request.session.get('room', '')
+        room = get_object_or_404(Room,id=room_id)
+        print("this is room:", room_id)
+        
+        check_in_date = request.session.get('check_in_date', '') 
+        date_obj = datetime.strptime(check_in_date, "%Y-%m-%d")
+        f_check_in_date = date_obj.strftime("%b. %d, %Y") 
+        
+        time_var = check_in_time.replace(".", "") 
+        time_var = datetime.strptime(time_var, "%I %p").time()
+        date_var = datetime.strptime(check_in_date, "%Y-%m-%d").date()  
+
+        check_in_var = datetime.combine(date_var, time_var)  
+        check_out_var = check_in_var + timedelta(hours=int(duration)) 
+        
+        check_out_date = check_out_var.date()
+        check_out_time = check_out_var.time()
+        print("check_in",check_in_var)
+        email = request.user.email
+        print('check_out', check_out_var)
+        context = {
+            'address': address,
+            'first_name': first_name,
+            'last_name': last_name,
+            'date_of_birth': date_of_birth,
+            'phone': phone,
+            'email': email,
+            'kid_count': kid_count,
+            'adult_count': adult_count,
+            'duration': duration,
+            'check_in_date': f_check_in_date,
+            'check_in_time': check_in_time,
+            'check_out_date': check_out_date,
+            'check_out_time': check_out_time,
+            'room': room,
+        }
+        print('address:', address)
+        return render(request, 'content/book_step3.html', context)
     else:
         check_in_unformat = request.GET.get('book_check_in_date')
         check_in_time = request.GET.get("book_check_in_time")
@@ -339,8 +392,8 @@ def book_view3(request):
         date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
         check_in_date = date_object.strftime('%Y-%m-%d')
         check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d').date() if check_in_date else None
-
-        start_time = datetime.strptime(check_in_time, '%H:%M').time() 
+        print("else in request method")
+        start_time = datetime.strptime(check_in_time, '%I:%M %p').time() 
         start_datetime = datetime.combine(check_in_date, start_time)
         end_datetime = start_datetime + timedelta(hours=duration)
 
@@ -401,7 +454,7 @@ def getFullyBookDates():
         start_time = now
     
     target_end_time = start_time.replace(hour=22, minute=0, second=0, microsecond=0)
-    target_end_date = (start_time + timedelta(days=30)).replace(hour=22, minute=0, second=0, microsecond=0)
+    target_end_date = (start_time + timedelta(days=365)).replace(hour=22, minute=0, second=0, microsecond=0)
 
     start_date = start_time
     initial_date = start_date
@@ -514,6 +567,8 @@ def initial_search(request):
     if request.method == "GET":
         print("call initial")
         check_in_date = request.GET.get('check_in', None) 
+        date_obj = datetime.strptime(check_in_date, "%Y-%m-%d")
+        str_check_in = date_obj.strftime("%b. %d, %Y")
         print("check_in", check_in_date)
 
         available_times = get_time(check_in_date)
@@ -522,10 +577,11 @@ def initial_search(request):
             time: datetime.strptime(time, "%I:%M %p").strftime("%H:%M")
             for time in available_times
         }
+        
 
         date_obj = datetime.strptime(check_in_date, "%Y-%m-%d").date()
         initial_time = datetime.strptime(initial_time, "%I:%M %p").time()
-
+        time_str = initial_time.strftime("%I:%M %p")
         capacity = 1
         check_in = datetime.combine(date_obj, initial_time)
         print(check_in)
@@ -534,7 +590,9 @@ def initial_search(request):
         print(rooms)
 
         context = {
+            'str_check_in': str_check_in,
             'check_in_date': check_in_date,
+            'initial_time': time_str,
             'available_times': available_times,
             'rooms': rooms
         }

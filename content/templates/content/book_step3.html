@@ -5,6 +5,9 @@
 
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'css/booking.css' %}" />
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 {% endblock %} 
 
 {% block content %}
@@ -14,7 +17,7 @@
     {% csrf_token %}
     <div class="booking3-container">
       <div class="btn-image-back">
-        <img src="{% static "images/icons/left-arrow.png" %}" alt="back icon">
+        <img src="{% static "images/icons/left-arrow.png" %}" alt="back icon" id="back_booking">
       </div>
       <div class="booking-step-wrapper clearfix">
         <div class="booking-step active">
@@ -42,7 +45,9 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-fname">First Name:</label>
-            <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}">
+            <input type="text" name="first_name" 
+              value="{% if form.first_name.value %}{{ form.first_name.value }}{% elif first_name %}{{ first_name }}{% else %}{% endif %}">
+
             {% if form.first_name.errors %}
               <ul class="errorlist">
                 {% for error in form.first_name.errors %}
@@ -53,7 +58,9 @@
           </div>
           <div class="book3-field">
             <label for="book3-lname">Last Name:</label>
-            <input type="text" id="book3-lname" name="last_name" value="{{ form.last_name.value|default:'' }}"/>
+            <input type="text" id="book3-lname" name="last_name" 
+               value="{% if form.last_name.value %}{{ form.last_name.value }}{% elif last_name %}{{ last_name }}{% else %}{% endif %}">
+
             {% if form.last_name.errors %}
               <ul class="errorlist">
                 {% for error in form.last_name.errors %}
@@ -66,7 +73,9 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-address">Address:</label>
-            <input type="text" id="book3-address" name="address" value="{{ form.address.value|default:'' }}"/>
+            <input type="text" id="book3-address" name="address" 
+            value="{% if form.address.value %}{{ form.address.value }}{% elif address %}{{ address }}{% else %}{% endif %}">
+
             {% if form.address.errors %}
               <ul class="errorlist">
                 {% for error in form.address.errors %}
@@ -77,7 +86,7 @@
           </div>
           <div class="book3-field">
             <label for="book3-dob">Date of Birth:</label>
-            <input type="text" id="book3-dob" name="date_of_birth" value="{{ form.date_of_birth.value |default:'' }}"/>
+            <input type="text" id="book3-dob" name="date_of_birth" value="{% if form.date_of_birth.value %}{{ form.date_of_birth.value }}{% elif date_of_birth %}{{ date_of_birth }}{% else %}{% endif %}" readonly/>
             {% if form.date_of_birth.errors %}
               <ul class="errorlist">
                 {% for error in form.date_of_birth.errors %}
@@ -90,7 +99,7 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-phone">Phone:</label>
-            <input type="text" id="book3-phone" name="phone" value="{{ form.phone.value |default:''}}"/>
+            <input type="text" id="book3-phone" name="phone" value="{% if form.phone.value %}{{ form.phone.value }}{% elif phone %}{{ phone }}{% else %}{% endif %}"/>
             {% if form.phone.errors %}
               <ul class="errorlist">
                 {% for error in form.phone.errors %}
@@ -107,7 +116,7 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-adult_count">Adult Count:</label>
-            <input type="text" name="adult_count" value="{{ form.adult_count.value|default:'' }}">
+            <input type="text" name="adult_count" value="{% if form.adult_count.value %}{{ form.adult_count.value }}{% elif adult_count %}{{ adult_count }}{% else %}{% endif %}">
             {% if form.adult_count.errors %}
               <ul class="errorlist">
                 {% for error in form.adult_count.errors %}
@@ -118,7 +127,7 @@
           </div>
           <div class="book3-field">
             <label for="book3-kid_count">Kid Count:</label>
-            <input type="text" id="book3-lname" name="kid_count" value="{{ form.kid_count.value|default:'' }}"/>
+            <input type="text" id="book3-lname" name="kid_count" value="{% if form.kid_count.value %}{{ form.kid_count.value }}{% elif kid_count %}{{ kid_count }}{% else %}{% endif %}"/>
             {% if form.kid_count.errors %}
               <ul class="errorlist">
                 {% for error in form.kid_count.errors %}
@@ -172,9 +181,21 @@
     </div>
   </div>
 </form>
-{% endblock %} {% block add_script %}
+{% endblock %} 
+{% block add_script %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - 120;
+    $(document).ready(function() {
+      $("#book3-dob").datepicker({
+        dateFormat: "yy-mm-dd",  
+        yearRange: `${startYear}:${currentYear}`, 
+        changeMonth: true,       
+        changeYear: true
+      });
+    });
+
     function handleResize() {
       window.addEventListener("resize", function () {
         const sidebar = document.querySelector(".booking3-aside");
@@ -226,6 +247,23 @@
 
     initialLoading();
     handleResize();
+
+    const backBooking = document.getElementById('back_booking')
+    backBooking.addEventListener('click', function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      let check_in_date = urlParams.get('book_check_in_date');
+      let dateObj = new Date(check_in_date);
+      let formattedDate = formatDate(dateObj);
+      window.location.href = '{% url "content:initial_search" %}?check_in=' + encodeURIComponent(formattedDate);
+    })
   });
+
+  function formatDate(date) {
+    let year = date.getFullYear();
+    let month = ('0' + (date.getMonth() + 1)).slice(-2); // Add leading zero for months less than 10
+    let day = ('0' + date.getDate()).slice(-2); // Add leading zero for days less than 10
+    return `${year}-${month}-${day}`;
+}
 </script>
 {% endblock %}

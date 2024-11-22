@@ -16,7 +16,7 @@
     var startDate = currentTime >= 22 ? new Date(currentDate.setDate(currentDate.getDate() + 1)) : currentDate;
 
     var validRangeStart = startDate.toLocaleDateString('en-CA'); 
-    var validRangeEnd = new Date(new Date().setDate(new Date().getDate() + 30)).toLocaleDateString('en-CA');  // 30 days from now
+    var validRangeEnd = new Date(new Date().setDate(new Date().getDate() + 365)).toLocaleDateString('en-CA');  // 30 days from now
     
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {

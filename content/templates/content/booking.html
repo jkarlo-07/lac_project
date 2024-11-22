@@ -105,9 +105,9 @@
 										<div class="room-rate-info">
 												<div class="room-clearfix buttons">
 														<input type="hidden" name="roomtype" value="{{ room.id }}">
-														<input type="hidden" name="book_check_in_date" id="book_check_in_date" value="{{ check_in_date }}">
+														<input type="hidden" name="book_check_in_date" id="book_check_in_date" value="{{ str_check_in }}">
 														<input type="hidden" name="book_duration" id="book_duration" value="{{ capacity|default:'12' }}">
-                            <input type="hidden" name="book_check_in_time" id="book_check_in_time" value="{{ checkin_time }}">
+                            <input type="hidden" name="book_check_in_time" id="book_check_in_time" value="{{ initial_time }}">
 														<input type="submit" value="Select Room" class="accomodation-select-room">
 												</div>
 										</div>
@@ -123,21 +123,6 @@
         
     </div>
     <div class="booking-page-sidebar atWrapper">
-        <div class="booking-stay-wrapper">
-            <h3>Your Stay</h3>
-            <hr class="bar-yellow">
-            <ul>
-                <li><span>Dates:</span> Aug 17, 2024 - Aug 18, 2024</li>
-                <br>
-                <li><span>Guests:</span> 2 Adults, 2 Children</li>
-                <br>
-            </ul>
-            <hr class="divider">
-            <div class="booking-total">
-                <h4>Total</h4>
-                <h4>$0</h4>
-            </div>
-        </div>
         <div class="booking-contact">
             <h3>Need Assistance?</h3>
             <hr class="bar-yellow">
@@ -166,7 +151,8 @@
 		const urlParams = new URLSearchParams(window.location.search);
 
 		const checkInDate = urlParams.get('check_in');
-
+    const book_date = document.getElementById('book_check_in_date')
+    
         let formattedCheckInDate = '';
     if (checkInDate) {
         formattedCheckInDate = formatDate(checkInDate);
@@ -182,21 +168,13 @@
 			checkInDisplay.textContent = formattedCheckInDate;
 	}
 
-
-
-    const durationInput = document.getElementById("book_duration")
-    const checkInTimeInput = document.getElementById("book_check_in_time")
-
-    const checkInDateText = document.querySelector(".checkin-display").textContent
-    const duration = document.getElementById("book-duration").value
-    const checkInTime = document.getElementById("book-checkin-time").value
+    // variables
+    
 
 		document.querySelectorAll(".accomodation-select-room").forEach(button => {
 			button.addEventListener("click", function(event) {
 				event.preventDefault();
-
 				const form = this.closest("form");
-	
 				form.submit();
 			});
 		});
@@ -211,6 +189,9 @@
 					const duration = document.getElementById("book-duration").value
 					const checkInTime = document.getElementById("book-checkin-time").value
 					const capacity = document.querySelector('.input-capacity').value
+          const str_check_in = document.querySelector('.checkin-display').textContent
+          const duration_input = document.querySelector('#book-duration').value
+          const time_input = convertTo12Hour(checkInTime)
 					const url = `{% url 'content:dynamic_search' %}?checkin_date=${encodeURIComponent(checkInDate)}&duration=${encodeURIComponent(duration)}&checkin_time=${encodeURIComponent(checkInTime)}&capacity=${encodeURIComponent(capacity)}`;
 					fetch(url)
 						.then(response => response.json())
@@ -237,6 +218,10 @@
 																<li><p> ${room.description} </p></li>
 															</ul>
 															<input type="submit" value="Select Room" class="accomodation-select-room">
+                              <input type="hidden" name="roomtype" value="${ room.id }">
+                              <input type="hidden" name="book_check_in_date" id="book_check_in_date" value="${ str_check_in }">
+                              <input type="hidden" name="book_duration" id="book_duration" value="${duration_input}">
+                              <input type="hidden" name="book_check_in_time" id="book_check_in_time" value="${ time_input }">
 													</div>
 												</div>
 											</div>
@@ -257,8 +242,23 @@
 					durationElement.addEventListener("change", searchRooms);
 					timeElement.addEventListener("change", searchRooms);
 					capacityElement.addEventListener("input", searchRooms);
+          window.addEventListener("pageshow", searchRooms);
 				}
 
 				addChangeHandler()
+
+        function convertTo12Hour(time) {
+          // Split the time into hours and minutes
+          let [hours, minutes] = time.split(':').map(Number);
+      
+          // Determine AM/PM
+          let period = hours >= 12 ? 'PM' : 'AM';
+      
+          // Convert hours to 12-hour format
+          hours = hours % 12 || 12;
+      
+          // Return the formatted time
+          return `${hours}:${minutes.toString().padStart(2, '0')} ${period}`;
+      }
 	</script>
 {% endblock  %}
