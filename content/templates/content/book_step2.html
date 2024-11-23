@@ -91,7 +91,9 @@
             <p class="white-border-bottom totaltxt">₱ {{ total_amount|floatformat:2|intcomma }}</p>
           </div>
         </div>
-        <div class="paypal-btn">{{ paypal.render }}</div>
+        <div class="paypal-btn">
+          <p>Note: </p>
+          {{ paypal.render }}</div>
       </div>
     </div>
   </div>

@@ -231,6 +231,8 @@ footer {
   width: 100%;
 }
 
+
+
 .front-txt-title h1{
   font-size: 7rem;
   font-weight: 300;
@@ -643,6 +645,10 @@ footer {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 7rem;
+}
+
+.mobile-room-price {
+  display: none;
 }
 
 .room-container {
@@ -1311,6 +1317,7 @@ footer {
 
 
 
+
   /* for title */
   .title {
     height: 20vh;
@@ -1338,6 +1345,10 @@ footer {
 
   .header-location-info{
     display: none;
+  }
+
+  .mobile-room-price {
+    display: block;
   }
 
   .logout-phone {

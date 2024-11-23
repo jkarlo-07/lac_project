@@ -75,7 +75,8 @@ def paypal_ipn(request):
             guest=guest,
             kid_count=temp_guest.kid_count,
             adult_count=temp_guest.adult_count,
-            is_overnight=temp_guest.is_overnight
+            is_overnight=temp_guest.is_overnight,
+            booking_created_at=datetime.now()
         )
         book.save()
         check_add_fullbook(book.check_in.date())

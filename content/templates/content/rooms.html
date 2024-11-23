@@ -23,6 +23,7 @@
 				<div class>
 					<h2 class="secondary-text-color">{{ roomtype.room_type }}</h2>
 					<div class="seperator"></div>
+					<p class="mobile-room-price">₱{{ roomtype.price|floatformat:2|intcomma }} / day</p>	
 				</div>
 				<p>{{ roomtype.description }}</p>
 				<a href="{% url "content:calendar" %}"><p class="room-book-btn">BOOK NOW</p></a>

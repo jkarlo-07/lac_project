@@ -691,15 +691,17 @@ def add_booking(request):
             total += entrance_fee
 
             book = Booking(
-            guest=guest,
-            room=room,
-            check_in=check_in,
-            check_out=check_out,
-            duration=timedelta(hours=int(duration)),
-            adult_count=form.cleaned_data.get('adult_count'),
-            kid_count=form.cleaned_data.get('kid_count'),
-            is_overnight=is_overnight,
-            total_amount=float(total))
+                guest=guest,
+                room=room,
+                check_in=check_in,
+                check_out=check_out,
+                duration=timedelta(hours=int(duration)),
+                adult_count=form.cleaned_data.get('adult_count'),
+                kid_count=form.cleaned_data.get('kid_count'),
+                is_overnight=is_overnight,
+                total_amount=float(total),
+                booking_created_at=datetime.now(),
+            )
             
             book.save()
             checkin_date = check_in.date()

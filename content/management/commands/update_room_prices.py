@@ -7,8 +7,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Set a fixed date for testing (e.g., June 15th, 2024)
-        test_date = datetime(2024, 6, 15)  # June 15, 2024
-
+        test_date = datetime.now() # June 15, 2024
+        print(test_date)
         # Loop through all RoomType entries
         room_types = RoomType.objects.all()
         updated_count = 0  # To keep track of how many rooms have been updated
@@ -19,7 +19,9 @@ class Command(BaseCommand):
             
             # Update the price field with the seasonal price
             room_type.price = seasonal_price
+            print(room_type.price)
             room_type.save()
+            print(room_type.price)
             updated_count += 1
 
         # Output the success message

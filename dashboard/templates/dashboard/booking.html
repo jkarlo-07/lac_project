@@ -273,7 +273,12 @@
       <option value="Booked">Booked</option>
       <option value="Canceled">Canceled</option>
   </select>
-  
+  <label for="dateFilter">Date: </label>
+  <select id="dateFilter">
+    <option value="">All</option>
+    <option value="Today">Today</option>
+    <option value="Tomorrow">Tomorrow</option>
+  </select>
   <p class="dashboard-add-booking">+ New Booking</p>
   <table id="myTable" class="display">
       <thead>
@@ -282,6 +287,7 @@
               <th>Room</th>
               <th>Check_in</th>
               <th>Check_out</th>
+              <th>Date Booking Created</th>
               <th>Guest</th>
               <th>Total Amount</th>
               <th></th>
@@ -289,11 +295,12 @@
       </thead>
       <tbody>
           {% for book in booking %}
-          <tr data-status="{{ book.status }}">
+          <tr data-status="{{ book.status }}" data-check-in="{{ book.check_in|date:"m-d-Y" }}">
               <td>{{ book.id }}</td>
               <td>{{ book.room.room_type }}</td>
               <td>{{ book.check_in|date:"m-d-Y" }}, {{ book.check_in|time:"g:i A" }}</td>
               <td>{{ book.check_out|date:"m-d-Y" }}, {{ book.check_out|time:"g:i A" }}</td>
+              <td>{{ book.booking_created_at|date:"m-d-Y" }}, {{ book.booking_created_at|time:"g:i A" }}</td>
               <td>{{ book.guest.first_name|add:" "|add:book.guest.last_name }}</td>
               <td>{{ book.total_amount }}</td>
               <td>
@@ -400,7 +407,7 @@
         changeYear: true
       });
     });
-    
+   
 
     const addTimeSelect = "#add-time-input";
     $("#checkin-datepicker").datepicker({
@@ -414,13 +421,47 @@
     const table = $("#myTable").DataTable({
       order: [[2, "desc"]]
     });
+    var currentDate = new Date();
+    var currentDate1 = new Date();
+    currentDate1.setDate(currentDate1.getDate() + 1); // Add 1 day
 
-    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-      const status = $(table.row(dataIndex).node()).data("status");
-      return !$("#statusFilter").val() || status === $("#statusFilter").val();
-    });
+    var tommorowDate = [
+      String(currentDate1.getMonth() + 1).padStart(2, '0'), // Month (01-12)
+      String(currentDate1.getDate()).padStart(2, '0'),      // Day (01-31)
+      currentDate.getFullYear()                           // Year (e.g., 2024)
+    ].join('-');
 
-    $("#statusFilter").on("change", function () {
+    console.log(tommorowDate); //
+    var currentDate = [
+      String(currentDate.getMonth() + 1).padStart(2, '0'), // Month (01-12)
+      String(currentDate.getDate()).padStart(2, '0'),      // Day (01-31)
+      currentDate.getFullYear()                           // Year (e.g., 2024)
+  ].join('-');
+  console.log(currentDate);
+
+  $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+    const status = $(table.row(dataIndex).node()).data("status");
+    const data_date = $(table.row(dataIndex).node()).data("check-in"); // Ensure `data-check-in` is properly set in the HTML
+    console.log(tommorowDate)
+    // Check the "Now" filter
+    if ($("#dateFilter").val() == "Today") {
+      if (data_date == currentDate) {
+        return true; 
+      }
+      return false; 
+    }
+
+    if ($("#dateFilter").val() == "Tomorrow") {
+      if (data_date == tommorowDate) {
+        return true; 
+      }
+      return false; 
+    }
+  
+    return !$("#statusFilter").val() || status === $("#statusFilter").val();
+  });
+
+    $("#statusFilter, #dateFilter").on("change", function () {
       table.draw();
     });
 
