@@ -243,7 +243,7 @@ def book_view2(request):
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://df40-2001-4453-6c4-6400-c83f-d6e2-9454-16f9.ngrok-free.app/paypal-ipn/",
+        'notify_url': "https://2f09-2001-4453-6c4-6400-c83f-d6e2-9454-16f9.ngrok-free.app/paypal-ipn/",
         'return_url': f"http://{host}/booking/step4/{temp_guest.id}",
         'custom': json.dumps({
             'tg': str(temp_guest.id),
@@ -310,6 +310,7 @@ def book_view3(request):
         check_in_date = datetime.strptime(check_in_date, '%Y-%m-%d')
         
         check_in_time = datetime.strptime(check_in_time, '%I %p').time()
+        
         check_in = datetime.combine(check_in_date, check_in_time)
         check_out = check_in + timedelta(hours=1)
         request.session['check_out'] = str(check_out)
@@ -332,7 +333,7 @@ def book_view3(request):
             request.session['adult_count'] = str(form.cleaned_data.get('adult_count', ''))
             request.session['kid_count'] = str(form.cleaned_data.get('kid_count', ''))
             request.session['check_out'] = check_out.strftime('%Y-%m-%d') if check_out else None
-
+            print("testtime", check_in_time)
             room_id = request.POST.get('room_id')
             print(room_id)
             room = get_object_or_404(Room, id=room_id)
@@ -346,6 +347,15 @@ def book_view3(request):
         else:
             check_in_date = check_in_date.date()
             check_out_time = check_out.time()
+
+            check_in_time = check_in_time.strftime("%I %p").lower()
+            check_in_time = check_in_time.replace('am', 'a.m.').replace('pm', 'p.m.')
+
+            check_out_time = check_out_time.strftime("%I %p").lower()
+            check_out_time = check_out_time.replace('am', 'a.m.').replace('pm', 'p.m.')
+
+
+            print("testtime", check_in_time)
             print("else in the form valid")
             print(form.errors)  
             return render(request, "content/book_step3.html", {
@@ -386,6 +396,9 @@ def book_view3(request):
         
         check_out_date = check_out_var.date()
         check_out_time = check_out_var.time()
+
+        check_out_time = check_out_time.strftime("%I %p").lower()
+        check_out_time = check_out_time.replace('am', 'a.m.').replace('pm', 'p.m.')
         print("check_in",check_in_var)
         email = request.user.email
         print('check_out', check_out_var)
@@ -422,8 +435,17 @@ def book_view3(request):
 
         check_out_date = end_datetime.date()
         check_out_time = end_datetime.time()
-        check_in_time = start_datetime.time()
 
+        check_out_time = check_out_time.strftime("%I %p").lower()
+        check_out_time = check_out_time.replace('am', 'a.m.').replace('pm', 'p.m.')
+        print(check_out_time) 
+
+
+        check_in_time = start_datetime.time()
+        check_in_time = check_in_time.strftime("%I %p").lower()
+        check_in_time = check_in_time.replace('am', 'a.m.').replace('pm', 'p.m.')
+
+        print(check_in_time)
         room_id = request.GET.get('roomtype')
         room = get_object_or_404(Room, id=room_id)
         email = request.user.email

@@ -647,6 +647,10 @@ footer {
   gap: 7rem;
 }
 
+.red-fg{
+  color: red;
+}
+
 .mobile-room-price {
   display: none;
 }
