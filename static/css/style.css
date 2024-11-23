@@ -44,6 +44,9 @@ header {
   line-height: 1.5;
 }
 
+#logoutForm {
+  display: none !important;
+}
 /* Top header section */
 .top-header {
   display: flex;
@@ -1302,6 +1305,11 @@ footer {
     left: 10px;
   }
 
+  #logoutForm {
+    display: block !important;
+  }
+
+
 
   /* for title */
   .title {
@@ -1330,6 +1338,10 @@ footer {
 
   .header-location-info{
     display: none;
+  }
+
+  .logout-phone {
+    display: block;
   }
 
   .header-time-info{
@@ -1491,6 +1503,7 @@ footer {
     width: 100%;
   }
 
+ 
   /* FOR ABOUT PAGE */
   .about-room {
     margin: 80px 20px;
