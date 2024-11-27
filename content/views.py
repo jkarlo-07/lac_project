@@ -243,7 +243,7 @@ def book_view2(request):
         'item_name': "any",
         'invoice': str(uuid.uuid4()),
         'currency_code': 'PHP',
-        'notify_url': "https://2f09-2001-4453-6c4-6400-c83f-d6e2-9454-16f9.ngrok-free.app/paypal-ipn/",
+        'notify_url': "https://www.lacresort.com/paypal-ipn/",
         'return_url': f"http://{host}/booking/step4/{temp_guest.id}",
         'custom': json.dumps({
             'tg': str(temp_guest.id),
