@@ -8,7 +8,6 @@ class Command(BaseCommand):
     help = 'Analyze historical booking data from the last 2 years to determine peak and off-peak seasons'
 
     def handle(self, *args, **kwargs):
-        # Calculate the start date for two years ago
         two_years_ago = datetime.now() - timedelta(days=365*2)
 
 

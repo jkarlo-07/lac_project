@@ -27,18 +27,17 @@
       longPressDelay: 0.1,
       selectMirror: false,
       validRange: {
-        start: validRangeStart,  // Dynamically calculated start date
-        end: validRangeEnd  // 30 days from now
+        start: validRangeStart, 
+        end: validRangeEnd  
       },
       events: fullyBookedDates.map(date => ({
         start: date,
         allDay: true,
-        display: 'background', // Background event to show a visual marker
+        display: 'background', 
         title: 'Fully Booked',
-        className: 'fully-booked' // Custom class for styling
+        className: 'fully-booked' 
       })),
       selectAllow: function(selectInfo) {
-        // Prevent selection if the date is in the fully booked list
         return !fullyBookedDates.includes(selectInfo.startStr);
       },
       select: function(info) {

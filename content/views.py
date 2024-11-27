@@ -80,7 +80,7 @@ def paypal_ipn(request):
         )
         book.save()
         check_add_fullbook(book.check_in.date())
-        name =  "hoihoi"
+        name =  "sample"
         email = "camalig.j29@gmail.com"
         subject = "L.A.C Resort: Booking Confirmation and Receipt"
         if name and email and subject:
@@ -551,20 +551,20 @@ def getFullyBookDates():
 
 def search_room(request):
     if request.method == 'GET':
-        # Get and format the check-in date
+
         check_in_unformat = request.GET.get('check_in_date')
         try:
             date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
-            check_in_date = date_object.date()  # Convert to date object
+            check_in_date = date_object.date() 
         except (ValueError, TypeError):
             return render(request, 'content/booking.html', {'error': 'Invalid check-in date format.'})
 
-        # Get other parameters
+      
         capacity = request.GET.get("capacity", 1)
         try:
             capacity = int(capacity)
         except ValueError:
-            capacity = 1  # Default to 1 if invalid
+            capacity = 1 
 
         checkin_time = request.GET.get("checkin_time", "12:00")
         try:
@@ -576,34 +576,34 @@ def search_room(request):
         try:
             duration = int(duration)
         except ValueError:
-            duration = 8  # Default to 8 hours if invalid
+            duration = 8  #
 
-        # Compute start and end datetime
+    
         start_datetime = datetime.combine(check_in_date, start_time)
         end_datetime = start_datetime + timedelta(hours=duration)
 
-        # Filter rooms by capacity
+    
         rooms = Room.objects.filter(room_type__capacity__gte=capacity)
 
-        # Filter out booked rooms during the specified time range
+     
         booked_rooms = Booking.objects.filter(
             Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
         ).values_list('room', flat=True)
 
-        # Exclude booked rooms
+    
         available_rooms = rooms.exclude(id__in=booked_rooms)
 
-        # Optional debug outputs
+      
         print("Start Time:", start_datetime)
         print("End Time:", end_datetime)
         print("Available Rooms:", available_rooms)
 
-        # Format check-in date for the template
+     
         check_in_date_str = date_object.strftime('%b. %d, %Y')
 
-        # Context for the template
+       
         context = {
-            'rooms': available_rooms.distinct('room_type'),  # Ensure unique room types
+            'rooms': available_rooms.distinct('room_type'),  
             'capacity': capacity,
             'check_in_date': check_in_date_str,
             'duration': duration,

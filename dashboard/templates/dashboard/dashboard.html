@@ -221,23 +221,23 @@
             labels: data.room_labels,
             datasets: [
               {
-                label: data.sales_labels[0], // Change to sales
+                label: "Sales", 
                 data: data.room_sales,
                 backgroundColor: 'rgba(255, 99, 132, 0.8)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 tension: 0.1,
                 fill: false,
-                yAxisID: 'salesYAxis' // Assign to the first Y-axis (left)
+                yAxisID: 'salesYAxis'
               },
               {
-                label: data.sales_labels[1], // Change to bookings
+                label: "Rooms", 
                 data: data.room_bookings,
                 backgroundColor: 'rgba(54, 162, 235, 0.8)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 tension: 0.1,
                 type: 'bar',
-                fill: false, // Ensure lines are not filled
-                yAxisID: 'bookingYAxis' // Assign to the second Y-axis (right)
+                fill: false, 
+                yAxisID: 'bookingYAxis'
               }
             ]
           }
@@ -255,15 +255,15 @@
                 scales: {
                   salesYAxis: {
                     type: 'linear',
-                    position: 'left', // Sales on the left
+                    position: 'left',
                     beginAtZero: true
                   },
                   bookingYAxis: {
                     type: 'linear',
-                    position: 'right', // Bookings on the right
+                    position: 'right',
                     beginAtZero: true,
                     grid: {
-                      drawOnChartArea: false // Only show grid on one side
+                      drawOnChartArea: false 
                     }
                   }
                 }
