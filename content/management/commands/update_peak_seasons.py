@@ -10,20 +10,41 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         two_years_ago = datetime.now() - timedelta(days=365*2)
 
-
         bookings_per_month = Booking.objects.filter(check_in__gte=two_years_ago).annotate(
-            month=models.functions.ExtractMonth('check_in')
-        ).values('month').annotate(total_bookings=Count('id')).order_by('month')
+            month=models.functions.ExtractMonth('check_in'),
+            year=models.functions.ExtractYear('check_in')
+        ).values('month', 'year').annotate(total_bookings=Count('id')).order_by('month', 'year')
 
+        bookings_by_month = {}
 
-        total_bookings = sum(b['total_bookings'] for b in bookings_per_month)
-        average_bookings = total_bookings / len(bookings_per_month) if bookings_per_month else 0
+        for entry in bookings_per_month:
+            month = entry['month']
+            year = entry['year']
+            total_bookings = entry['total_bookings']
+            
+            if month not in bookings_by_month:
+                bookings_by_month[month] = []
+            
+            bookings_by_month[month].append(total_bookings)
 
-        peak_months = [entry['month'] for entry in bookings_per_month if entry['total_bookings'] > average_bookings * 1.5]
-        off_peak_months = [entry['month'] for entry in bookings_per_month if entry['total_bookings'] < average_bookings * 0.8]
+        total_bookings = sum(sum(bookings) for bookings in bookings_by_month.values())
+        total_months = sum(len(bookings) for bookings in bookings_by_month.values())
+        average_bookings = total_bookings / total_months if total_months else 0
+
+        peak_months = []
+        off_peak_months = []
+
+        for month, bookings in bookings_by_month.items():
+            normalized_average = sum(bookings) / len(bookings)
+            print(month, normalized_average)
+            if normalized_average > average_bookings * 1.5:
+                peak_months.append(month)
+
+            elif normalized_average < average_bookings * 0.8:
+                off_peak_months.append(month)
 
         current_year = datetime.now().year
-        years_range = list(range(current_year - 1, current_year + 1))  
+        years_range = list(range(current_year - 1, current_year + 1))
 
         seasonal_data, created = SeasonalData.objects.get_or_create(years=years_range)
 
