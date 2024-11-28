@@ -59,16 +59,17 @@ def total_amount_per_month():
 
     last_six_months = []
     total_amounts = []
-
+    
     for i in range(6):
-        month_date = today - timedelta(days=30 * i)
-        last_six_months.append(month_date.strftime('%B'))  
+        month_date = today - relativedelta(months=i)
+        last_six_months.append(month_date.strftime('%B')) 
         total_amounts.append(0)  
 
-    bookings = Booking.objects.filter(check_in__gte=today - timedelta(days=180)) 
+    six_months_ago = today - relativedelta(months=6)
+    bookings = Booking.objects.filter(check_in__gte=six_months_ago)
 
     for booking in bookings:
-        month = booking.check_in.strftime('%B') 
+        month = booking.check_in.strftime('%B')
         if month in last_six_months:
             index = last_six_months.index(month)
             total_amounts[index] += booking.total_amount
@@ -78,6 +79,7 @@ def total_amount_per_month():
 
     return last_six_months, total_amounts
 
+
 def booking_count_per_month():
     today = datetime.now()
 
@@ -85,19 +87,20 @@ def booking_count_per_month():
     booking_counts = [0] * 6  
 
     for i in range(6):
-        month_date = today - timedelta(days=30 * i)
-        last_six_months.append(month_date.strftime('%B'))
+        month_date = today - relativedelta(months=i)
+        last_six_months.append(month_date.strftime('%B'))  
 
     last_six_months.reverse()
     booking_counts.reverse()
 
-    bookings = Booking.objects.filter(check_in__gte=today - timedelta(days=180))
+    six_months_ago = today - relativedelta(months=6)
+    bookings = Booking.objects.filter(check_in__gte=six_months_ago)
 
     for booking in bookings:
         month = booking.check_in.strftime('%B')
         if month in last_six_months:
             index = last_six_months.index(month)
-            booking_counts[index] += 1  
+            booking_counts[index] += 1
 
     return last_six_months, booking_counts
 
