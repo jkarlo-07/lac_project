@@ -73,17 +73,28 @@
         <div class="book3-twofields">
           <div class="book3-field">
             <label for="book3-address">Address:</label>
-            <input type="text" id="book3-address" name="address" 
-            value="{% if form.address.value %}{{ form.address.value }}{% elif address %}{{ address }}{% else %}{% endif %}">
-
-            {% if form.address.errors %}
-              <ul class="errorlist">
-                {% for error in form.address.errors %}
-                  <li class="error-msg">{{ error }}</li>
+            <select id="book3-address" name="address">
+                {% if form.address.value %}
+                    <option value="{{ form.address.value }}" selected>{{ form.address.value }}</option>
+                {% elif address %}
+                    <option value="{{ address }}" selected>{{ address }}</option>
+                {% else %}
+                    <option value="" disabled selected>Select region</option>
+                {% endif %}
+        
+                {% for key, region_name in regions.items %}
+                    <option value="{{ key }}">{{ region_name }}</option>
                 {% endfor %}
-              </ul>
+            </select>
+        
+            {% if form.address.errors %}
+                <ul class="errorlist">
+                    {% for error in form.address.errors %}
+                        <li class="error-msg">{{ error }}</li>
+                    {% endfor %}
+                </ul>
             {% endif %}
-          </div>
+        </div>        
           <div class="book3-field">
             <label for="book3-dob">Date of Birth:</label>
             <input type="text" id="book3-dob" name="date_of_birth" value="{% if form.date_of_birth.value %}{{ form.date_of_birth.value }}{% elif date_of_birth %}{{ date_of_birth }}{% else %}{% endif %}" readonly/>

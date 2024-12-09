@@ -460,6 +460,7 @@ def book_view3(request):
             'check_out_time': check_out_time,
             'room': room,
             'email': email,
+            'regions': get_regions()
         }
 
         return render(request, 'content/book_step3.html', context)
@@ -736,3 +737,30 @@ def dynamic_search(request):
         'check_in':check_in})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+def region_data():
+    file_path = "content/data/philippine_data.json"
+
+    with open(file_path, "r", encoding="utf-8") as file:
+        data = json.load(file)
+    
+    return data
+
+def test_data(request):
+    data = region_data()
+    
+    regions = {region_key: region_info['region_name'] for region_key, region_info in data.items()}
+
+    print("Regions", regions)
+
+    return render(request, "content/test_data.html", {'regions' : regions})
+
+
+def get_regions():
+    data = region_data()
+    
+    regions = {region_key: region_info['region_name'] for region_key, region_info in data.items()}
+
+    print("Regions", regions)
+
+    return regions

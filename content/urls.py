@@ -18,4 +18,5 @@ urlpatterns = [
     path('get_fully_book/', views.getFullyBookDates, name='get_fully_book'),
     path('initial_search/', views.initial_search, name='initial_search'),
     path('dynamic_search/', views.dynamic_search, name='dynamic_search'),
+    path('test_data/', views.test_data, name='test_data'),
 ]
