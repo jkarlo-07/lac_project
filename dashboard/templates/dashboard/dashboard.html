@@ -85,7 +85,7 @@
     let barChart, lineChart, salesChart, comboChart
     
     function fetchChartData() {
-      fetch("{% url 'dashboard:sample_sales_data' %}")
+      fetch("{% url 'dashboard:get_data' %}")
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok')
@@ -117,7 +117,6 @@
                 labels: data.room_labels,
                 datasets: [
                   {
-                    label: 'Book Count',
                     data: data.room_bookings,
                     backgroundColor: 'rgba(75, 192, 192)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -126,8 +125,31 @@
                 ]
               },
               options: {
+                plugins: {
+                  legend: {
+                    display: false 
+                  }
+                },
                 scales: {
+                  x: {
+                    title: {
+                        display: true,
+                        text: 'Rooms' ,
+                        font: {   
+                          weight: 'bold', 
+                        }, 
+                        color: '#000',
+                    }
+                },
                   y: {
+                    title: {
+                      display: true,
+                      text: 'Book Count',
+                      font: {   
+                        weight: 'bold', 
+                      }, 
+                      color: '#000',
+                  },
                     beginAtZero: true
                   }
                 }
@@ -157,8 +179,31 @@
               type: 'line',
               data: lineData,
               options: {
+                plugins: {
+                  legend: {
+                    display: false 
+                  }
+                },
                 scales: {
+                  x: {
+                    title: {
+                        display: true,
+                        text: 'Month' ,
+                        font: {   
+                          weight: 'bold', 
+                        }, 
+                        color: '#000',
+                    }
+                  },
                   y: {
+                    title: {
+                      display: true,
+                      text: 'Sales' ,
+                      font: {   
+                        weight: 'bold', 
+                      }, 
+                      color: '#000',
+                    },
                     beginAtZero: true
                   }
                 }
@@ -208,7 +253,25 @@
               data: salesData,
               options: {
                 scales: {
+                  x: {
+                    title: {
+                        display: true,
+                        text: 'Month' ,
+                        font: {   
+                          weight: 'bold', 
+                        }, 
+                        color: '#000',
+                    }
+                  },
                   y: {
+                    title: {
+                      display: true,
+                      text: 'Book Count' ,
+                      font: {   
+                        weight: 'bold', 
+                      }, 
+                      color: '#000',
+                    },
                     beginAtZero: true
                   }
                 }
@@ -253,10 +316,28 @@
               data: comboData,
               options: {
                 scales: {
+                  x: {
+                    title: {
+                        display: true,
+                        text: 'Room' ,
+                        font: {   
+                          weight: 'bold', 
+                        }, 
+                        color: '#000',
+                    }
+                  },
                   salesYAxis: {
                     type: 'linear',
                     position: 'left',
-                    beginAtZero: true
+                    beginAtZero: true,
+                    title: {
+                      display: true,
+                      text: 'Sales', 
+                      font: { 
+                        weight: 'bold',
+                      },
+                      color: '#000' 
+                    }
                   },
                   bookingYAxis: {
                     type: 'linear',
@@ -264,6 +345,14 @@
                     beginAtZero: true,
                     grid: {
                       drawOnChartArea: false 
+                    },
+                    title: {
+                      display: true,
+                      text: 'Book Count', 
+                      font: {
+                        weight: 'bold',
+                      },
+                      color: '#000' 
                     }
                   }
                 }

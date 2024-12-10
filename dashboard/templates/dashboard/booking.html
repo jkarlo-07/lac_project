@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block in_body %}
-<!-- Cancel Form -->
+
 <form action="change_booking_status" method="POST" class="booking-forms-walkin canceled_booking_option" style="display: none;">
   {% csrf_token %}
   <input type="hidden" id="status-book-id" name="id">
@@ -466,6 +466,7 @@
     const formattedDataDateOut = new Date(data_date_out).toLocaleDateString('en-US');
     const formattedDate = new Date(data_date).toLocaleDateString('en-US');
     const formattedCurrentDate = new Date(currentDate).toLocaleDateString('en-US');
+    const formattedTommorowDate = new Date(tommorowDate).toLocaleDateString('en-US'); 
     if ($("#dateFilter").val() == "Today") {
       if (formattedDataDateOut == formattedCurrentDate || formattedCurrentDate == formattedDate) {  
         console.log("test")
@@ -478,7 +479,7 @@
     }
 
     if ($("#dateFilter").val() == "Tomorrow") {
-      if (data_date == tommorowDate) {
+      if (formattedDataDateOut == formattedTommorowDate || formattedTommorowDate == formattedDate) {
         return true; 
       }
       return false; 

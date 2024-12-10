@@ -54,78 +54,69 @@ def room_type_view(request):
 def add_room_view(request):
     return render(request, "dashboard/add-room.html")
 
+from datetime import datetime
+from collections import defaultdict
+
 def total_amount_per_month():
+    months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+    total_amounts = defaultdict(int)
+
     today = datetime.now()
-
-    last_six_months = []
-    total_amounts = []
-    
-    for i in range(6):
-        month_date = today - relativedelta(months=i)
-        last_six_months.append(month_date.strftime('%B')) 
-        total_amounts.append(0)  
-
-    six_months_ago = today - relativedelta(months=6)
-    bookings = Booking.objects.filter(check_in__gte=six_months_ago)
+    start_of_year = today.replace(month=1, day=1)
+    bookings = Booking.objects.filter(check_in__gte=start_of_year)
 
     for booking in bookings:
         month = booking.check_in.strftime('%B')
-        if month in last_six_months:
-            index = last_six_months.index(month)
-            total_amounts[index] += booking.total_amount
+        total_amounts[month] += booking.total_amount
 
-    last_six_months.reverse()
-    total_amounts.reverse()
+    total_amounts_list = [total_amounts[month] for month in months]
 
-    return last_six_months, total_amounts
+    return months, total_amounts_list
 
 
 def booking_count_per_month():
+    months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+    booking_counts = defaultdict(int)
+
     today = datetime.now()
-
-    last_six_months = []
-    booking_counts = [0] * 6  
-
-    for i in range(6):
-        month_date = today - relativedelta(months=i)
-        last_six_months.append(month_date.strftime('%B'))  
-
-    last_six_months.reverse()
-    booking_counts.reverse()
-
-    six_months_ago = today - relativedelta(months=6)
-    bookings = Booking.objects.filter(check_in__gte=six_months_ago)
+    start_of_year = today.replace(month=1, day=1)
+    bookings = Booking.objects.filter(check_in__gte=start_of_year)
 
     for booking in bookings:
         month = booking.check_in.strftime('%B')
-        if month in last_six_months:
-            index = last_six_months.index(month)
-            booking_counts[index] += 1
+        booking_counts[month] += 1
 
-    return last_six_months, booking_counts
+    booking_counts_list = [booking_counts[month] for month in months]
+
+    return months, booking_counts_list
+
+from datetime import datetime
+from collections import defaultdict
 
 def booking_count_per_month_past(past_year):
-    today = datetime.now()
+    months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+    booking_counts = defaultdict(int)
 
-    last_six_months = []
-    booking_counts = [0] * 6
-
-    for i in range(5, -1, -1):  
-        month_date = today.replace(year=today.year - past_year) - relativedelta(months=i)
-        last_six_months.append(month_date.strftime('%B %Y'))
-
-    bookings = Booking.objects.filter(
-        check_in__year=today.year - past_year,
-        check_in__month__in=[datetime.strptime(month, '%B %Y').month for month in last_six_months]
-    )
+    target_year = datetime.now().year - past_year
+    bookings = Booking.objects.filter(check_in__year=target_year)
 
     for booking in bookings:
-        month_year = booking.check_in.strftime('%B %Y')
-        if month_year in last_six_months:
-            index = last_six_months.index(month_year)
-            booking_counts[index] += 1 
+        month = booking.check_in.strftime('%B')
+        booking_counts[month] += 1
 
-    return booking_counts
+    booking_counts_list = [booking_counts[month] for month in months]
+
+    return  booking_counts_list
+
 
 
 from django.db.models import Q
@@ -159,7 +150,7 @@ def count_available_rooms():
 
 
 
-def sample_sales_data(request):
+def get_data(request):
     room_types_with_bookings = RoomType.objects.annotate(booking_count=Count('room__booking'))
 
     room_labels = []
