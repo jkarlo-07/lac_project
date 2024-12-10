@@ -566,6 +566,9 @@ def get_rooms(request):
     selected_date = request.GET.get('date')
     selected_time = request.GET.get('time')
     duration = request.GET.get('duration')
+    capacity = request.GET.get('capacity')
+    capacity = int(capacity)
+    print(selected_date, selected_time, duration)
     if selected_date and selected_time:
         try:
             combined_datetime_str = f"{selected_date} {selected_time}"
@@ -574,7 +577,7 @@ def get_rooms(request):
             duration_hours = int(duration) if duration else 0
             end_datetime = start_datetime + timedelta(hours=duration_hours)
             
-            rooms = Room.objects.all()
+            rooms = Room.objects.filter(room_type__capacity__gte=capacity)
             booked_rooms = Booking.objects.filter(
                 Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime) & Q(status="Booked")
             ).values_list('room', flat=True)

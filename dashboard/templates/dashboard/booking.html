@@ -121,7 +121,7 @@
           {% endif %}
         </div>
       </div>
-        
+      <div class="add-select-option">
         <div class="input-container">
           <label for="add-duration">Duration</label>
           <select name="duration" id="add-duration">
@@ -132,6 +132,16 @@
               <p class="errorlist">{{ form.duration.errors }}</p>
             {% endif %}
         </div>
+        <div class="input-container">
+          <label for="add-capacity">Capacity</label>
+          <input type="text" name="capacity" id="add-capacity" value="1">
+          {% if form.capacity.errors %}
+              <p class="errorlist">{{ form.capacity.errors }}</p>
+            {% endif %}
+        </div>
+      </div>
+        
+        
 
         <div class="input-container add-room-container">
           <div class="input-container">
@@ -226,10 +236,14 @@
             <option value="8:00am">---Select Check In Date First---</option>
         </select>
       </div>
-      <select name="duration" id="edit-duration-input">
-        <option value="12">12 hrs</option>
-        <option value="24">24 hrs</option>
-    </select>
+      <div class="input-flex">
+        <select name="duration" id="edit-duration-input">
+          <option value="12">12 hrs</option>
+          <option value="24">24 hrs</option>
+        </select>
+        <input type="text" name="update-capacity" id="update-capacity" value="1">
+      </div>
+      
       <div class="update-select-option">
         <label for="update-room-booking">Room</label>
         <div class="input-container">
@@ -295,7 +309,7 @@
       </thead>
       <tbody>
           {% for book in booking %}
-          <tr data-status="{{ book.status }}" data-check-in="{{ book.check_in|date:"m-d-Y" }}">
+          <tr data-status="{{ book.status }}" data-check-in="{{ book.check_in|date:"m-d-Y" }}" data-check-out="{{ book.check_out|date:"m-d-Y" }} ">
               <td>{{ book.id }}</td>
               <td>{{ book.room.room_type }}</td>
               <td>{{ book.check_in|date:"m-d-Y" }}, {{ book.check_in|time:"g:i A" }}</td>
@@ -354,10 +368,13 @@
         .catch(error => console.error("Error fetching time data:", error));
     }
 
-    function handleTimeSelect(timeInput, dateInput, durationInput, roomInput) {
+    function handleTimeSelect(timeInput, dateInput, durationInput, roomInput, capacityInput) {
       const selectedTime = $(timeInput).val();
       const selectedDate = $(dateInput).val();
       const duration = $(durationInput).val();
+      const capacity = $(capacityInput).val();
+      console.log('check', capacity)
+      console.log(capacity)
       console.log(selectedTime, selectedDate, duration);
 
       if (selectedTime && selectedDate && duration) {
@@ -367,10 +384,13 @@
             "&time=" +
             encodeURIComponent(selectedTime) +
             "&duration=" +
-            encodeURIComponent(duration)
+            encodeURIComponent(duration) +
+            "&capacity=" +
+            encodeURIComponent(capacity)
         )
           .then(response => response.json())
           .then(data => {
+            console.log("teest")
             const selectRoomInput = $(roomInput);
             selectRoomInput.empty();
             data.available_rooms.forEach(room => {
@@ -441,13 +461,19 @@
 
   $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
     const status = $(table.row(dataIndex).node()).data("status");
-    const data_date = $(table.row(dataIndex).node()).data("check-in"); // Ensure `data-check-in` is properly set in the HTML
-    console.log(tommorowDate)
-    // Check the "Now" filter
+    const data_date = $(table.row(dataIndex).node()).data("check-in"); 
+    const data_date_out = $(table.row(dataIndex).node()).data("check-out"); 
+    const formattedDataDateOut = new Date(data_date_out).toLocaleDateString('en-US');
+    const formattedDate = new Date(data_date).toLocaleDateString('en-US');
+    const formattedCurrentDate = new Date(currentDate).toLocaleDateString('en-US');
     if ($("#dateFilter").val() == "Today") {
-      if (data_date == currentDate) {
+      if (formattedDataDateOut == formattedCurrentDate || formattedCurrentDate == formattedDate) {  
+        console.log("test")
+        
         return true; 
+        
       }
+      console.log(data_date_out, currentDate)
       return false; 
     }
 
@@ -508,14 +534,19 @@
     });
 
     // Time and duration changes
-    function addChangeHandler(timeInput, dateInput, durationInput, roomInput) {
+    function addChangeHandler(timeInput, dateInput, durationInput, roomInput, capacityInput) {
       $(timeInput + ", " + durationInput).on("change", function () {
-        handleTimeSelect(timeInput, dateInput, durationInput, roomInput);
+        console.log('sdfjlsdfjl')
+        handleTimeSelect(timeInput, dateInput, durationInput, roomInput, capacityInput);
+      });
+
+      $(capacityInput).on("change input", function () {
+        handleTimeSelect(timeInput, dateInput, durationInput, roomInput, capacityInput);
       });
     }
 
-    addChangeHandler("#checkin-time-update", "#datepicker", "#edit-duration-input", "#update-room-booking");
-    addChangeHandler("#add-time-input", "#checkin-datepicker", "#add-duration", "#add-room-booking");
+    addChangeHandler("#checkin-time-update", "#datepicker", "#edit-duration-input", "#update-room-booking", "#update-capacity");
+    addChangeHandler("#add-time-input", "#checkin-datepicker", "#add-duration", "#add-room-booking", '#add-capacity');
 
     // Add Form
     const addFormBtn = $(".dashboard-add-booking");

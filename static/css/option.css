@@ -15,6 +15,16 @@
     padding: 10px 20px;
 }
 
+.input-flex {
+    display: flex;
+    gap: 10px;
+}
+
+.input-flex > * {
+    height: 30px !important;
+    width: 50% !important;
+}
+
 .delete-choose-container{
     display: flex;
     text-align: center;

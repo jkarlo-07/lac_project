@@ -66,7 +66,7 @@
                     <a href="#" class="nav-link" onclick="document.getElementById('logoutForm').submit();">LOG OUT</a>
                 </form>
               {% else %}
-              <a href="{% url 'users:login' %}" class="nav-link book-now-mobile-btn">BOOK NOW</a>
+              <a href="{% url 'content:rooms' %}" class="nav-link book-now-mobile-btn">BOOK NOW</a>
               {% endif %}
               
             </li>
@@ -77,7 +77,7 @@
               <button class="header-book-btn">LOG OUT</button>
             </form>
           {% else %}
-            <a class="header-book-btn" href="{% url 'users:login' %}">BOOK NOW</a>
+            <a class="header-book-btn" href="{% url 'content:rooms' %}">BOOK NOW</a>
           {% endif %}
         </nav>
       </div>
