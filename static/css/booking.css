@@ -53,6 +53,11 @@
     position: relative;
 }
 
+#book3-province, #book3-region, #book3-municipality{
+    padding: 15px 10px;
+    border: 1px solid rgba(150, 150, 150, 0.5);
+}
+
 .booking-step {
     text-align: center;
     flex: 1;
