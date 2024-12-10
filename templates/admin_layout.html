@@ -152,6 +152,28 @@
             Guest
           </p>
         </a>
+        <a
+          href="{% url 'dashboard:manage_email' %}"
+          class="side-link {% if request.resolver_match.view_name == 'dashboard:manage_email' %}current-link{% endif %}"
+          id="link-guest"
+        >
+          <img
+            src="{% if request.resolver_match.view_name == 'dashboard:manage_email' %}
+            {% static 'images/icons/m_email-b.png' %}
+          {% else %}
+            {% static 'images/icons/m_email-s.png' %}
+          {% endif %}"
+            alt="manage_email"
+            class="side-icon"
+            id="img-manage_email"
+            width="100"
+          />
+          <p
+            class="side-link-text {% if request.resolver_match.view_name == 'dashboard:manage_email' %}active-link{% endif %}"
+          >
+            Manage Email
+          </p>
+        </a>
       </div>
     </div>
 

@@ -800,6 +800,60 @@ main {
   z-index: 1;
 }
 
+/*MANAGE EMAIL CSS*/
+
+.manage-email input, .manage-email textarea{
+  padding: 15px 10px;
+  font-size: 1.2rem;
+}
+
+.manage-contact-email input{
+  width: 100%;
+}
+
+.manage-contact-email{
+  display: flex;
+  gap: 50px;
+}
+
+.manage-ce-box{
+  width: 50%;
+}
+
+.manage-email-btn-container{
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: end;
+}
+
+.manage-email-btn-container button, .manage-email-btn-container p{
+    padding: 10px 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    color: #fff;
+
+}
+
+.manage-email-btn-container button{
+  background-color: green;
+}
+
+.manage-email-btn-container p{
+  background-color: #C1C1C1;
+}
+
+.manage-email-btn-container button:hover{
+  background-color: rgb(1, 172, 1);
+}
+
+.manage-email-btn-container p:hover{
+  background-color: #9b9b9b;
+}
+
 @media screen and (max-width: 1265px) {
 }
 

@@ -54,6 +54,11 @@ def room_type_view(request):
 def add_room_view(request):
     return render(request, "dashboard/add-room.html")
 
+@login_required(login_url="users:login")
+@user_passes_test(is_staff, login_url="content:index") 
+def manage_email_view(request):
+    return render(request, "dashboard/manage_email.html")
+
 from datetime import datetime
 from collections import defaultdict
 
