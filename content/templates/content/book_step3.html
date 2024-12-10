@@ -1,280 +1,377 @@
-{% extends 'layout.html' %} 
-{% load static %} 
-{% load humanize %} 
-{% block title%} Booking {% endblock %} 
+{% extends 'layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+  Booking
+{% endblock %}
 
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'css/booking.css' %}" />
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-{% endblock %} 
+{% endblock %}
 
 {% block content %}
-<form method="POST" action="{% url "content:book_3" %}">
-  
-  <div class="booking3-wrapper">
-    {% csrf_token %}
-    <div class="booking3-container">
-      <div class="btn-image-back">
-        <img src="{% static "images/icons/left-arrow.png" %}" alt="back icon" id="back_booking">
-      </div>
-      <div class="booking-step-wrapper clearfix">
-        <div class="booking-step active">
-          <a class="step-number">1</a>
-          <a class="step-label">Rooms</a>
+  <form method="POST" action="{% url 'content:book_3' %}">
+    <div class="booking3-wrapper">
+      {% csrf_token %}
+      <div class="booking3-container">
+        <div class="btn-image-back">
+          <img src="{% static 'images/icons/left-arrow.png' %}" alt="back icon" id="back_booking" />
         </div>
-        <div class="booking-step active">
-          <a class="step-number">2</a>
-          <a class="step-label">Guest Info</a>
-        </div>
-        <div class="booking-step">
-          <a class="step-number">3</a>
-          <a class="step-label">Payment</a>
-        </div>
-        <div class="booking-step">
-          <a class="step-number">4</a>
-          <a class="step-label">Complete</a>
-        </div>
-        <div class="booking-step-line">
-          <div style="width: 25%"></div>
-        </div>
-      </div>
-      <div class="book3-form">
-        <h2 class="book3-heading">Billing Details</h2>
-        <div class="book3-twofields">
-          <div class="book3-field">
-            <label for="book3-fname">First Name:</label>
-            <input type="text" name="first_name" 
-              value="{% if form.first_name.value %}{{ form.first_name.value }}{% elif first_name %}{{ first_name }}{% else %}{% endif %}">
-
-            {% if form.first_name.errors %}
-              <ul class="errorlist">
-                {% for error in form.first_name.errors %}
-                  <li class="error-msg">{{ error }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+        <div class="booking-step-wrapper clearfix">
+          <div class="booking-step active">
+            <a class="step-number">1</a>
+            <a class="step-label">Rooms</a>
           </div>
-          <div class="book3-field">
-            <label for="book3-lname">Last Name:</label>
-            <input type="text" id="book3-lname" name="last_name" 
-               value="{% if form.last_name.value %}{{ form.last_name.value }}{% elif last_name %}{{ last_name }}{% else %}{% endif %}">
-
-            {% if form.last_name.errors %}
-              <ul class="errorlist">
-                {% for error in form.last_name.errors %}
-                  <li class="error-msg">{{ error }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+          <div class="booking-step active">
+            <a class="step-number">2</a>
+            <a class="step-label">Guest Info</a>
+          </div>
+          <div class="booking-step">
+            <a class="step-number">3</a>
+            <a class="step-label">Payment</a>
+          </div>
+          <div class="booking-step">
+            <a class="step-number">4</a>
+            <a class="step-label">Complete</a>
+          </div>
+          <div class="booking-step-line">
+            <div style="width: 25%"></div>
           </div>
         </div>
-        <div class="book3-twofields">
-          <div class="book3-field">
-            <label for="book3-address">Address:</label>
-            <select id="book3-address" name="address">
-                {% if form.address.value %}
-                    <option value="{{ form.address.value }}" selected>{{ form.address.value }}</option>
-                {% elif address %}
-                    <option value="{{ address }}" selected>{{ address }}</option>
-                {% else %}
-                    <option value="" disabled selected>Select region</option>
-                {% endif %}
-        
-                {% for key, region_name in regions.items %}
-                    <option value="{{ key }}">{{ region_name }}</option>
-                {% endfor %}
-            </select>
-        
-            {% if form.address.errors %}
+        <div class="book3-form">
+          <h2 class="book3-heading">Billing Details</h2>
+          <div class="book3-twofields">
+            <div class="book3-field">
+              <label for="book3-fname">First Name:</label>
+              <input type="text"
+                name="first_name"
+                value="{% if form.first_name.value %}{{ form.first_name.value }}{% elif first_name %}{{ first_name }}
+                {% endif %}" />
+
+              {% if form.first_name.errors %}
                 <ul class="errorlist">
-                    {% for error in form.address.errors %}
-                        <li class="error-msg">{{ error }}</li>
-                    {% endfor %}
+                  {% for error in form.first_name.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
                 </ul>
-            {% endif %}
-        </div>        
-          <div class="book3-field">
-            <label for="book3-dob">Date of Birth:</label>
-            <input type="text" id="book3-dob" name="date_of_birth" value="{% if form.date_of_birth.value %}{{ form.date_of_birth.value }}{% elif date_of_birth %}{{ date_of_birth }}{% else %}{% endif %}" readonly/>
-            {% if form.date_of_birth.errors %}
-              <ul class="errorlist">
-                {% for error in form.date_of_birth.errors %}
-                  <li class="error-msg">{{ error }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          </div>
-        </div>
-        <div class="book3-twofields">
-          <div class="book3-field">
-            <label for="book3-phone">Phone:</label>
-            <input type="text" id="book3-phone" name="phone" value="{% if form.phone.value %}{{ form.phone.value }}{% elif phone %}{{ phone }}{% else %}{% endif %}"/>
-            {% if form.phone.errors %}
-              <ul class="errorlist">
-                {% for error in form.phone.errors %}
-                  <li class="error-msg">{{ error }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          </div>
-          <div class="book3-field">
-            <label for="book3-phone">Email:</label>
-            <input type="text" id="book3-email" value="{{ email }}" readonly />
-          </div>
-        </div>
-        <div class="book3-twofields">
-          <div class="book3-field">
-            <label for="book3-adult_count">Adult Count:</label>
-            <input type="text" name="adult_count" value="{% if form.adult_count.value %}{{ form.adult_count.value }}{% elif adult_count %}{{ adult_count }}{% else %}{% endif %}">
-            {% if form.adult_count.errors %}
-              <ul class="errorlist">
-                {% for error in form.adult_count.errors %}
-                  <li class="error-msg">{{ error }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          </div>
-          <div class="book3-field">
-            <label for="book3-kid_count">Kid Count:</label>
-            <input type="text" id="book3-lname" name="kid_count" value="{% if form.kid_count.value %}{{ form.kid_count.value }}{% elif kid_count %}{{ kid_count }}{% else %}{% endif %}"/>
-            {% if form.kid_count.errors %}
-              <ul class="errorlist">
-                {% for error in form.kid_count.errors %}
-                  <li class="error-msg">{{ error }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          </div>
-        </div>
-        
-      </div>
-      
-      <input type="hidden" name="check_in_date" value="{{ check_in_date }}">
-      <input type="hidden" name="check_out_date" value="{{ check_out_date }}">
-      <input type="hidden" name="room_id" value="{{ room.id }}">
-      <input type="hidden" name="total_amount" value="{{ room.price|floatformat:2|intcomma }}">
-      <input type="hidden" name="duration" value="{{ duration }}">
-      <input type="hidden" name="check_in_time" value="{{ check_in_time }}">
-      <button class="button-sub-3">NEXT</button>
-    </div>
+              {% endif %}
+            </div>
+            <div class="book3-field">
+              <label for="book3-lname">Last Name:</label>
+              <input type="text"
+                id="book3-lname"
+                name="last_name"
+                value="{% if form.last_name.value %}{{ form.last_name.value }}{% elif last_name %}{{ last_name }}
+                {% endif %}" />
 
-    <div class="booking3-aside atWrapper">
-      <div class="book3-aside-info">
-        <h2 class="book3-aside-title">Room 1 of 1</h2>
-        <div class="brown-spacer"></div>
-        <div class="date-guest-info">
-          <p>
-            Date: <span class="gray-fg">{{ check_in_date }} - {{ check_out_date }}</span>
-          </p>
-          <p>
-            Time: <span class="gray-fg">{{ check_in_time }} - {{ check_out_time }}</span>
-          </p>
-        </div>
-        <div class="book3-room-price-info">
-          <img
-            src="{% static 'images/photos/lac2.jpg' %}"
-            alt="room"
-            width="100"
-            class="room-aside-photo"
-          />
-          <div class="book3-purchase-info">
-            <div class="book3-bed-info">
-              <p class="gray-fg">Room:</p>
+              {% if form.last_name.errors %}
+                <ul class="errorlist">
+                  {% for error in form.last_name.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
             </div>
-            <div class="book3-info-container">
-              <p class="book3-info">{{room.room_type}}</p>
+          </div>
+          <div class="book3-twofields">
+            <div class="book3-field">
+              <label for="book3-region">Region:</label>
+              <select id="book3-region" name="region">
+                <option value="" disabled selected>--Regions--</option>
+
+                {% for key, region_name in regions.items %}
+                  <option value="{{ key }}">{{ region_name }}</option>
+                {% endfor %}
+              </select>
+              {% if form.region.errors %}
+                <ul class="errorlist">
+                  {% for error in form.region.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="book3-field">
+              <label for="book3-province">Province:</label>
+              <select id="book3-province" name="province">
+                <option value="" disabled selected>--Select region first--</option>
+              </select>
+              {% if form.province.errors %}
+                <ul class="errorlist">
+                  {% for error in form.province.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+          <div class="book3-twofields">
+            <div class="book3-field">
+              <label for="book3-municipality">Municipality:</label>
+              <select id="book3-municipality" name="municipality">
+                <option value="" disabled selected>--Select province first--</option>
+              </select>
+              {% if form.municipality.errors %}
+                <ul class="errorlist">
+                  {% for error in form.municipality.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="book3-field">
+              <label for="book3-dob">Date of Birth:</label>
+              <input type="text"
+                id="book3-dob"
+                name="date_of_birth"
+                value="{% if form.date_of_birth.value %}{{ form.date_of_birth.value }}{% elif date_of_birth %}{{ date_of_birth }}
+                {% endif %}"
+                readonly />
+              {% if form.date_of_birth.errors %}
+                <ul class="errorlist">
+                  {% for error in form.date_of_birth.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+          <div class="book3-twofields">
+            <div class="book3-field">
+              <label for="book3-phone">Phone:</label>
+              <input type="text"
+                id="book3-phone"
+                name="phone"
+                value="{% if form.phone.value %}{{ form.phone.value }}{% elif phone %}{{ phone }}
+                {% endif %}" />
+              {% if form.phone.errors %}
+                <ul class="errorlist">
+                  {% for error in form.phone.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="book3-field">
+              <label for="book3-phone">Email:</label>
+              <input type="text" id="book3-email" value="{{ email }}" readonly />
+            </div>
+          </div>
+          <div class="book3-twofields">
+            <div class="book3-field">
+              <label for="book3-adult_count">Adult Count:</label>
+              <input type="text"
+                name="adult_count"
+                value="{% if form.adult_count.value %}{{ form.adult_count.value }}{% elif adult_count %}{{ adult_count }}
+                {% endif %}" />
+              {% if form.adult_count.errors %}
+                <ul class="errorlist">
+                  {% for error in form.adult_count.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="book3-field">
+              <label for="book3-kid_count">Kid Count:</label>
+              <input type="text"
+                id="book3-lname"
+                name="kid_count"
+                value="{% if form.kid_count.value %}{{ form.kid_count.value }}{% elif kid_count %}{{ kid_count }}
+                {% endif %}" />
+              {% if form.kid_count.errors %}
+                <ul class="errorlist">
+                  {% for error in form.kid_count.errors %}
+                    <li class="error-msg">{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" name="check_in_date" value="{{ check_in_date }}" />
+        <input type="hidden" name="check_out_date" value="{{ check_out_date }}" />
+        <input type="hidden" name="room_id" value="{{ room.id }}" />
+        <input type="hidden" name="total_amount" value="{{ room.price|floatformat:2|intcomma }}" />
+        <input type="hidden" name="duration" value="{{ duration }}" />
+        <input type="hidden" name="check_in_time" value="{{ check_in_time }}" />
+        <button class="button-sub-3">NEXT</button>
+      </div>
+
+      <div class="booking3-aside atWrapper">
+        <div class="book3-aside-info">
+          <h2 class="book3-aside-title">Room 1 of 1</h2>
+          <div class="brown-spacer"></div>
+          <div class="date-guest-info">
+            <p>
+              Date: <span class="gray-fg">{{ check_in_date }} - {{ check_out_date }}</span>
+            </p>
+            <p>
+              Time: <span class="gray-fg">{{ check_in_time }} - {{ check_out_time }}</span>
+            </p>
+          </div>
+          <div class="book3-room-price-info">
+            <img src="{% static 'images/photos/lac2.jpg' %}" alt="room" width="100" class="room-aside-photo" />
+            <div class="book3-purchase-info">
+              <div class="book3-bed-info">
+                <p class="gray-fg">Room:</p>
+              </div>
+              <div class="book3-info-container">
+                <p class="book3-info">{{ room.room_type }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</form>
-{% endblock %} 
+  </form>
+{% endblock %}
 {% block add_script %}
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 120;
-    $(document).ready(function() {
-      $("#book3-dob").datepicker({
-        dateFormat: "yy-mm-dd",  
-        yearRange: `${startYear}:${currentYear}`, 
-        changeMonth: true,       
-        changeYear: true
-      });
-    });
-
-    function handleResize() {
-      window.addEventListener("resize", function () {
-        const sidebar = document.querySelector(".booking3-aside");
-        const bookingContainer = document.querySelector(".booking3-container");
-        const bookingWrapper = document.querySelector(".booking3-wrapper");
-        if (
-          window.innerWidth < 1024 &&
-          sidebar.classList.contains("atWrapper")
-        ) {
-          putAbove();
-        } else if (
-          window.innerWidth > 1024 &&
-          sidebar.classList.contains("atContainer")
-        ) {
-          putBelow();
-        }
-      });
-    }
-
-    function putAbove() {
-      const sidebar = document.querySelector(".booking3-aside");
-      const bookingContainer = document.querySelector(".booking3-container");
-      const bookingWrapper = document.querySelector(".booking3-wrapper");
-      console.log("less than 1024");
-      sidebar.classList.add("atContainer");
-      sidebar.classList.remove("atWrapper");
-      bookingWrapper.removeChild(sidebar);
-      bookingContainer.appendChild(sidebar);
-      bookingContainer.insertBefore(sidebar, bookingContainer.children[1]);
-    }
-
-    function putBelow() {
-      const sidebar = document.querySelector(".booking3-aside");
-      const bookingContainer = document.querySelector(".booking3-container");
-      const bookingWrapper = document.querySelector(".booking3-wrapper");
-      console.log("less than 1024");
-      sidebar.classList.add("atWrapper");
-      sidebar.classList.remove("atContainer");
-      bookingContainer.removeChild(sidebar);
-      bookingWrapper.appendChild(sidebar);
-    }
-
-    function initialLoading() {
-      const sidebar = document.querySelector(".booking3-aside");
-      if (window.innerWidth < 1024 && sidebar.classList.contains("atWrapper")) {
-        putAbove();
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const regionSelectInput = document.querySelector('#book3-region')
+      const selectProvinceInput = document.querySelector('#book3-province')
+      const selectMunicipalityInput = document.querySelector('#book3-municipality')
+    
+      function renderProvinces() {
+        const region = regionSelectInput.value
+        fetch("{% url 'content:get_provinces' %}?region=" + encodeURIComponent(region))
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('regions:', data.provinces)
+            selectProvinceInput.innerHTML = ''
+            const defaultOption = document.createElement('option')
+            defaultOption.value = ''
+            defaultOption.textContent = 'Select a province'
+            defaultOption.disabled = true
+            defaultOption.selected = true
+            selectProvinceInput.appendChild(defaultOption)
+            data.provinces.forEach((province) => {
+              const option = document.createElement('option')
+              option.value = province
+              option.textContent = province
+              selectProvinceInput.appendChild(option)
+            })
+          })
+          .catch((error) => console.error('Error fetching province data:', error))
       }
-    }
-
-    initialLoading();
-    handleResize();
-
-    const backBooking = document.getElementById('back_booking')
-    backBooking.addEventListener('click', function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      
-      let check_in_date = urlParams.get('book_check_in_date');
-      let dateObj = new Date(check_in_date);
-      let formattedDate = formatDate(dateObj);
-      window.location.href = '{% url "content:initial_search" %}?check_in=' + encodeURIComponent(formattedDate);
+    
+      function renderMunicipalities() {
+        const region = regionSelectInput.value
+        const province = selectProvinceInput.value
+        fetch("{% url 'content:get_municipalities' %}?region=" + encodeURIComponent(region) + '&province=' + encodeURIComponent(province))
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('municipalities:', data.municipalities)
+    
+            selectMunicipalityInput.innerHTML = ''
+            const defaultOption = document.createElement('option')
+            defaultOption.value = ''
+            defaultOption.textContent = 'Select municipality'
+            defaultOption.disabled = true
+            defaultOption.selected = true
+            console.log('test')
+            selectMunicipalityInput.appendChild(defaultOption)
+            data.municipalities.forEach((municipality) => {
+              const option = document.createElement('option')
+              option.value = municipality
+              option.textContent = municipality
+              selectMunicipalityInput.appendChild(option)
+            })
+          })
+          .catch((error) => console.error('Error fetching municipality data:', error))
+      }
+    
+      regionSelectInput.addEventListener('change', () => {
+        renderProvinces()
+        defaultOption.textContent = 'Select municipality'
+        defaultOption.disabled = true
+        defaultOption.selected = true
+        selectProvinceInput.appendChild(defaultOption)
+        selectMunicipalityInput.innerHTML = ''
+      })
+    
+      selectProvinceInput.addEventListener('change', () => {
+        renderMunicipalities()
+      })
+    
+      const currentYear = new Date().getFullYear()
+      const startYear = currentYear - 120
+      $(document).ready(function () {
+        $('#book3-dob').datepicker({
+          dateFormat: 'yy-mm-dd',
+          yearRange: `${startYear}:${currentYear}`,
+          changeMonth: true,
+          changeYear: true
+        })
+      })
+    
+      function handleResize() {
+        window.addEventListener('resize', function () {
+          const sidebar = document.querySelector('.booking3-aside')
+          const bookingContainer = document.querySelector('.booking3-container')
+          const bookingWrapper = document.querySelector('.booking3-wrapper')
+          if (window.innerWidth < 1024 && sidebar.classList.contains('atWrapper')) {
+            putAbove()
+          } else if (window.innerWidth > 1024 && sidebar.classList.contains('atContainer')) {
+            putBelow()
+          }
+        })
+      }
+    
+      function putAbove() {
+        const sidebar = document.querySelector('.booking3-aside')
+        const bookingContainer = document.querySelector('.booking3-container')
+        const bookingWrapper = document.querySelector('.booking3-wrapper')
+        console.log('less than 1024')
+        sidebar.classList.add('atContainer')
+        sidebar.classList.remove('atWrapper')
+        bookingWrapper.removeChild(sidebar)
+        bookingContainer.appendChild(sidebar)
+        bookingContainer.insertBefore(sidebar, bookingContainer.children[1])
+      }
+    
+      function putBelow() {
+        const sidebar = document.querySelector('.booking3-aside')
+        const bookingContainer = document.querySelector('.booking3-container')
+        const bookingWrapper = document.querySelector('.booking3-wrapper')
+        console.log('less than 1024')
+        sidebar.classList.add('atWrapper')
+        sidebar.classList.remove('atContainer')
+        bookingContainer.removeChild(sidebar)
+        bookingWrapper.appendChild(sidebar)
+      }
+    
+      function initialLoading() {
+        const sidebar = document.querySelector('.booking3-aside')
+        if (window.innerWidth < 1024 && sidebar.classList.contains('atWrapper')) {
+          putAbove()
+        }
+      }
+    
+      initialLoading()
+      handleResize()
+    
+      const backBooking = document.getElementById('back_booking')
+      backBooking.addEventListener('click', function () {
+        const urlParams = new URLSearchParams(window.location.search)
+    
+        let check_in_date = urlParams.get('book_check_in_date')
+        let dateObj = new Date(check_in_date)
+        let formattedDate = formatDate(dateObj)
+        window.location.href = '{% url "content:initial_search" %}?check_in=' + encodeURIComponent(formattedDate)
+      })
     })
-  });
-
-  function formatDate(date) {
-    let year = date.getFullYear();
-    let month = ('0' + (date.getMonth() + 1)).slice(-2); // Add leading zero for months less than 10
-    let day = ('0' + date.getDate()).slice(-2); // Add leading zero for days less than 10
-    return `${year}-${month}-${day}`;
-}
-</script>
+    
+    function formatDate(date) {
+      let year = date.getFullYear()
+      let month = ('0' + (date.getMonth() + 1)).slice(-2)
+      let day = ('0' + date.getDate()).slice(-2)
+      return `${year}-${month}-${day}`
+    }
+  </script>
 {% endblock %}

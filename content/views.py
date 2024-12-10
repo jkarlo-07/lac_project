@@ -324,9 +324,11 @@ def book_view3(request):
         email = str(email)
         form = BookGuestForm(request.POST)
         if form.is_valid():
+            address = str(form.cleaned_data.get('province', '')) + ', ' + str(form.cleaned_data.get('municipality', ''))
+            print(address)
             request.session['first_name'] = str(form.cleaned_data.get('first_name', ''))
             request.session['last_name'] = str(form.cleaned_data.get('last_name', ''))
-            request.session['address'] = str(form.cleaned_data.get('address', ''))
+            request.session['address'] = address
             request.session['phone'] = str(form.cleaned_data.get('phone', ''))
             request.session['date_of_birth'] = str(form.cleaned_data.get('date_of_birth', ''))
             request.session['email'] = email
@@ -367,7 +369,8 @@ def book_view3(request):
                 'check_out_date': check_out_date,
                 'check_in_time': check_in_time,
                 'check_out_time': check_out_time,
-                'duration': duration
+                'duration': duration,
+                'regions': get_regions()
             })
     elif 'back' in request.GET and request.GET.get('back') == 'true':
         address = request.session.get('address', '')  
@@ -417,6 +420,7 @@ def book_view3(request):
             'check_out_date': check_out_date,
             'check_out_time': check_out_time,
             'room': room,
+            'regions': get_regions()
         }
         print('address:', address)
         return render(request, 'content/book_step3.html', context)
@@ -747,13 +751,11 @@ def region_data():
     return data
 
 def test_data(request):
-    data = region_data()
     
-    regions = {region_key: region_info['region_name'] for region_key, region_info in data.items()}
-
-    print("Regions", regions)
-
-    return render(request, "content/test_data.html", {'regions' : regions})
+    provinces = get_municipalities()
+    
+    print(provinces)
+    return render(request, "content/test_data.html", {'provinces' : provinces})
 
 
 def get_regions():
@@ -764,3 +766,36 @@ def get_regions():
     print("Regions", regions)
 
     return regions
+
+def get_provinces(request):
+    data = region_data()
+    region_key = request.GET.get('region')
+    print(region_key)
+    if region_key in data:
+        region_info = data[region_key]
+        provinces = region_info.get('province_list', {}).keys()
+        provinces = list(provinces)
+        return JsonResponse({'provinces': provinces})
+        
+    else:
+        return []
+    
+def get_municipalities(request):
+    data = region_data()
+    region_key = request.GET.get('region')
+    province_name = request.GET.get('province')
+    print('test')
+    if region_key in data:
+        region_info = data[region_key]  
+        province_list = region_info.get('province_list', {}) 
+
+        if province_name in province_list:
+            province_info = province_list[province_name]  
+            municipalities = province_info.get('municipality_list', {}).keys()
+            municipalities = list(municipalities)
+            return JsonResponse({'municipalities': municipalities})
+    
+    return []
+
+    
+

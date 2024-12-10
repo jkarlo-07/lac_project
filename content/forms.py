@@ -8,8 +8,9 @@ from datetime import date
 class BookGuestForm(forms.Form):
     first_name = forms.CharField(max_length=75)
     last_name = forms.CharField(max_length=75)
-    address = forms.CharField(max_length=200)
-    
+    region = forms.CharField(max_length=75)
+    province = forms.CharField(max_length=75)
+    municipality = forms.CharField(max_length=75)
     phone_validator = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',  
         message="Please enter a valid phone number."
@@ -18,8 +19,8 @@ class BookGuestForm(forms.Form):
     
     date_of_birth = forms.DateField(initial=date(2002, 1, 1), widget=forms.SelectDateWidget(years=range(1900, 2025)))
     
-    adult_count = forms.IntegerField(initial=1)  # Default value set to 1
-    kid_count = forms.IntegerField(initial=0)  # Default value set to 0
+    adult_count = forms.IntegerField(initial=1)  
+    kid_count = forms.IntegerField(initial=0) 
 
 
 
