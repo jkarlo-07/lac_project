@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from content.models import Booking, Room, Guest, RoomType, FullyBookedDates
+from content.models import Booking, Room, Guest, RoomType, FullyBookedDates, ManageEmail
 from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta, time, date
@@ -57,7 +57,27 @@ def add_room_view(request):
 @login_required(login_url="users:login")
 @user_passes_test(is_staff, login_url="content:index") 
 def manage_email_view(request):
-    return render(request, "dashboard/manage_email.html")
+    main_message_row = get_object_or_404(ManageEmail, field='main_message')
+    main_message = main_message_row.value
+    
+    closing_message_row = get_object_or_404(ManageEmail, field='closing_message')
+    closing_message = closing_message_row.value
+    
+    email_row = get_object_or_404(ManageEmail, field='email')
+    email = email_row.value
+    
+    contact_num_row = get_object_or_404(ManageEmail, field='contact_num')
+    contact_num = contact_num_row.value
+    print(main_message, closing_message, email, contact_num)
+    
+    context = {
+        'email': email,
+        'main_message': main_message,
+        'closing_message': closing_message,
+        'contact_num': contact_num,
+    }
+
+    return render(request, "dashboard/manage_email.html", context)
 
 from datetime import datetime
 from collections import defaultdict

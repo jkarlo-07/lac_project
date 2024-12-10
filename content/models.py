@@ -122,3 +122,7 @@ class SeasonalData(models.Model):
 
 class FullyBookedDates(models.Model):
     date = models.DateField()
+
+class ManageEmail(models.Model):
+    field = models.CharField(max_length=25, unique=True)
+    value = models.TextField()

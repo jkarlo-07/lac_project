@@ -20,34 +20,57 @@
   <div class="manage-email-container">
     <label for="">Main message:</label>
     <div class="input-container">
-      <textarea name="" id="" rows="5" readonly></textarea>
+      <textarea name="" id="main_message" rows="5" readonly class="input-manage-email">{{ main_message }}</textarea>
     </div>
   </div>
   <div class="manage-email-container">
     <label for="">Closing message:</label>
     <div class="input-container">
-      <textarea name="" id="" rows="5" readonly></textarea>
+      <textarea name="" id="closing_message" rows="5" readonly class="input-manage-email">{{ closing_message }}</textarea>
     </div>
   </div>
   <div class="manage-contact-email">
     <div class="manage-ce-box">
       <label for="">Contact number:</label>
       <div class="input-container">
-        <input type="text" name="" id="" readonly></input>
+        <input type="text" name="" id="contact_num" readonly value="{{ contact_num }}" class="input-manage-email" ></input>
       </div>
     </div>
     <div class= "manage-ce-box">
       <label for="">Email:</label>
       <div class="input-container">
-        <input type="text" name="" id="" readonly></input>
+        <input type="text" name="" id="email" readonly value="{{ email }}" class="input-manage-email"></input>
       </div>
     </div>
   </div>
 
   <div class="manage-email-btn-container">
-    <p>EDIT</p>
+    <p id="edit-btn">EDIT</p>
     <button type="submit">SAVE</button>
   </div>
   
 </form>
 {% endblock %}
+
+{% block extra_script %}
+<script>
+  main_message_input = document.querySelector('#main_message')
+  closing_message_input = document.querySelector('#closing_message')
+  contact_num_input = document.querySelector('#contact_num')
+  email_input = document.querySelector('#email')
+  editBtn = document.querySelector('#edit-btn')
+  allInputs = document.querySelectorAll('.input-manage-email')
+  console.log(allInputs)
+  
+  
+  editBtn.addEventListener('click', function() {
+    main_message_input.removeAttribute('readonly');
+    closing_message_input.removeAttribute('readonly');
+    contact_num_input.removeAttribute('readonly');
+    email_input.removeAttribute('readonly');
+    allInputs.forEach(function(input) {
+      input.style.backgroundColor = '#fff';  
+    });
+  })
+</script>
+{% endblock  %}

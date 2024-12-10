@@ -807,6 +807,10 @@ main {
   font-size: 1.2rem;
 }
 
+.input-manage-email {
+  background-color: #e3e1e1;
+}
+
 .manage-contact-email input{
   width: 100%;
 }
