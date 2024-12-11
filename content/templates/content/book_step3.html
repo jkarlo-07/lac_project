@@ -48,10 +48,8 @@
               <label for="book3-fname">First Name:</label>
               <input type="text"
                 name="first_name"
-                value="{% if form.first_name.value %}
-                  {{ form.first_name.value }}
-                {% elif first_name %}
-                  {{ first_name }}
+                value="{% if form.first_name.value %}{{ form.first_name.value }}
+                {% elif first_name %}{{ first_name }}
                 {% endif %}" />
 
               {% if form.first_name.errors %}
@@ -67,10 +65,7 @@
               <input type="text"
                 id="book3-lname"
                 name="last_name"
-                value="{% if form.last_name.value %}
-                  {{ form.last_name.value }}
-                {% elif last_name %}
-                  {{ last_name }}
+                value="{% if form.last_name.value %}{{ form.last_name.value }}{% elif last_name %}{{ last_name }}
                 {% endif %}" />
 
               {% if form.last_name.errors %}
@@ -133,11 +128,7 @@
               <input type="text"
                 id="book3-dob"
                 name="date_of_birth"
-                value="{% if form.date_of_birth.value %}
-                  {{ form.date_of_birth.value }}
-                {% elif date_of_birth %}
-                  {{ date_of_birth }}
-                {% endif %}"
+                value="{% if form.date_of_birth.value %}{{ form.date_of_birth.value }}{% elif date_of_birth %}{{ date_of_birth }}{% endif %}"
                 readonly />
               {% if form.date_of_birth.errors %}
                 <ul class="errorlist">
@@ -154,11 +145,7 @@
               <input type="text"
                 id="book3-phone"
                 name="phone"
-                value="{% if form.phone.value %}
-                  {{ form.phone.value }}
-                {% elif phone %}
-                  {{ phone }}
-                {% endif %}" />
+                value="{% if form.phone.value %} {{ form.phone.value }}{% elif phone %}{{ phone }}{% endif %}" />
               {% if form.phone.errors %}
                 <ul class="errorlist">
                   {% for error in form.phone.errors %}
@@ -177,10 +164,7 @@
               <label for="book3-adult_count">Adult Count:</label>
               <input type="text"
                 name="adult_count"
-                value="{% if form.adult_count.value %}
-                  {{ form.adult_count.value }}
-                {% elif adult_count %}
-                  {{ adult_count }}
+                value="{% if form.adult_count.value %}{{ form.adult_count.value }}{% elif adult_count %}{{ adult_count }}
                 {% endif %}" />
               {% if form.adult_count.errors %}
                 <ul class="errorlist">
@@ -195,11 +179,7 @@
               <input type="text"
                 id="book3-lname"
                 name="kid_count"
-                value="{% if form.kid_count.value %}
-                  {{ form.kid_count.value }}
-                {% elif kid_count %}
-                  {{ kid_count }}
-                {% endif %}" />
+                value="{% if form.kid_count.value %}{{ form.kid_count.value }}{% elif kid_count %}{{ kid_count }}{% endif %}" />
               {% if form.kid_count.errors %}
                 <ul class="errorlist">
                   {% for error in form.kid_count.errors %}
