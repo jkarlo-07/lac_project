@@ -42,6 +42,8 @@ def login_view(request):
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
+        
+
         if form.is_valid():
             user = form.save(commit=False)
             user.email = form.cleaned_data['email']

@@ -67,3 +67,19 @@ class AddBookingForm(forms.Form):
     room = forms.CharField(max_length=25)
     adult_count = forms.IntegerField()
     kid_count = forms.IntegerField()
+
+
+class ManageEmailForm(forms.Form):
+    main_message = forms.CharField(required=True)
+    closing_message = forms.CharField(required=True)
+    phone_validator = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',  
+        message="Please enter a valid phone number."
+    )
+    contact_num = forms.CharField(max_length=30, validators=[phone_validator])
+    email = forms.EmailField(
+        required=True,
+        error_messages={
+            'invalid': "Please enter a valid email address."
+        }
+    )

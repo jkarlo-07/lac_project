@@ -12,18 +12,22 @@ class CustomUserCreationForm(UserCreationForm):
         validators=[EmailValidator(message="Please enter a valid email address")],
         widget=forms.EmailInput(attrs={'placeholder': 'Email'})
     )
+    
+    terms_conditions = forms.BooleanField(
+        required=True,
+        label="I agree to the Terms and Conditions and Privacy Policy.",
+        error_messages={'required': 'You must agree to the terms and conditions in order to signup.'}
+    )
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2', 'terms_conditions')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("This email address is already in use.")
         return email
-    
-
     
 class NewPasswordForm(forms.Form):
     new_password = forms.CharField(

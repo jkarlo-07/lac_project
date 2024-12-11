@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta, time, date
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm
+from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm, ManageEmailForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
@@ -57,6 +57,32 @@ def add_room_view(request):
 @login_required(login_url="users:login")
 @user_passes_test(is_staff, login_url="content:index") 
 def manage_email_view(request):
+
+    if request.method == 'POST':
+        form = ManageEmailForm(request.POST)
+        if form.is_valid():
+            main_message = get_object_or_404(ManageEmail, field='main_message')
+            main_message.value = form.cleaned_data.get('main_message')
+            main_message.save()
+            
+            closing_message= get_object_or_404(ManageEmail, field='closing_message')
+            closing_message.value = form.cleaned_data.get('closing_message')
+            closing_message.save()
+
+            email = get_object_or_404(ManageEmail, field='email')
+            email.value = form.cleaned_data.get('email')
+            email.save()
+
+            contact_num = get_object_or_404(ManageEmail, field='contact_num')
+            contact_num.value = form.cleaned_data.get('contact_num')
+            contact_num.save()
+            
+        else:
+            return render(request, "dashboard/manage_email.html", {
+                'invalid_form': True,
+                'form': form,
+            })
+
     main_message_row = get_object_or_404(ManageEmail, field='main_message')
     main_message = main_message_row.value
     
@@ -68,7 +94,6 @@ def manage_email_view(request):
     
     contact_num_row = get_object_or_404(ManageEmail, field='contact_num')
     contact_num = contact_num_row.value
-    print(main_message, closing_message, email, contact_num)
     
     context = {
         'email': email,

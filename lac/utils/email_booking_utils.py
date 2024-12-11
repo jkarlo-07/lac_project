@@ -2,6 +2,7 @@
 from django.core.mail import send_mail, BadHeaderError
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from content.models import ManageEmail
 from content.models import Booking
 from django.shortcuts import get_object_or_404
 
@@ -15,6 +16,19 @@ def send_booking_details(name, email, subject, to_email, msg_template, book_id):
         else:
             entrance_fee =(float(50)*float(booking.kid_count)) + (float(100)*float(booking.adult_count))
             entrance_prompt = "(Adult: ₱100, Kid:₱50)"
+
+        main_message_row = get_object_or_404(ManageEmail, field='main_message')
+        main_message = main_message_row.value
+        
+        closing_message_row = get_object_or_404(ManageEmail, field='closing_message')
+        closing_message = closing_message_row.value
+        
+        email_row = get_object_or_404(ManageEmail, field='email')
+        lac_email = email_row.value
+        
+        contact_num_row = get_object_or_404(ManageEmail, field='contact_num')
+        contact_num = contact_num_row.value
+
         html_message = render_to_string(msg_template, {
             'name': name,
             'email': email,
@@ -32,6 +46,10 @@ def send_booking_details(name, email, subject, to_email, msg_template, book_id):
             'entrance_fee': entrance_fee,
             'total_amount': booking.total_amount,
             'entrance_prompt': entrance_prompt,
+            'main_message': main_message,
+            'closing_message': closing_message,
+            'lac_email': lac_email,
+            'contact_num': contact_num,
         })
         
         plain_message = strip_tags(html_message)

@@ -54,7 +54,14 @@
           <p class="error">{{ error }}</p>
         {% endfor %}
       </div>
-
+      <div class="terms-container">
+        <input type="checkbox" id="terms_conditions" name="terms_conditions" required>
+        <label for="terms_conditions">By signing up, you agree to our Privacy Policy and Terms and Conditions.</label>
+        
+      </div>
+      {% for error in form.terms_conditions.errors %}
+        <p class="error">{{ error }}</p>
+      {% endfor %}
       <button type="submit">Sign up</button>
       <div>
         <p class="gray-fg">Have an account?</p>

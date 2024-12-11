@@ -13,7 +13,7 @@
         <tr>
             <td style="padding-bottom: 20px;">
                 <p style="color: #333;">Dear {{name}},</p>
-                <p style="color: #333;">Thank you for booking your stay with <strong>L.A.C. Resort</strong>. We are excited to welcome you! Below are the details of your reservation:</p>
+                <p style="color: #333;">{{ main_message }}</p>
             </td>
         </tr>
         <tr>
@@ -51,15 +51,15 @@
             <td style="padding-bottom: 20px;">
                 <h2 style="color: #555; font-size: 18px;">Contact Information</h2>
                 <ul style="list-style: none; padding: 0; color: #333;">
-                    <li><strong>Email:</strong> <a href="mailto:lacresortfarm@gmail.com" style="color: #007bff; text-decoration: none;">lacresortfarm@gmail.com</a></li>
-                    <li><strong>Phone:</strong> 0939-819-4499</li>
+                    <li><strong>Email:</strong> <a href="mailto:{{ lac_email }}" style="color: #007bff; text-decoration: none;">{{ lac_email }}</a></li>
+                    <li><strong>Phone:</strong> {{ contact_num }}</li>
                 </ul>
             </td>
         </tr>
         <tr>
             <td>
                 <p><span style="color:red">Note: </span><i>For the booking cancellation policy: cancellations are allowed within 24 hrs of the booking, and it offers an 80% refund. You can request a cancellation by emailing us at lacresortfarm@gmail.com.</i></p>
-                <p style="color: #333;">We look forward to making your stay at <strong>L.A.C. Resort</strong> a memorable one.</p>
+                <p style="color: #333;">{{ closing_message }}</p>
                 <p style="color: #888; font-size: 14px;">Warm regards,<br>L.A.C Team</p>
             </td>
         </tr>

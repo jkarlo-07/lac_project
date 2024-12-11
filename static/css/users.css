@@ -2,3 +2,18 @@
     color: red;
     font-size: 0.8rem !important;
 }
+
+.terms-container {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.terms-container input {
+    width: 20px !important;
+    padding: 0 !important;
+}
+
+.terms-container label{
+    font-size: 1rem !important;
+}

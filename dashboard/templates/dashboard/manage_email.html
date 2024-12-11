@@ -16,30 +16,63 @@
 
 {% block content %}
 
-<form class="manage-email" action="">
+<form class="manage-email" action="{% url "dashboard:manage_email" %}" method="post">
+  {% csrf_token %}
   <div class="manage-email-container">
     <label for="">Main message:</label>
     <div class="input-container">
-      <textarea name="" id="main_message" rows="5" readonly class="input-manage-email">{{ main_message }}</textarea>
+      {% if invalid_form %}
+        <textarea style="background-color:#fff" name="main_message" id="main_message" rows="5" class="input-manage-email">{{ form.main_message.value }}</textarea>
+      {% else %}
+        <textarea name="main_message" id="main_message" rows="5" readonly class="input-manage-email">{{ main_message }}</textarea>
+      {% endif %}
+      
+      {% if form.main_message.errors %}
+        <p class="errorlist">{{ form.main_message.errors }}</p>
+      {% endif %}
     </div>
   </div>
   <div class="manage-email-container">
     <label for="">Closing message:</label>
     <div class="input-container">
-      <textarea name="" id="closing_message" rows="5" readonly class="input-manage-email">{{ closing_message }}</textarea>
+      {% if invalid_form %}
+        <textarea style="background-color:#fff" name="closing_message" id="closing_message" rows="5" readonly class="input-manage-email">{{ form.closing_message.value }}</textarea>
+      {% else %}
+        <textarea name="closing_message" id="closing_message" rows="5" readonly class="input-manage-email">{{ closing_message }}</textarea>
+      {% endif %}
+      
+      {% if form.closing_message.errors %}
+        <p class="errorlist">{{ form.closing_message.errors }}</p>
+      {% endif %}
     </div>
   </div>
   <div class="manage-contact-email">
     <div class="manage-ce-box">
       <label for="">Contact number:</label>
       <div class="input-container">
-        <input type="text" name="" id="contact_num" readonly value="{{ contact_num }}" class="input-manage-email" ></input>
+        {% if invalid_form %}
+        <input style="background-color:#fff" type="text" name="contact_num" id="contact_num" value="{{ form.contact_num.value }}" class="input-manage-email" ></input>
+        {% else %}
+          <input type="text" name="contact_num" id="contact_num" readonly value="{{ contact_num }}" class="input-manage-email" ></input>
+        {% endif %}
+        
+        {% if form.contact_num.errors %}
+          <p class="errorlist">{{ form.contact_num.errors }}</p>
+        {% endif %}
       </div>
     </div>
     <div class= "manage-ce-box">
       <label for="">Email:</label>
       <div class="input-container">
-        <input type="text" name="" id="email" readonly value="{{ email }}" class="input-manage-email"></input>
+        {% if invalid_form %}
+          <input style="background-color:#fff" type="text" name="email" id="email" value="{{ form.email.value }}" class="input-manage-email"></input>
+        {% else %}
+          <input type="text" name="email" id="email" readonly value="{{ email }}" class="input-manage-email"></input>
+        {% endif %}
+        
+        {% if form.email.errors %}
+            <p class="errorlist">{{ form.email.errors }}</p>
+        {% endif %}
       </div>
     </div>
   </div>
