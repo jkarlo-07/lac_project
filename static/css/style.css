@@ -1210,6 +1210,11 @@ footer {
     padding: 60px 20px;
   }
 
+  /*TERMS CSS*/
+.terms-condition-container{
+  margin: 10px 20px;
+}
+
   /* for title */
   .title__text {
     left: 20px;

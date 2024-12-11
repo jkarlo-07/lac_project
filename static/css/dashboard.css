@@ -33,6 +33,10 @@ body {
   font-family: "SourGummy";
 }
 
+textarea {
+  resize: none;
+}
+
 
 a {
   text-decoration: none;
@@ -804,7 +808,8 @@ main {
 
 .manage-email input, .manage-email textarea{
   padding: 15px 10px;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  border: none;
 }
 
 .input-manage-email {
@@ -813,6 +818,7 @@ main {
 
 .manage-contact-email input{
   width: 100%;
+  border: none;
 }
 
 .manage-contact-email{

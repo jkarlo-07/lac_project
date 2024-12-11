@@ -9,6 +9,11 @@
     gap: 5px;
 }
 
+.term-policy-link {
+    color: #b58a60;
+    text-decoration: underline;
+}
+
 .terms-container input {
     width: 20px !important;
     padding: 0 !important;

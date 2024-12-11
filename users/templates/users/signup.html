@@ -56,7 +56,7 @@
       </div>
       <div class="terms-container">
         <input type="checkbox" id="terms_conditions" name="terms_conditions" required>
-        <label for="terms_conditions">By signing up, you agree to our Privacy Policy and Terms and Conditions.</label>
+        <label for="terms_conditions">By signing up, you agree to our <a class="term-policy-link" href="{% url "content:policy" %}">Privacy Policy</a> and <a href="{% url "content:terms" %}" class="term-policy-link">Terms and Conditions.</a></label>
         
       </div>
       {% for error in form.terms_conditions.errors %}
