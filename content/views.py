@@ -147,6 +147,12 @@ def contact_view(request):
 def about_view(request):
     return render(request, "content/about.html")
 
+def terms_view(request):
+    return render(request, "content/terms-condition.html")
+
+def policy_view(request):
+    return render(request, "content/privacy-policy.html")
+
 @login_required(login_url="users:login")
 def book_view1(request):
     roomtypes = RoomType.objects.all()

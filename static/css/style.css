@@ -1079,6 +1079,25 @@ footer {
   gap: 20px;
 }
 
+/*TERMS CSS*/
+.terms-condition-container{
+  margin: 40px 100px;
+}
+
+.terms-condition-container h1{
+  color: #b58a60;
+}
+
+.terms-condition{
+  margin: 20px 0;
+}
+
+.terms-condition p{
+  padding-left: 20px; 
+  margin: 10px 0;
+}
+
+
 
 @media screen and (max-width: 1265px) {
   .top-header,
