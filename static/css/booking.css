@@ -428,6 +428,7 @@
     display: flex;
     gap: 5px;
     margin-bottom: 10px;
+    flex-wrap: wrap;
 }
 
 .room-card{
@@ -438,6 +439,10 @@
     border-radius: 5px;
     padding: 3px;
 
+}
+
+.room-card p {
+    font-size: 12px;
 }
 
 .room-card img{

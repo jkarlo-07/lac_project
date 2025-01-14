@@ -73,6 +73,16 @@ header {
   font-size: 1.5rem;
 }
 
+.header-button-container{
+  display: flex;
+  gap: 10px;
+}
+
+.header-button-container > * {
+  padding: 7px 20px !important;
+  font-weight: 600 !important;
+}
+
 /* line seperator */
 .seperator {
   height: 1px;
@@ -106,7 +116,7 @@ li {
 }
 
 .book-now-mobile-btn {
-  visibility: hidden;
+  display: none;
 }
 
 .nav-link::before {
@@ -1312,7 +1322,7 @@ footer {
   }
 
   .book-now-mobile-btn {
-    visibility: visible;
+    display: block;
   }
 
   .active-link {

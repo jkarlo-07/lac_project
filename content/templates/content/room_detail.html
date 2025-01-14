@@ -21,7 +21,7 @@
     </div>
     <div class="room-view-info-container">
         <div class="room-view-info-img">
-            <img src="{% static "{{ roomtype.picture.url}}" %}" alt="">
+            <img src="{{room.picture.url}}" alt="">
         </div>
         <div class="room-info-reserve">
             <div class="room-card">
@@ -80,7 +80,7 @@
         </div>  
         <div class="price-book-button">
             <h4>Room: 1st Floor</h4>
-            <p>₱2000 / 12hrs</p>
+            <p>₱{{room.price}} / 12hrs</p>
             <a href="{% url "content:calendar" %}"><p class="button-view-info">Reserve</p></a>
         </div>
     </div>
