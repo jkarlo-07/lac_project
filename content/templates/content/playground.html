@@ -1,0 +1,65 @@
+{% extends "layout.html" %} 
+{% load static %} 
+
+{% block title %} 
+  About 
+{%endblock%}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static "css/play.css" %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="play_container">
+    <div class="btn-image-back">
+        <img src="{% static 'images/icons/left-arrow.png' %}" alt="back icon" class="back-step-form" />
+      </div>
+    <div>
+        <h1 calss="title-rooms-type">1ST FLOOR</h1>
+    </div>
+    <div class="room-view-info-container">
+        <div class="room-view-info-img">
+            <img src="{% static "images/photos/first1.jpg" %}" alt="">
+        </div>
+        <div class="room-info-reserve">
+            <div class="room-card">
+                <img src="{% static "images/icons/people.png" %}" alt="">
+                <p>Capacity: 5pax</p>
+            </div>
+            <div class="room-card">
+                <img src="{% static "images/icons/double-bed.png" %}" alt="">
+                <p>Bed size</p>
+            </div>
+            <div class="room-card">
+                <img src="{% static "images/icons/shower.png" %}" alt="">
+                <p>Private bathroom</p>
+            </div>
+            <div class="room-card">
+                <img src="{% static "images/icons/wifi.png" %}" alt="">
+                <p>Free WiFi</p>
+            </div>
+            <div class="room-card">
+                <img src="{% static "images/icons/air.png" %}" alt="">
+                <p>Air Conditioning</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="second-view-info-room">
+        <div>
+            <h4>Details</h4>
+            <p>A cozy room featuring beds, a TV, air conditioning, a private bathroom, and complimentary Wi-Fi. Ideal for groups of 5 to 10 people.</p>
+        </div>  
+        <div class="price-book-button">
+            <h4>Room: 1st Floor</h4>
+            <p>₱2000 / 12hrs</p>
+            <a href="{% url "content:calendar" %}"><p class="button-view-info">Reserve</p></a>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

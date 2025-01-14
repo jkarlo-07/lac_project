@@ -26,7 +26,7 @@
 					<p class="mobile-room-price">₱{{ roomtype.price|floatformat:2|intcomma }} / day</p>	
 				</div>
 				<p>{{ roomtype.description }}</p>
-				<a href="{% url "content:calendar" %}"><p class="room-book-btn">BOOK NOW</p></a>
+				<a href="{% url "content:room_detail" roomtype.id %}"><p class="room-book-btn">VIEW DETAILS</p></a>
 			</div>
 		</div>
 	{% endfor %}

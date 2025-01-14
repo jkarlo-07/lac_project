@@ -38,7 +38,7 @@
               <div style="width: 25%;"></div> 
             </div>
         </div>
-        <form class="booking-form-wrapper" action="{% url 'content:search_room' %}" method="get">
+        <form class="booking-form-wrapper" id="search-id-form" action="{% url 'content:search_room' %}" method="get">
             <div class="booking-form">
                 <img src="{% static 'images/icons/calendar-1.png' %}" alt="">
                 <div>
@@ -79,6 +79,7 @@
             </div>
             <input type="hidden" name="check_in_date" value="{{ check_in_date}}" id="check_in_date">
         </form>
+        <p class="booking-note">Note: You must be logged in to reserve this booking.</p>
 				<div id="all-rooms-container">
 					{% for room in rooms  %}
 				<form action="{% url 'content:book_3' %}" method="GET">
@@ -93,9 +94,27 @@
 												<li><span>Capacity:</span> {{ room.room_type.capacity }}pax</li>
 												<li><span>Size:</span> 35sqm</li>
 												<li><span>Price:</span> ₱ {{ room.room_type.price|floatformat:2|intcomma }}</li>
-												<li> <h>Description:</h4></li>
-												<li><p> {{room.room_type.description}} </p></li>
+												<li> <h>Amenities:</h4></li>
 										</ul>
+                    <div class="room-card-container">
+                      <div class="room-card">
+                        <img src="{% static "images/icons/people.png" %}" alt="">
+                        <p>Bed Size</p>
+                    </div>  
+                    <div class="room-card">
+                        <img src="{% static "images/icons/people.png" %}" alt="">
+                        <p>Private Bathroom</p>
+                    </div>  
+                    <div class="room-card">
+                        <img src="{% static "images/icons/people.png" %}" alt="">
+                        <p>Free Wifi</p>
+                    </div>  
+                    <div class="room-card">
+                        <img src="{% static "images/icons/people.png" %}" alt="">
+                        <p>Air Conditioning</p>
+                    </div>  
+                    </div>
+                  
 								</div>
 								<div class="room-rate-section">
 										<div class="room-rate-info">
@@ -135,6 +154,11 @@
 
 {% block add_script %}
 	<script>
+    document.getElementById("search-id-form").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+          event.preventDefault(); 
+      }
+  });
         function formatDate(dateString) {
             const date = new Date(dateString);
             const monthOptions = { month: 'short' };
@@ -181,54 +205,133 @@
         })
 
 				function searchRooms() {
-					const checkInDate = document.querySelector('.checkin-display').textContent
-					const duration = document.getElementById("book-duration").value
-					const checkInTime = document.getElementById("book-checkin-time").value
-					const capacity = document.querySelector('.input-capacity').value
-          const str_check_in = document.querySelector('.checkin-display').textContent
-          const duration_input = document.querySelector('#book-duration').value
-          const time_input = convertTo12Hour(checkInTime)
-					const url = `{% url 'content:dynamic_search' %}?checkin_date=${encodeURIComponent(checkInDate)}&duration=${encodeURIComponent(duration)}&checkin_time=${encodeURIComponent(checkInTime)}&capacity=${encodeURIComponent(capacity)}`;
-					fetch(url)
-						.then(response => response.json())
-						.then(data => {
-							console.log(data)
-							const roomsContainer = document.getElementById("all-rooms-container");
-            	roomsContainer.innerHTML = ''; // Clear current content
-							data.rooms.forEach(room => {
-                const roomHTML = `
-                    <form action="{% url 'content:book_3' %}" method="GET">
-											<div class="booking-room-container">
-												<div class="room-image">
-													<a href="#"><img src="${room.picture_url}" alt="Room Image"></a>
-												</div>
-												<div class="room-accomodation-wrapper">
-													<div class="room-accomodation-info">
-														<h3>${room.roomtype}</h3>
-															<ul>
-																<li><span>Capacity:</span> ${ room.capacity}pax</li>
-																<li><span>Price:</span> ₱ ${room.price}</li>
-																<li>
-																	<h4>Description:</h4>
-																</li>
-																<li><p> ${room.description} </p></li>
-															</ul>
-															<input type="submit" value="Select Room" class="accomodation-select-room">
-                              <input type="hidden" name="roomtype" value="${ room.id }">
-                              <input type="hidden" name="book_check_in_date" id="book_check_in_date" value="${ str_check_in }">
-                              <input type="hidden" name="book_duration" id="book_duration" value="${duration_input}">
-                              <input type="hidden" name="book_check_in_time" id="book_check_in_time" value="${ time_input }">
-													</div>
-												</div>
-											</div>
-										</form>
-                `;
-                roomsContainer.innerHTML += roomHTML; 
-            });
-							
-						})
-						.catch(error => console.error("Error fetching time data:", error));
-				}
+          const checkInDate = document.querySelector('.checkin-display').textContent;
+          const duration = document.getElementById("book-duration").value;
+          const checkInTime = document.getElementById("book-checkin-time").value;
+          const capacity = document.querySelector('.input-capacity').value;
+          const str_check_in = document.querySelector('.checkin-display').textContent;
+          const duration_input = document.querySelector('#book-duration').value;
+          const time_input = convertTo12Hour(checkInTime);
+      
+          const url = `{% url 'content:dynamic_search' %}?checkin_date=${encodeURIComponent(checkInDate)}&duration=${encodeURIComponent(duration)}&checkin_time=${encodeURIComponent(checkInTime)}&capacity=${encodeURIComponent(capacity)}`;
+      
+          fetch(url)
+              .then(response => response.json())
+              .then(data => {
+                  console.log(data);
+                  const roomsContainer = document.getElementById("all-rooms-container");
+                  roomsContainer.innerHTML = ''; // Clear current content
+      
+                  data.rooms.forEach(room => {
+                      let specialFeature = '';
+                      if (room.roomtype === '1st floor' || room.roomtype === 'E-house') {
+                          specialFeature = `
+                              <div class="room-card">
+                                                  <img src="{% static "images/icons/people.png" %}" alt="">
+                                 <p>King-size bed</p>
+                              </div>
+                              
+                          <div class="room-card">
+                                                  <img src="{% static "images/icons/people.png" %}" alt="">
+                                                  <p>Air Conditioning</p>
+                                              </div>
+                              <div class="room-card">
+                                                  <img src="{% static "images/icons/people.png" %}" alt="">
+                                                  <p>Private Bathroom</p>
+                                              </div>
+                          `;
+                      } else if (room.roomtype === '2nd floor') {
+                        specialFeature = `
+                        <div class="room-card">
+                                            <img src="{% static "images/icons/people.png" %}" alt="">
+                           <p>2 Double-deck bed</p>
+                        </div>
+                        
+                        <div class="room-card">
+                                                  <img src="{% static "images/icons/people.png" %}" alt="">
+                                                  <p>Air Conditioning</p>
+                                              </div>
+                        <div class="room-card">
+                                            <img src="{% static "images/icons/people.png" %}" alt="">
+                                            <p>Private Bathroom</p>
+                                        </div>
+                    `;
+                      } else if (room.roomtype === '3rd floor') {
+                        specialFeature = `
+                        <div class="room-card">
+                                            <img src="{% static "images/icons/people.png" %}" alt="">
+                           <p>Queen-size bed</p>
+                        </div>
+                        <div class="room-card">
+                                                  <img src="{% static "images/icons/people.png" %}" alt="">
+                                                  <p>Air Conditioning</p>
+                                              </div>
+                        <div class="room-card">
+                                            <img src="{% static "images/icons/people.png" %}" alt="">
+                                            <p>Private Bathroom</p>
+                                        </div>
+                    `;
+                      } else if (room.roomtype === 'Cottage') {
+                        specialFeature = `
+                        <div class="room-card">
+                                            <img src="{% static "images/icons/bbq.png" %}" alt="">
+                                            <p>Grill station</p>
+                                        </div>
+                    `;
+                      } else {
+                          specialFeature = `
+                              <div class="special-feature">
+                                  <p>This room is perfect for budget travelers!</p>
+                              </div>
+                          `;
+                      }
+      
+                      // Generate the room HTML
+                      const roomHTML = `
+                          <form action="{% url 'content:book_3' %}" method="GET">
+                              <div class="booking-room-container">
+                                  <div class="room-image">
+                                      <a href="#"><img src="${room.picture_url}" alt="Room Image"></a>
+                                  </div>
+                                  <div class="room-accomodation-wrapper">
+                                      <div class="room-accomodation-info">
+                                          <h3>${room.roomtype}</h3>
+                                          <ul>
+                                              <li><span>Capacity:</span> ${room.capacity}pax</li>
+                                              <li><span>Price:</span> ₱${room.price}</li>
+                                              <li>
+                                                  <h4>Amenities:</h4>
+                                              </li>
+                                          </ul>
+                                          <div class="room-card-container">
+                                              ${specialFeature}
+                                              <div class="room-card">
+                                                  <img src="{% static "images/icons/people.png" %}" alt="">
+                                                  <p>Free Wifi</p>
+                                              </div>
+                                              
+                                          </div>
+      
+                                          <!-- Conditional special feature -->
+                                          
+      
+                                          <input type="submit" value="Select Room" class="accomodation-select-room">
+                                          <input type="hidden" name="roomtype" value="${room.id}">
+                                          <input type="hidden" name="book_check_in_date" id="book_check_in_date" value="${str_check_in}">
+                                          <input type="hidden" name="book_duration" id="book_duration" value="${duration_input}">
+                                          <input type="hidden" name="book_check_in_time" id="book_check_in_time" value="${time_input}">
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      `;
+      
+                      roomsContainer.innerHTML += roomHTML;
+                  });
+              })
+              .catch(error => console.error("Error fetching room data:", error));
+      }
+      
 
 				function addChangeHandler() {
 					const durationElement = document.querySelector('#book-duration'); 

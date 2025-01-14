@@ -117,6 +117,9 @@ def room_view(request):
 def service_view(request):
     return render(request, "content/service.html")
 
+def play_view(request):
+    return render(request, "content/playground.html")
+
 @csrf_exempt
 def contact_view(request):
     if request.method == 'POST':
@@ -157,6 +160,10 @@ def policy_view(request):
 def book_view1(request):
     roomtypes = RoomType.objects.all()
     return render(request, "content/booking.html", { 'roomtypes':roomtypes } )
+
+def room_detail_view(request, id):
+    room = get_object_or_404(RoomType, id=id)
+    return render(request, 'content/room_detail.html', {'room': room})
 
 def book_view2(request):
     # Retrieve session data
@@ -292,8 +299,14 @@ def book_view2(request):
 
 
 
-
 def book_view3(request):
+    if not request.user.is_authenticated:
+        # Capture the current URL with query parameters
+        next_url = request.get_full_path()
+        print('yesnt', next_url)
+        request.session['next_url'] = next_url
+        # Redirect to the login page with the next parameter
+        return redirect(f'/users/login?next={next_url}')
     if request.method == 'POST':
         check_in = request.POST.get('check_in')
         room_id = request.POST.get('room_id')
@@ -487,7 +500,7 @@ def book_view4(request, temp_id):
     }
     return render(request, "content/book_step4.html", context)
 
-@login_required(login_url="users:login")
+
 def calendar_view(request):
     fullyBookDates = []
     dates = FullyBookedDates.objects.all()

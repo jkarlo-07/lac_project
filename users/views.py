@@ -22,14 +22,18 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 
-                next_url = request.GET.get('next') or request.POST.get('next')
+                # Get the 'next' parameter from the query string or from the POST request
+                next_url = request.session.get('next_url', '/')
+                print('hey', next_url)
                 if next_url:
+                    # Redirect to the captured 'next' URL (if available), otherwise redirect to home
                     return redirect(next_url)
                 
+                # If no 'next' URL, redirect based on user type
                 if user.is_staff:
                     return redirect("dashboard:dashboard")
                 else:
-                    return redirect('content:calendar')  
+                    return redirect('content:calendar')
             else:
                 messages.error(request, "Invalid username or password.")
         else:

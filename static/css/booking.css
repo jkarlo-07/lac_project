@@ -46,6 +46,13 @@
     flex: 3;
 }
 
+.booking-note{
+    color: red;
+    margin-top: 40px;
+    font-size: 14px;
+    font-style: italic;
+}
+
 .booking-step-wrapper {
     display: flex;
     justify-content: space-between;
@@ -195,7 +202,7 @@
 /* Room Information*/
 
 .booking-room-container {
-    margin-top: 50px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -415,7 +422,27 @@
     padding: 0;
 }
 
+/* Icons*/
 
+.room-card-container{
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.room-card{
+    display: flex;
+    font-size: 14px;
+    gap: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 3px;
+
+}
+
+.room-card img{
+    width: 20px;
+}
 
 /* Booking Step 2 */
 
@@ -959,6 +986,10 @@
 
     .room-input input {
         width: 100%;
+    }
+
+    .room-card-container{
+        flex-wrap: wrap;
     }
 
 }

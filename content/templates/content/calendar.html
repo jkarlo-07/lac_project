@@ -8,16 +8,31 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var fullyBookedDates = {{ fullBookDates|safe }};
-    
-    var currentDate = new Date(); 
-    
+    var currentDate = new Date();
     var currentTime = currentDate.getHours();
-    
     var startDate = currentTime >= 22 ? new Date(currentDate.setDate(currentDate.getDate() + 1)) : currentDate;
 
-    var validRangeStart = startDate.toLocaleDateString('en-CA'); 
-    var validRangeEnd = new Date(new Date().setDate(new Date().getDate() + 365)).toLocaleDateString('en-CA');  // 30 days from now
-    
+    var validRangeStart = startDate.toLocaleDateString('en-CA');
+    var validRangeEnd = new Date(new Date().setDate(new Date().getDate() + 365)).toLocaleDateString('en-CA'); // 365 days from now
+
+    // Generate all dates within the valid range
+    function generateAvailableDates(start, end) {
+      var availableDates = [];
+      var current = new Date(start);
+
+      while (current <= new Date(end)) {
+        var dateStr = current.toISOString().split('T')[0];
+        if (!fullyBookedDates.includes(dateStr)) {
+          availableDates.push(dateStr); // Only add dates that are not fully booked
+        }
+        current.setDate(current.getDate() + 1); // Move to the next day
+      }
+
+      return availableDates;
+    }
+
+    var availableDates = generateAvailableDates(validRangeStart, validRangeEnd);
+
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
@@ -27,16 +42,36 @@
       longPressDelay: 0.1,
       selectMirror: false,
       validRange: {
-        start: validRangeStart, 
-        end: validRangeEnd  
+        start: validRangeStart,
+        end: validRangeEnd
       },
-      events: fullyBookedDates.map(date => ({
-        start: date,
-        allDay: true,
-        display: 'background', 
-        title: 'Fully Booked',
-        className: 'fully-booked' 
-      })),
+      events: [
+        // Add events for fully booked dates
+        ...fullyBookedDates.map(date => ({
+          start: date,
+          allDay: true,
+          display: 'background',
+          title: 'Fully Booked',
+          className: 'fully-booked'
+        })),
+        // Add events for available dates
+        ...availableDates.map(date => ({
+          start: date,
+          allDay: true,
+          display: 'background',
+          title: 'Available',
+          className: 'available'
+        }))
+      ],
+      eventDidMount: function(info) {
+        // Optionally style the "Available" and "Fully Booked" events differently
+        if (info.event.title === "Available") {
+          info.el.style.backgroundColor = 'rgba(0, 255, 0, 0.2)';
+        } else if (info.event.title === "Fully Booked") {
+          info.el.style.color = 'gray'; // Change the text color to gray
+          info.el.style.fontWeight = 'bold'; 
+        }
+      },
       selectAllow: function(selectInfo) {
         return !fullyBookedDates.includes(selectInfo.startStr);
       },
@@ -51,6 +86,7 @@
         window.checkInDate = null;
       },
     });
+
     calendar.render();
   });
 </script>

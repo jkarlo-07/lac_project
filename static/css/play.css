@@ -1,0 +1,138 @@
+
+.play_container{
+    margin: 40px 80px;
+}
+
+.room-view-info-container{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.room-view-info-img{
+    width: 80%;
+}
+
+.room-view-info-img img{
+    width: 100%;
+    border-radius: 5px;
+}
+
+.room-info-reserve{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.room-card{
+    display: flex;
+    gap: 10px;
+    padding: 5px 15px;
+    align-items: center;
+    border: 1px solid rgb(219, 219, 219);
+    border-radius: 5px;
+}
+
+.room-card img{
+    width: 50px;
+}
+
+.second-view-info-room{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+
+.second-view-info-room{
+    margin-top: 10px;
+}
+
+.price-book-button{
+    border-radius: 5px;
+    background-color: #F0F6FF;
+    width: 25%;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.button-view-info{
+    background-color: #006CE4;
+    border-radius: 5px;
+    text-align: center;
+    color: #fff;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.button-view-info:hover{
+    background-color: #035abd;
+}
+
+.price-book-button p{
+    text-align: center;
+}
+
+.btn-image-back img{
+    height: auto;
+    width: 40px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: .4s;
+}
+
+.btn-image-back img:hover{
+    transform: scale(1.2);
+}
+
+@media screen and (max-width: 1265px){
+    .room-view-info-container{
+        flex-direction: column;
+    }
+
+    .room-info-reserve{
+        flex-direction: row;
+    }
+
+    .room-view-info-img{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1100px){
+    .play_container{
+        margin: 40px 20px;
+    }
+
+    .second-view-info-room{
+        margin-top: 40px;
+    }
+    .price-book-button{
+        width: 40%;
+    }
+    
+}
+
+@media screen and (max-width: 980px){
+    .room-card img{
+        width: 30px;
+    }
+    .room-info-reserve{
+        flex-wrap: wrap;
+    }
+
+
+}
+
+@media screen and (max-width: 767px){
+    .second-view-info-room{
+        flex-direction: column;
+    }
+
+    .price-book-button{
+        margin-top: 10px;
+        width: 100%;
+    }
+}
