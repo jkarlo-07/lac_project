@@ -28,6 +28,9 @@ body {
 
 /*Amenities CSS */
 
+.add-amenities {
+  z-index: 1000;
+}
 .td-container {
   display: flex;
   justify-content: center;
@@ -556,7 +559,7 @@ canvas {
   display: none;
 }
 
-.dashboard-add-room, .dashboard-add-booking{
+.dashboard-add-room, .dashboard-add-booking, .dashboard-add-amenities{
   float: right;
   margin-bottom: 10px;
   padding: 0.5rem 1rem;

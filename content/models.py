@@ -126,3 +126,7 @@ class FullyBookedDates(models.Model):
 class ManageEmail(models.Model):
     field = models.CharField(max_length=25, unique=True)
     value = models.TextField()
+
+class Amenities(models.Model):
+    name = models.CharField(max_length=25, unique=True)
+    icon = models.ImageField(upload_to='amenities/', default='amenities/amenities_fallback.jpg', blank=True)

@@ -1,0 +1,103 @@
+{% load static %}
+
+<form action="{% url "dashboard:update_room_type" %}"
+        method="post"
+        class="booking-forms-walkin update_rtype_option" 
+        style= "
+        {% if showUpdateType %}
+          display: block;
+        {% else %}
+          display: none;
+        {% endif %};"  
+        enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="update-option-header">
+      <h1>Update Room Type</h1>
+      <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-exist-rtype-btn" />
+    </div>
+      <input type="hidden" name="roomtype_id" id="update-type-id" value="{{ room_id |default:'' }}">
+    <div class="update_exist_rtype_container">
+        <div class="rtype-column">
+            <div class="exist-input-rtype-price">
+                <div>
+                  <input type="text" placeholder="Room Type" name="room_type" id="update-type-rtype"  value="{{ form.room_type.value|default:'' }}">
+                  {% if form.room_type.errors %}
+                      <p class="errorlist">{{ form.room_type.errors }}</p>
+                  {% endif %}
+                </div>
+                <div>
+                  <input type="text" placeholder="Price" name="price" id="update-type-price"  value="{{ form.price.value|default:'' }}">
+                  {% if form.price.errors %}
+                      <p class="errorlist">{{ form.price.errors }}</p>
+                  {% endif %}
+                </div>
+                
+              </div>
+              <div class="input-container">
+                <textarea name="description" class="no-resize" rows="5" name="description" id="update-type-description" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
+                {% if form.description.errors %}
+                      <p class="errorlist">{{ form.description.errors }}</p>
+                  {% endif %}
+              </div>
+                <div class="input-container">
+                  {% if form.price.errors %}
+                      <p class="errorlist">{{ form.price.errors }}</p>
+                  {% endif %}
+                </div>
+        
+                <div class="update-capacity-rooms">
+                  <input class="cap-exist" type="text" placeholder="Capacity" name="capacity" id="update-type-capacity"  value="{{ form.capacity.value|default:'' }}">
+                  {% if form.capacity.errors %}
+                      <p class="errorlist">{{ form.capacity.errors }}</p>
+                  {% endif %}
+                </div>
+                
+        
+                <div class="exist-file-group">
+                  <p>Picture</p>
+                  <input type="file" name="picture" id="update-dob-form" value="{{ form.picture.value|default:'' }}"/>
+              </div>
+        
+              <div class="input-group update_cot_req">
+                <input type="checkbox" id="update-type-cottage-req" name="is_cottage_required" {% if form.is_cottage_required.value %}checked{% endif %}/>
+                <label for="exist_cottage_req">Cottage Required</label>
+              </div>
+        </div>
+        <div class="rtype-column rtype-ammenities">
+            <p>Ammenities</p>
+            <div class="ammenities-section">
+                <div class="ammenities">
+                    <img src="{% static "images/icons/wifi.png" %}" alt="wifi" width="100" class="ammenities-icon">
+                    <p>Free WiFi</p>
+                </div>
+                <div class="ammenities">
+                    <img src="{% static "images/icons/wifi.png" %}" alt="wifi" width="100" class="ammenities-icon">
+                    <p>sdfsdfsd</p>
+                </div>
+                <div class="ammenities">
+                    <img src="{% static "images/icons/wifi.png" %}" alt="wifi" width="100" class="ammenities-icon">
+                    <p>Free sdfsd</p>
+                </div>
+                <div class="ammenities">
+                    <img src="{% static "images/icons/wifi.png" %}" alt="wifi" width="100" class="ammenities-icon">
+                    <p>sdfsdf</p>
+                </div>
+                <div class="ammenities">
+                    <img src="{% static "images/icons/wifi.png" %}" alt="wifi" width="100" class="ammenities-icon">
+                    <p>sdfsdf</p>
+                </div>
+                <div class="ammenities">
+                    <img src="{% static "images/icons/wifi.png" %}" alt="wifi" width="100" class="ammenities-icon">
+                    <p>sdfds</p>
+                </div>
+            </div>
+            <div class="ammenities-buttons">
+                <p>Edit</p>
+                <p>Delete</p>
+            </div>
+        </div>
+      
+    </div>
+    <button class="btn-update_rtype" type="submit">Update</button>
+  </form>

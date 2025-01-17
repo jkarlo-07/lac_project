@@ -29,4 +29,5 @@ urlpatterns = [
     path('update_booking', views.update_booking, name='update_booking'),
     path('add_booking', views.add_booking, name='add_booking'),
     path('change_booking_status', views.change_booking_status, name='change_booking_status'),
+    path('add_amenities', views.add_amenities, name='add_amenities'),
 ]

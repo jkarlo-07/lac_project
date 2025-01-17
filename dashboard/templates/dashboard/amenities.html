@@ -6,6 +6,47 @@
   Amenities
 {% endblock %}
 
+{% block pagetitle %}
+  Amenities
+{% endblock  %}
+
+{% block in_body %}
+<form class="add-amenities booking-forms-walkin" action="{% url "dashboard:add_amenities" %}" method='post' enctype="multipart/form-data" style="
+{% if show_add_form %}
+  display: block
+{% else %}
+  display:none
+{% endif %}">
+  {% csrf_token %}
+  <div class="option-header2">
+    <h1>Add New Amenities</h1>
+    <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-new-amenities-btn" />
+  </div>
+
+  <div class="amenities-info">
+    <div class="Amenities-container">
+      <div class="input-amenities">
+        <input type="text" name="name_add" id="name_add" placeholder="Name" value="{{ form.name_add.value|default:'' }}">
+        {% if form.name_add.errors %}
+            <p class="errorlist">{{ form.name_add.errors }}</p>
+          {% endif %}
+      </div>
+
+      <div class="input-icon">
+        <p>Icon</p>
+        <input type="file" name="icon_add" id="icon_add" />
+        {% if form.icon_add.errors %}
+            <p class="errorlist">{{ form.icon_add.errors }}</p>
+          {% endif %}
+      </div>
+
+    </div>
+
+
+    <button type="submit">Submit</button>
+  </div>
+</form>
+{% endblock %}
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'lib/datatables/dataTables.css' %}" />
 
@@ -18,7 +59,7 @@
 {% endblock %}
 
 {% block content %}
-<p class="dashboard-add-room">+ New Amenities</p>
+<p class="dashboard-add-amenities">+ New Amenities</p>
 
 <table id="myTable" class="display">
   <thead>
@@ -30,12 +71,15 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Name</td>
-      <td><img class="image-icon-td" src="{% static "images/icons/air.png" %}" alt=""></td>
-      <td><div class="td-container"><p class="td-button-edit">Edit</p></div></td>
-      <td><div class="td-container"><p class="td-button-delete">Delete</p></div></td>
-    </tr>
+    {% for amenity in amenities %}
+      <tr>
+        <td>{{amenity.name}}</td>
+        <td><img class="image-icon-td" src="{{amenity.icon.url}}" alt=""></td>
+        <td><div class="td-container"><p class="td-button-edit">Edit</p></div></td>
+        <td><div class="td-container"><p class="td-button-delete">Delete</p></div></td>
+      </tr>
+    {% endfor %}
+    
   </tbody>
 </table>
 
@@ -50,6 +94,18 @@
       $('#myTable').DataTable()
     
     })
+
+    addAmenitiesBtn = document.querySelector('.dashboard-add-amenities')
+    addAmenitiesForm = document.querySelector('.add-amenities')
+    closeAmenitiesBtn = document.querySelector('#close-new-amenities-btn')
+    addAmenitiesBtn.addEventListener('click', function() {
+      addAmenitiesForm.style.display = 'block'
+    })
+
+    closeAmenitiesBtn.addEventListener('click', function() {
+      addAmenitiesForm.style.display = 'none'
+    })
+    
   </script>
   
 {% endblock %}

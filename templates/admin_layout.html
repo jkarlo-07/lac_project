@@ -173,6 +173,27 @@
           >
             Manage Email
           </p>
+        <a
+          href="{% url 'dashboard:amenities' %}"
+          class="side-link {% if request.resolver_match.view_name == 'dashboard:amenities' %}current-link{% endif %}"
+          id="link-guest"
+        >
+          <img
+            src="{% if request.resolver_match.view_name == 'dashboard:amenities' %}
+            {% static 'images/icons/amenities-a.png' %}
+          {% else %}
+            {% static 'images/icons/amenities.png' %}
+          {% endif %}"
+            alt="amenities"
+            class="side-icon"
+            id="img-amenities"
+            width="100"
+          />
+          <p
+            class="side-link-text {% if request.resolver_match.view_name == 'dashboard:amenities' %}active-link{% endif %}"
+          >
+            Amenities
+          </p>
         </a>
       </div>
     </div>

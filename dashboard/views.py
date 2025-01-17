@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from content.models import Booking, Room, Guest, RoomType, FullyBookedDates, ManageEmail
+from content.models import Booking, Room, Guest, RoomType, FullyBookedDates, ManageEmail, Amenities
 from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta, time, date
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm, ManageEmailForm
+from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm, ManageEmailForm, AddAmenitiesForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
@@ -41,7 +41,11 @@ def booking_view(request):
 @login_required(login_url="users:login")
 @user_passes_test(is_staff, login_url="content:index") 
 def amenities_view(request):
-    return render(request, "dashboard/amenities.html")
+    amenities = Amenities.objects.all()
+    context = {
+        'amenities': amenities
+    }
+    return render(request, "dashboard/amenities.html", context)
 
 
 @login_required(login_url="users:login")
@@ -862,3 +866,22 @@ def change_booking_status(request):
             check_add_fullbook(checkin_date)
         
         return redirect('dashboard:booking')
+    
+def add_amenities(request):
+    amenities = Amenities.objects.all()
+    if request.method == "POST":
+        form = AddAmenitiesForm(request.POST, request.FILES)
+        if form.is_valid():
+            amenities = Amenities(
+                name=form.cleaned_data.get('name_add'),
+                icon=form.cleaned_data.get('icon_add'),
+            )
+            amenities.save()
+            print('done adding am')
+            return redirect('dashboard:amenities')  
+        else:
+            print('Form errors:', form.errors)  
+    else:
+        form = AddAmenitiesForm()
+
+    return render(request, "dashboard/amenities.html", {"form": form, 'show_add_form': True, "amenities" : amenities})

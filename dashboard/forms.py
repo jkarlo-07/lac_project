@@ -1,5 +1,5 @@
 from django import forms
-from content.models import Room, RoomType
+from content.models import Room, RoomType, Amenities
 from django.core.validators import RegexValidator
 
 class ExistingRoomForm(forms.ModelForm):
@@ -83,3 +83,15 @@ class ManageEmailForm(forms.Form):
             'invalid': "Please enter a valid email address."
         }
     )
+
+class AddAmenitiesForm(forms.Form):
+    name_add = forms.CharField(max_length=25)
+    icon_add = forms.ImageField(required=True)
+
+    def clean_name_add(self):
+        name_add = self.cleaned_data.get('name_add')
+        
+        if Amenities.objects.filter(name=name_add).exists():
+            raise forms.ValidationError("This name already exists. Please choose a different name.")
+        
+        return name_add
