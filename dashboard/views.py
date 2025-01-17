@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta, time, date
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm, ManageEmailForm, AddAmenitiesForm
+from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm, ManageEmailForm, AddAmenitiesForm, EditAmenitiesForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
@@ -885,3 +885,42 @@ def add_amenities(request):
         form = AddAmenitiesForm()
 
     return render(request, "dashboard/amenities.html", {"form": form, 'show_add_form': True, "amenities" : amenities})
+
+def delete_amenity(request):
+    if request.method == "POST":
+        amenity_id = request.POST.get('deleteID')
+        amenity = get_object_or_404(Amenities,id=amenity_id)
+        amenity.delete()
+        amenity = Amenities.objects.all()
+        return redirect("dashboard:amenities")
+    else:
+        return redirect("content:amenities")
+
+def edit_amenity(request):
+    amenities = Amenities.objects.all()
+    if request.method == 'POST':
+        amenity_id = request.POST.get('edit_id')
+        amenity = get_object_or_404(Amenities, id=amenity_id)
+
+        form = EditAmenitiesForm(request.POST, request.FILES)
+        if form.is_valid():
+            amenity.name = form.cleaned_data.get('name_edit')
+
+            
+            if 'icon_edit' in request.FILES:
+                icon_edit = request.FILES['icon_edit']
+                amenity.icon = icon_edit
+                amenity.save(update_fields=['name', 'icon'])
+                print(icon_edit)
+            else:
+                amenity.save(update_fields=['name'])
+                print("No file uploaded in 'icon_edit'.")
+                
+
+            return redirect('dashboard:amenities')
+        else:
+            print('Form errors:', form.errors)  
+    else:
+        form = EditAmenitiesForm()
+            
+    return render(request, "dashboard/amenities.html", {"form": form, "amenities" : amenities})

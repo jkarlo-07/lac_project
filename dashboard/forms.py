@@ -95,3 +95,7 @@ class AddAmenitiesForm(forms.Form):
             raise forms.ValidationError("This name already exists. Please choose a different name.")
         
         return name_add
+    
+class EditAmenitiesForm(forms.Form):
+    name_edit = forms.CharField(max_length=25)
+    icon_add = forms.ImageField(required=False)

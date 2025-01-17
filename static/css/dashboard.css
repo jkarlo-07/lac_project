@@ -78,7 +78,9 @@ body {
   height: auto;
 }
 
-.delete_option_roomtype {
+
+
+.delete_option_roomtype, .edit-amenity {
   z-index: 1000;
 }
 

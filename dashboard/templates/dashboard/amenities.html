@@ -6,6 +6,7 @@
   Amenities
 {% endblock %}
 
+
 {% block pagetitle %}
   Amenities
 {% endblock  %}
@@ -46,10 +47,54 @@
     <button type="submit">Submit</button>
   </div>
 </form>
+
+<form class="booking-forms-walkin delete_option" style="display: none;" method="post" action="{% url 'dashboard:delete_amenity' %}">
+  {% csrf_token %}
+  <div class="image-delete-icon">
+    <img src="{% static 'images/icons/remove-del.png' %}" alt="exit icon" />
+  </div>
+  <div class="delete-option-header">
+    <h1>Are you sure?</h1>
+    <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-delete-amenity-btn" />
+  </div>
+  <input type="hidden" name="deleteID" id="deleteID" value="" />
+  <div class="delete-choose-container">
+    <p>
+      Do you really want to delete this record? This <br /> process cannot be undone.
+    </p>
+    <div class="button-choose-delete">
+      <button class="gray-cancel-button" id="cancel-delete-btn" type="button">Cancel</button>
+      <button class="red-delete-button" type="submit">Delete</button>
+    </div>
+  </div>
+</form>
+
+<form class="edit-amenity booking-forms-walkin" action="{% url "dashboard:edit_amenity" %}" method='post' enctype="multipart/form-data" style=" display: none;">
+  {% csrf_token %}
+  <input type="hidden" id="edit_id" name="edit_id">
+  <div class="option-header2">
+    <h1>Update Amenity</h1>
+    <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-edit-amenities-btn" />
+  </div>
+
+  <div class="amenities-info">
+    <div class="Amenities-container">
+      <div class="input-amenities">
+        <input type="text" name="name_edit" id="name_edit" placeholder="Name" value="">
+      </div>
+
+      <div class="input-icon">
+        <p>Icon</p>
+        <input type="file" name="icon_edit" id="icon_edit" />
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
 {% endblock %}
 {% block extra_head %}
   <link rel="stylesheet" href="{% static 'lib/datatables/dataTables.css' %}" />
-
+  <link rel="stylesheet" href="{% static 'css/option.css' %}" />
 
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   
@@ -75,8 +120,8 @@
       <tr>
         <td>{{amenity.name}}</td>
         <td><img class="image-icon-td" src="{{amenity.icon.url}}" alt=""></td>
-        <td><div class="td-container"><p class="td-button-edit">Edit</p></div></td>
-        <td><div class="td-container"><p class="td-button-delete">Delete</p></div></td>
+        <td><div class="td-container"><p class="td-button-edit" data-amenity-id="{{amenity.id}}" data-amenity-name="{{ amenity.name }}">Edit</p></div></td>
+        <td><div class="td-container"><p class="td-button-delete" data-amenity-id={{amenity.id}}>Delete</p></div></td>
       </tr>
     {% endfor %}
     
@@ -104,6 +149,53 @@
 
     closeAmenitiesBtn.addEventListener('click', function() {
       addAmenitiesForm.style.display = 'none'
+    })
+
+    // for delete
+
+
+    const deleteForm = document.querySelector('.delete_option')
+    const deleteBtns = document.querySelectorAll('.td-button-delete')
+    const closeDeleteFormBtn = document.getElementById('close-delete-amenity-btn')
+    const cancelDeleteFormBtn = document.getElementById('cancel-delete-btn')
+
+    deleteBtns.forEach((deleteBtn) => {
+      deleteBtn.addEventListener('click', function (event) {
+        const deleteID = document.getElementById('deleteID')
+        amenity_id = deleteBtn.getAttribute('data-amenity-id')
+        deleteID.value = amenity_id
+        console.log(amenity_id)
+        deleteForm.style.display = 'block'
+      })
+    })
+
+
+    const hideDeleteForm = () => {
+      deleteForm.style.display = 'none'
+    }
+
+    closeDeleteFormBtn.addEventListener('click', hideDeleteForm)
+    cancelDeleteFormBtn.addEventListener('click', hideDeleteForm)
+
+    // for delete
+    const editForm = document.querySelector('.edit-amenity')
+    const editBtns = document.querySelectorAll('.td-button-edit')
+    const editCloseBtn = document.querySelector('#close-edit-amenities-btn')
+    const editAmenityInput = document.querySelector('#name_edit')
+    const editAmenityId = document.querySelector('#edit_id')
+
+    editBtns.forEach((editBtn) => {
+      editBtn.addEventListener('click', function() {
+        amenity_id = editBtn.getAttribute('data-amenity-id')
+        amenity_name = editBtn.getAttribute('data-amenity-name')
+        editAmenityInput.value = amenity_name
+        editAmenityId.value = amenity_id
+        editForm.style.display= "block"
+      })
+    })
+    
+    editCloseBtn.addEventListener('click', function() {
+      editForm.style.display = 'none'
     })
     
   </script>
