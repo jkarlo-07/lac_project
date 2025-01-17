@@ -19,38 +19,27 @@
 
 {% block content %}
 
-<form class="manage-email" action="">
-  <div class="manage-email-container">
-    <label for="">Main message:</label>
-    <div class="input-container">
-      <textarea name="" id="" rows="5" readonly></textarea>
-    </div>
-  </div>
-  <div class="manage-email-container">
-    <label for="">Closing message:</label>
-    <div class="input-container">
-      <textarea name="" id="" rows="5" readonly></textarea>
-    </div>
-  </div>
-  <div class="manage-contact-email">
-    <div class="manage-ce-box">
-      <label for="">Contact number:</label>
-      <div class="input-container">
-        <input type="text" name="" id="" readonly></input>
-      </div>
-    </div>
-    <div class= "manage-ce-box">
-      <label for="">Email:</label>
-      <div class="input-container">
-        <input type="text" name="" id="" readonly></input>
-      </div>
-    </div>
+<form class="add-ammenities booking-forms-walkin" action="">
+  <div class="option-header2">
+    <h1>Add New Amenities</h1>
+    <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-new-room-btn" />
   </div>
 
-  <div class="manage-email-btn-container">
-    <p>EDIT</p>
-    <button type="submit">SAVE</button>
+  <div class="amenities-info">
+    <div class="Amenities-container">
+      <div class="input-amenities">
+        <input type="text" name="name-amenities" id="name-amenities" placeholder="Name">
+      </div>
+
+      <div class="input-icon">
+        <p>Icon</p>
+        <input type="file" name="picture" id="dob-form" />
+      </div>
+
+    </div>
+
+
+    <button type="submit">Submit</button>
   </div>
-  
 </form>
 {% endblock %}

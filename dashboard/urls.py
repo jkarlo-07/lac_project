@@ -8,6 +8,7 @@ urlpatterns = [
     path('booking', views.booking_view, name='booking'),
     path('room', views.room_view, name='room'),
     path('manage_email', views.manage_email_view, name='manage_email'),
+    path('amenities', views.amenities_view, name='amenities'),
     path('book_form', views.book_form_view, name='book_form'),
     path('roomt_form', views.room_type_view, name='roomt_form'),
     path('addroom_form', views.add_room_view, name='addroom_form'),

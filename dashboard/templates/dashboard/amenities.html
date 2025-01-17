@@ -1,0 +1,55 @@
+{% extends "admin_layout.html" %}
+
+{% load static %}
+
+{% block title %}
+  Amenities
+{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'lib/datatables/dataTables.css' %}" />
+
+
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  
+  <!-- jQuery and jQuery UI JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<p class="dashboard-add-room">+ New Amenities</p>
+
+<table id="myTable" class="display">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Icon</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td><img class="image-icon-td" src="{% static "images/icons/air.png" %}" alt=""></td>
+      <td><div class="td-container"><p class="td-button-edit">Edit</p></div></td>
+      <td><div class="td-container"><p class="td-button-delete">Delete</p></div></td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}
+
+{% block extra_script %}
+
+  <script src="{% static 'lib/datatables/dataTables.js' %}"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#myTable').DataTable()
+    
+    })
+  </script>
+  
+{% endblock %}

@@ -25,6 +25,56 @@ body {
   font-weight: 400;
 }
 
+
+/*Amenities CSS */
+
+.td-container {
+  display: flex;
+  justify-content: center;
+}
+
+.td-button-edit{
+  background-color: #88f011;
+  color: #fff;
+  padding: 5px 20px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.td-button-edit:hover{
+  background-color: #85f506;
+}
+
+.td-button-delete:hover{
+  background-color: #ce0909;
+}
+
+.input-amenities input{
+  padding: 10px;
+  width: 100%;
+}
+
+.amenities-info{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.td-button-delete{
+  background-color: #a90606;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.image-icon-td{
+  width: 30px;
+  height: auto;
+}
+
 .delete_option_roomtype {
   z-index: 1000;
 }
