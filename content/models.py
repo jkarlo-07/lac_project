@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import CustomUser
 from datetime import timedelta, time, datetime
+from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
 from decimal import Decimal
@@ -13,6 +14,11 @@ class RoomType(models.Model):
     capacity = models.IntegerField(default=0)
     picture = models.ImageField(upload_to='room/', default='room/room_fallback.jpg', blank=True)
     is_cottage_required = models.BooleanField(default=True)
+    amenities = ArrayField(
+        models.IntegerField(),
+        blank=True,
+        default=list
+    )
     cottage_price = models.DecimalField(max_digits=10, decimal_places=2, default=750)
 
     def __str__(self):

@@ -79,7 +79,6 @@ body {
 }
 
 
-
 .delete_option_roomtype, .edit-amenity {
   z-index: 1000;
 }
@@ -100,6 +99,28 @@ a {
 li {
   list-style-type: none;
 }
+
+/*Room type CSS 1.1*/
+
+.main-container-add-rtype{
+  display: flex;
+  gap: 10px;
+}
+
+.amenities-checkbox{
+  display: flex;
+  width: 300px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.type-amenities{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+
 
 /*Booking Forms*/
 .booking-forms-walkin{

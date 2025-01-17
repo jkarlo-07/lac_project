@@ -164,56 +164,73 @@
       <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-new-room-btn" />
     </div>
 
-    <div class="room-type-info">
-      <div class="input-group">
-        <div class="input-container1">
-          <input type="text" name="room_type" id="f-name-form" placeholder="Room Type" value="{{ form.room_type.value|default:'' }}" />
-          {% if form.room_type.errors %}
-            <p class="errorlist">{{ form.room_type.errors }}</p>
-          {% endif %}
+    
+    <div class="main-container-add-rtype">
+      <div class="room-type-info">
+        <div class="input-group">
+          <div class="input-container1">
+            <input type="text" name="room_type" id="f-name-form" placeholder="Room Type" value="{{ form.room_type.value|default:'' }}" />
+            {% if form.room_type.errors %}
+              <p class="errorlist">{{ form.room_type.errors }}</p>
+            {% endif %}
+          </div>
+  
+          <div class="input-container1">
+            <input type="text" name="room_number" id="l-name-form" placeholder="Room Number" value="{{ form2.room_number.value|default:'' }}" />
+            {% if form.room_number.errors %}
+              <p class="errorlist">{{ form.room_type.errors }}</p>
+            {% endif %}
+          </div>
         </div>
-
-        <div class="input-container1">
-          <input type="text" name="room_number" id="l-name-form" placeholder="Room Number" value="{{ form2.room_number.value|default:'' }}" />
-          {% if form.room_number.errors %}
-            <p class="errorlist">{{ form.room_type.errors }}</p>
-          {% endif %}
+        <div class="input-group inprice">
+          <div class="input-container1">
+            <input type="text" name="price" placeholder="Price" value="{{ form.price.value|default:'' }}" />
+            {% if form.price.errors %}
+              <p class="errorlist">{{ form.price.errors }}</p>
+            {% endif %}
+          </div>
+        </div>
+        <div class="input-group indesc">
+          <div class="input-container1">
+            <textarea rows="5" class="no-resize" name="description" id="" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
+            {% if form.description.errors %}
+              <p class="errorlist">{{ form.description.errors }}</p>
+            {% endif %}
+          </div>
+        </div>
+        <div class="input-group incap">
+          <div class="input-container1">
+            <input type="text" name="capacity" id="address-form" placeholder="Capacity" value="{{ form.capacity.value|default:'' }}" />
+            {% if form.capacity.errors %}
+              <p class="errorlist">{{ form.capacity.errors }}</p>
+            {% endif %}
+          </div>
+        </div>
+        <div class="file-group">
+          <p>Picture</p>
+          <input type="file" name="picture" id="dob-form" />
+        </div>
+        <div class="input-group cot_req">
+          <input type="checkbox" id="cottage_req" name="cottage_req" />
+          <label for="cottage_req">Cottage Required</label>
         </div>
       </div>
-      <div class="input-group inprice">
-        <div class="input-container1">
-          <input type="text" name="price" placeholder="Price" value="{{ form.price.value|default:'' }}" />
-          {% if form.price.errors %}
-            <p class="errorlist">{{ form.price.errors }}</p>
-          {% endif %}
+      <div class="sec-container-rtype">
+        <h3>Amenities</h3>
+        <div class="amenities-checkbox">
+          {% for amenity in amenities %}
+          <div class="type-amenities">
+            <input type="checkbox" value={{amenity.id}} name="amenities">
+            <p>{{amenity.name}}</p>
+          </div>
+          {% endfor %}
+          
+          
         </div>
       </div>
-      <div class="input-group indesc">
-        <div class="input-container1">
-          <textarea rows="5" class="no-resize" name="description" id="" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
-          {% if form.description.errors %}
-            <p class="errorlist">{{ form.description.errors }}</p>
-          {% endif %}
-        </div>
-      </div>
-      <div class="input-group incap">
-        <div class="input-container1">
-          <input type="text" name="capacity" id="address-form" placeholder="Capacity" value="{{ form.capacity.value|default:'' }}" />
-          {% if form.capacity.errors %}
-            <p class="errorlist">{{ form.capacity.errors }}</p>
-          {% endif %}
-        </div>
-      </div>
-      <div class="file-group">
-        <p>Picture</p>
-        <input type="file" name="picture" id="dob-form" />
-      </div>
-      <div class="input-group cot_req">
-        <input type="checkbox" id="cottage_req" name="cottage_req" />
-        <label for="cottage_req">Cottage Required</label>
-      </div>
-      <button type="submit">Submit</button>
     </div>
+
+    <button type="submit">Submit</button>
   </form>
   <form action="{% url 'dashboard:add_existing_room' %}"
     method="post"

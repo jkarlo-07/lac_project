@@ -28,48 +28,12 @@
                 <img src="{% static "images/icons/people.png" %}" alt="">
                 <p>Capacity: {{room.capacity}}pax</p>
             </div>
-            {% if room.room_type == '1st floor' %}
+            {% for amenity in amenities %}
             <div class="room-card">
-                <img src="{% static "images/icons/double-bed.png" %}" alt="">
-                <p>King-size-bed</p> 
+                <img src="{{amenity.icon.url}}" alt="">
+                <p>{{amenity.name}}</p>
             </div>
-            {% elif room.room_type == '2nd floor' %}
-            <div class="room-card">
-                <img src="{% static "images/icons/double-bed.png" %}" alt="">
-                <p>Double-deck bed</p> 
-            </div>
-            {% elif room.room_type == '3rd floor' %}
-            <div class="room-card">
-                <img src="{% static "images/icons/double-bed.png" %}" alt="">
-                <p>Queen-size-bed</p> 
-            </div>
-            {% elif room.room_type == 'E-house' %}
-            <div class="room-card">
-                <img src="{% static "images/icons/double-bed.png" %}" alt="">
-                <p>King-size-bed</p> 
-            </div>
-            {% elif room.room_type == 'Cottage' %}
-            <div class="room-card">
-                <img src="{% static "images/icons/bbq.png" %}" alt="">
-                <p>Grill station</p> 
-            </div>
-            {% endif %}
-            
-            
-            {% if room.room_type != 'Cottage' %}
-            <div class="room-card">
-                <img src="{% static "images/icons/shower.png" %}" alt="">
-                <p>Private bathroom</p>
-            </div>
-            <div class="room-card">
-                <img src="{% static "images/icons/air.png" %}" alt="">
-                <p>Air Conditioning</p>
-            </div>
-            {% endif %}
-            <div class="room-card">
-                <img src="{% static "images/icons/wifi.png" %}" alt="">
-                <p>Free WiFi</p>
-            </div>
+            {% endfor %}
         </div>
     </div>
 

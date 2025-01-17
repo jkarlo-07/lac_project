@@ -30,7 +30,8 @@ def guest_view(request):
 def room_view(request):
     rooms = Room.objects.all()
     roomtypes = RoomType.objects.all()
-    return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })
+    amenities = Amenities.objects.all()
+    return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True,  'amenities': amenities})
 
 @login_required(login_url="users:login")
 @user_passes_test(is_staff, login_url="content:index") 
@@ -327,14 +328,19 @@ from django.db import transaction
 from django.shortcuts import render
 
 def add_new_room_type(request):
+    amenitiesList = Amenities.objects.all()
     rooms = Room.objects.all()
     roomtypes = RoomType.objects.all()
 
     if request.method == 'POST':
+
+        
+
         form = NewRoomTypeForm(request.POST, request.FILES)
         form2 = ExistingRoomForm(request.POST)
 
         if form.is_valid() and form2.is_valid():
+            amenities = request.POST.getlist('amenities')
             roomtype = form.save(commit=False)  
 
             is_cottage_required = request.POST.get('cottage_req')
@@ -348,6 +354,7 @@ def add_new_room_type(request):
             roomtype.price = form.cleaned_data.get('price')
             roomtype.capacity = form.cleaned_data.get('capacity')
             roomtype.picture = form.cleaned_data.get('picture')
+            roomtype.amenities = amenities
 
             with transaction.atomic():
                 roomtype.save() 
@@ -372,7 +379,8 @@ def add_new_room_type(request):
                 'form': form,
                 'form2': form2,
                 'show_form': True,
-                'show_form2': True  
+                'show_form2': True,
+                'amenities': amenitiesList,
             })
 
     else:
@@ -385,7 +393,8 @@ def add_new_room_type(request):
         'form': form,
         'form2': form2,
         'show_form': True,
-        'show_form2': False
+        'show_form2': False,
+        'amenities': amenitiesList,
     })
     
 from django.http import JsonResponse
