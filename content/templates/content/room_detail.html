@@ -79,7 +79,7 @@
             <p>{{room.description}}</p>
         </div>  
         <div class="price-book-button">
-            <h4>Room: 1st Floor</h4>
+            <h4>Room: {{room.room_type}}</h4>
             <p>₱{{room.price}} / 12hrs</p>
             <a href="{% url "content:calendar" %}"><p class="button-view-info">Reserve</p></a>
         </div>
