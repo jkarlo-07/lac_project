@@ -120,6 +120,11 @@ li {
   gap: 5px;
 }
 
+.main-container-edit-rtype{
+  display: flex;
+  gap: 10px;
+}
+
 
 
 /*Booking Forms*/

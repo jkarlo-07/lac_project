@@ -427,6 +427,7 @@ def delete_room(request):
         
         rooms = Room.objects.all()
         roomtypes = RoomType.objects.all()
+        
         return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })
 
 
@@ -437,7 +438,7 @@ def delete_roomtype(request):
         room_id = request.POST.get('deleteID2')
         room = get_object_or_404(RoomType, id=room_id)
         room.delete()
-        
+        amenities = Amenities.objects.all()
         rooms = Room.objects.all()
         roomtypes = RoomType.objects.all()
         switch_to_room = request.GET.get('switchToRoom') == 'true'
@@ -445,11 +446,11 @@ def delete_roomtype(request):
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             html_content = render_to_string(
                 'dashboard/room_table.html' if not switch_to_room else 'dashboard/room_type_table.html',
-                {'rooms': rooms, 'roomtypes': roomtypes}
+                {'rooms': rooms, 'roomtypes': roomtypes , 'amenities':amenities}
             )
             return JsonResponse({'html': html_content})
         
-        return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True, 'switchToRoom': "true",  })
+        return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True, 'switchToRoom': "true", 'amenities':amenities  })
 
 
     return redirect('home')
@@ -472,9 +473,11 @@ def update_room(request):
         return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })
     
 def update_room_type(request):
+    amenitiesList = Amenities.objects.all()
     if request.method == 'POST':
         form = UpdateRoomTypeForm(request.POST, request.FILES)
         if form.is_valid():
+            amenities = request.POST.getlist('amenities')
             roomtype_id = request.POST.get("roomtype_id")
             room_type = form.cleaned_data.get('room_type', '')
             price = form.cleaned_data.get('price', '')
@@ -489,6 +492,7 @@ def update_room_type(request):
             roomtype_model.description = description
             roomtype_model.base_price = price
             roomtype_model.capacity = capacity
+            roomtype_model.amenities = amenities
             if is_cottage_required == "on":
                 roomtype_model.is_cottage_required = True
             else:
@@ -496,9 +500,9 @@ def update_room_type(request):
                 
             roomtype_model.picture = form.cleaned_data.get('picture')
             if form.cleaned_data.get('picture'):
-                roomtype_model.save(update_fields=['room_type', 'price', 'description', 'base_price', 'capacity', 'is_cottage_required', 'picture'])
+                roomtype_model.save(update_fields=['room_type', 'price', 'description', 'base_price', 'capacity', 'is_cottage_required', 'picture', 'amenities'])
             else:
-                roomtype_model.save(update_fields=['room_type', 'price', 'description', 'base_price', 'capacity', 'is_cottage_required'])
+                roomtype_model.save(update_fields=['room_type', 'price', 'description', 'base_price', 'capacity', 'is_cottage_required', 'amenities'])
 
 
             rooms = Room.objects.all()
@@ -508,7 +512,7 @@ def update_room_type(request):
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 html_content = render_to_string(
                     'dashboard/room_table.html' if not switch_to_room else 'dashboard/room_type_table.html',
-                    {'rooms': rooms, 'roomtypes': roomtypes}
+                    {'rooms': rooms, 'roomtypes': roomtypes, 'amenities': amenitiesList}
                 )
                 return JsonResponse({'html': html_content})
             form = UpdateRoomTypeForm()
@@ -517,6 +521,7 @@ def update_room_type(request):
                            'roomtypes': roomtypes, 
                            'show_form': True, 
                            'switchToRoom': "true", 
+                           'amenities': amenitiesList,
                            "showUpdateType": False})
         else:
             rooms = Room.objects.all()
@@ -526,7 +531,7 @@ def update_room_type(request):
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 html_content = render_to_string(
                     'dashboard/room_table.html' if not switch_to_room else 'dashboard/room_type_table.html',
-                    {'rooms': rooms, 'roomtypes': roomtypes}
+                    {'rooms': rooms, 'roomtypes': roomtypes,'amenities': amenitiesList}
                 )
                 return JsonResponse({'html': html_content})
             
@@ -537,6 +542,7 @@ def update_room_type(request):
                            'switchToRoom': "true", 
                            "showUpdateType": True,
                            "form": form,
+                           'amenities': amenitiesList,
                            "room_id":request.POST.get("roomtype_id")}
                            )
 

@@ -32,54 +32,70 @@
       <h1>Update Room Type</h1>
       <img src="{% static 'images/icons/reject.png' %}" alt="close icon" id="close-update-exist-rtype-btn" />
     </div>
+
       <input type="hidden" name="roomtype_id" id="update-type-id" value="{{ room_id |default:'' }}">
-    <div class="update_exist_rtype_container">
-      <div class="exist-input-rtype-price">
-        <div>
-          <input type="text" placeholder="Room Type" name="room_type" id="update-type-rtype"  value="{{ form.room_type.value|default:'' }}">
-          {% if form.room_type.errors %}
-              <p class="errorlist">{{ form.room_type.errors }}</p>
-          {% endif %}
+    <div class="main-container-edit-rtype">
+      <div class="update_exist_rtype_container">
+        <div class="exist-input-rtype-price">
+          <div>
+            <input type="text" placeholder="Room Type" name="room_type" id="update-type-rtype"  value="{{ form.room_type.value|default:'' }}">
+            {% if form.room_type.errors %}
+                <p class="errorlist">{{ form.room_type.errors }}</p>
+            {% endif %}
+          </div>
+          <div>
+            <input type="text" placeholder="Price" name="price" id="update-type-price"  value="{{ form.price.value|default:'' }}">
+            {% if form.price.errors %}
+                <p class="errorlist">{{ form.price.errors }}</p>
+            {% endif %}
+          </div>
+          
         </div>
-        <div>
-          <input type="text" placeholder="Price" name="price" id="update-type-price"  value="{{ form.price.value|default:'' }}">
-          {% if form.price.errors %}
-              <p class="errorlist">{{ form.price.errors }}</p>
-          {% endif %}
-        </div>
-        
-      </div>
-      <div class="input-container">
-        <textarea name="description" class="no-resize" rows="5" name="description" id="update-type-description" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
-        {% if form.description.errors %}
-              <p class="errorlist">{{ form.description.errors }}</p>
-          {% endif %}
-      </div>
         <div class="input-container">
-          {% if form.price.errors %}
-              <p class="errorlist">{{ form.price.errors }}</p>
-          {% endif %}
+          <textarea name="description" class="no-resize" rows="5" name="description" id="update-type-description" placeholder="Description">{{ form.description.value|default:'' }}</textarea>
+          {% if form.description.errors %}
+                <p class="errorlist">{{ form.description.errors }}</p>
+            {% endif %}
         </div>
-
-        <div class="update-capacity-rooms">
-          <input class="cap-exist" type="text" placeholder="Capacity" name="capacity" id="update-type-capacity"  value="{{ form.capacity.value|default:'' }}">
-          {% if form.capacity.errors %}
-              <p class="errorlist">{{ form.capacity.errors }}</p>
-          {% endif %}
+          <div class="input-container">
+            {% if form.price.errors %}
+                <p class="errorlist">{{ form.price.errors }}</p>
+            {% endif %}
+          </div>
+  
+          <div class="update-capacity-rooms">
+            <input class="cap-exist" type="text" placeholder="Capacity" name="capacity" id="update-type-capacity"  value="{{ form.capacity.value|default:'' }}">
+            {% if form.capacity.errors %}
+                <p class="errorlist">{{ form.capacity.errors }}</p>
+            {% endif %}
+          </div>
+          
+  
+          <div class="exist-file-group">
+            <p>Picture</p>
+            <input type="file" name="picture" id="update-dob-form" value="{{ form.picture.value|default:'' }}"/>
         </div>
-        
-
-        <div class="exist-file-group">
-          <p>Picture</p>
-          <input type="file" name="picture" id="update-dob-form" value="{{ form.picture.value|default:'' }}"/>
+  
+        <div class="input-group update_cot_req">
+          <input type="checkbox" id="update-type-cottage-req" name="is_cottage_required" {% if form.is_cottage_required.value %}checked{% endif %}/>
+          <label for="exist_cottage_req">Cottage Required</label>
+        </div>
       </div>
-
-      <div class="input-group update_cot_req">
-        <input type="checkbox" id="update-type-cottage-req" name="is_cottage_required" {% if form.is_cottage_required.value %}checked{% endif %}/>
-        <label for="exist_cottage_req">Cottage Required</label>
+      <div class="sec-container-rtype">
+        <h3>Amenities</h3>
+        <div class="amenities-checkbox">
+          {% for amenity in amenities %}
+          <div class="type-amenities">
+            <input type="checkbox" value={{amenity.id}} name="amenities">
+            <p>{{amenity.name}}</p>
+          </div>
+          {% endfor %}
+        </div>
       </div>
-      <button class="btn-update_rtype" type="submit">Update</button>
     </div>
+    
+    <button class="btn-update_rtype" type="submit">Update</button>
+    
   </form>
 {% endblock  %}
 {% block content %}
@@ -343,6 +359,9 @@
 
                 updateNewTypeBtns.forEach((edit) => {
                   edit.addEventListener('click', function(event) {
+                    
+                    let rtype_amenities = edit.getAttribute('data-roomtype-amenities')
+                    rtype_amenities = JSON.parse(rtype_amenities)
                     const roomtype_id = edit.getAttribute('data-roomtype-id')
                     const roomtype = document.getElementById('update-type-rtype')
                     const price = document.getElementById('update-type-price')
@@ -352,6 +371,17 @@
                     const cottageReq = document.getElementById('update-type-cottage-req')
                     const dataCottageReq = edit.getAttribute('data-roomtype-cottage-req')
 
+                    let checkboxes = document.querySelectorAll(`input[name="amenities"]`);
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false; // Uncheck each checkbox
+                    });
+
+                    for (let amenity of rtype_amenities) {
+                      let checkbox = document.querySelector(`input[name="amenities"][value="${amenity}"]`);
+                      if (checkbox) {
+                          checkbox.checked = true; 
+                        }
+                    }
                     roomtypeId.value = roomtype_id
                     console.log(roomtypeId)
                     if (dataCottageReq == "True") {
@@ -631,6 +661,8 @@
 
                 updateNewTypeBtns.forEach((edit) => {
                   edit.addEventListener('click', function(event) {
+                    let rtype_amenities = edit.getAttribute('data-roomtype-amenities')
+                    rtype_amenities = JSON.parse(rtype_amenities)
                     const roomtype_id = edit.getAttribute('data-roomtype-id')
                     const roomtype = document.getElementById('update-type-rtype')
                     const price = document.getElementById('update-type-price')
@@ -639,6 +671,19 @@
                     const roomtypeId = document.getElementById('update-type-id')
                     const cottageReq = document.getElementById('update-type-cottage-req')
                     const dataCottageReq = edit.getAttribute('data-roomtype-cottage-req')
+
+                    let checkboxes = document.querySelectorAll(`input[name="amenities"]`);
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false; // Uncheck each checkbox
+                    });
+
+                    for (let amenity of rtype_amenities) {
+                      let checkbox = document.querySelector(`input[name="amenities"][value="${amenity}"]`);
+                      if (checkbox) {
+                          checkbox.checked = true; 
+                        }
+                    }
+                  
 
                     roomtypeId.value = roomtype_id
                     console.log(roomtypeId)
