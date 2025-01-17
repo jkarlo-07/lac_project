@@ -136,3 +136,7 @@ class ManageEmail(models.Model):
 class Amenities(models.Model):
     name = models.CharField(max_length=25, unique=True)
     icon = models.ImageField(upload_to='amenities/', default='amenities/amenities_fallback.jpg', blank=True)
+
+class RoomTypeImage(models.Model):
+    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE) 
+    picture = models.ImageField(upload_to='room/', default='', blank=True)

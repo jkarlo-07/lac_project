@@ -9,11 +9,23 @@ class ExistingRoomForm(forms.ModelForm):
         fields = ['room_number']
         exclude = ['room_type']
 
-class NewRoomTypeForm(forms.ModelForm):
+class NewRoomTypeForm(forms.Form):
     class Meta:
         model = RoomType
 
         fields = ['room_type', 'description', 'price', 'capacity', 'picture']
+
+class AddRoomTypeForm(forms.Form):
+    room_type = forms.CharField(max_length=50)
+    room_number = forms.CharField(max_length=25)
+    price = forms.DecimalField(max_digits=10, decimal_places=2)
+    description = forms.CharField(max_length=250)
+    capacity = forms.IntegerField()
+    picture = forms.ImageField(required=False)
+    picture2 = forms.ImageField(required=False)
+    picture3 = forms.ImageField(required=False)
+    picture4 = forms.ImageField(required=False)
+    picture5 = forms.ImageField(required=False)
 
 class UpdateRoomTypeForm(forms.Form):
     room_type = forms.CharField(max_length=50)

@@ -125,6 +125,15 @@ li {
   gap: 10px;
 }
 
+.file-pic-group {
+  display: flex;
+  gap: 5px;
+}
+
+.file-pic-group input {
+  background-color: #fff !important;
+}
+
 
 
 /*Booking Forms*/

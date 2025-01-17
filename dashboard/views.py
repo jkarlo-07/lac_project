@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from content.models import Booking, Room, Guest, RoomType, FullyBookedDates, ManageEmail, Amenities
+from content.models import Booking, Room, Guest, RoomType, FullyBookedDates, ManageEmail, Amenities, RoomTypeImage
 from django.http import JsonResponse
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta, time, date
 from dateutil.relativedelta import relativedelta
-from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm, ManageEmailForm, AddAmenitiesForm, EditAmenitiesForm
+from .forms import ExistingRoomForm, NewRoomTypeForm, UpdateRoomTypeForm, UpdateGuestForm, UpdateBookingForm, AddBookingForm, ManageEmailForm, AddAmenitiesForm, EditAmenitiesForm, AddRoomTypeForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
@@ -328,70 +328,69 @@ from django.db import transaction
 from django.shortcuts import render
 
 def add_new_room_type(request):
+   
     amenitiesList = Amenities.objects.all()
     rooms = Room.objects.all()
     roomtypes = RoomType.objects.all()
 
     if request.method == 'POST':
-
-        
-
-        form = NewRoomTypeForm(request.POST, request.FILES)
-        form2 = ExistingRoomForm(request.POST)
-
-        if form.is_valid() and form2.is_valid():
+        form = AddRoomTypeForm(request.POST, request.FILES)
+        if form.is_valid():
             amenities = request.POST.getlist('amenities')
-            roomtype = form.save(commit=False)  
-
             is_cottage_required = request.POST.get('cottage_req')
+            print(is_cottage_required)
             if is_cottage_required == "on":
-                roomtype.is_cottage_required = True
+                cottage_req = True
             else:
-                roomtype.is_cottage_required = False
-            roomtype.base_price = form.cleaned_data.get('price')
-            roomtype.room_type = form.cleaned_data.get('room_type')
-            roomtype.description = form.cleaned_data.get('description')
-            roomtype.price = form.cleaned_data.get('price')
-            roomtype.capacity = form.cleaned_data.get('capacity')
-            roomtype.picture = form.cleaned_data.get('picture')
-            roomtype.amenities = amenities
+                cottage_req = False
+            roomtype = RoomType(
+                room_type = form.cleaned_data.get('room_type'),
+                base_price = form.cleaned_data.get('price'),
+                price = form.cleaned_data.get('price'),
+                description = form.cleaned_data.get('description'),
+                capacity = form.cleaned_data.get('capacity'),
+                is_cottage_required = cottage_req,
+                amenities=amenities
+            )
+            
+            roomtype.save()
+            for key, file in request.FILES.items():
+                print(f"Processing file: {file}")
+                
+                # Save each file associated with any key in request.FILES
+                rimage = RoomTypeImage(
+                    room_type=roomtype,  # Assuming 'roomtype' is passed correctly
+                    picture=file
+                )
+                rimage.save()
+            room = Room(
+                room_number=form.cleaned_data.get('room_number'),
+                room_type=roomtype
+            )
+            room.save()
 
-            with transaction.atomic():
-                roomtype.save() 
 
-                room = form2.save(commit=False)
-                room.room_type = roomtype
-                room.room_number = form2.cleaned_data.get('room_number')
-                room.save() 
-
-                form = NewRoomTypeForm()
-                form2 = ExistingRoomForm()
-
+            print('saved')            
         else:
             if not form.is_valid():
                 print('Form errors:', form.errors)
-            if not form2.is_valid():
-                print('Form2 errors:', form2.errors)
 
             return render(request, "dashboard/room.html", {
                 'rooms': rooms,
                 'roomtypes': roomtypes,
                 'form': form,
-                'form2': form2,
                 'show_form': True,
                 'show_form2': True,
                 'amenities': amenitiesList,
             })
 
     else:
-        form = NewRoomTypeForm()
-        form2 = ExistingRoomForm()
+        form = AddRoomTypeForm()
 
     return render(request, "dashboard/room.html", {
         'rooms': rooms,
         'roomtypes': roomtypes,
         'form': form,
-        'form2': form2,
         'show_form': True,
         'show_form2': False,
         'amenities': amenitiesList,
@@ -473,6 +472,7 @@ def update_room(request):
         return render(request, "dashboard/room.html", {'rooms': rooms, 'roomtypes': roomtypes, 'show_form': True  })
     
 def update_room_type(request):
+    
     amenitiesList = Amenities.objects.all()
     if request.method == 'POST':
         form = UpdateRoomTypeForm(request.POST, request.FILES)
@@ -483,7 +483,7 @@ def update_room_type(request):
             price = form.cleaned_data.get('price', '')
             description = form.cleaned_data.get('description', '')
             capacity = form.cleaned_data.get('capacity', '')
-            is_cottage_required = form.cleaned_data.get('is_cottage_required', '')
+            
             
                 
             roomtype_model = get_object_or_404(RoomType,id=roomtype_id)
@@ -493,10 +493,7 @@ def update_room_type(request):
             roomtype_model.base_price = price
             roomtype_model.capacity = capacity
             roomtype_model.amenities = amenities
-            if is_cottage_required == "on":
-                roomtype_model.is_cottage_required = True
-            else:
-                roomtype_model.is_cottage_required = False
+            
                 
             roomtype_model.picture = form.cleaned_data.get('picture')
             if form.cleaned_data.get('picture'):
