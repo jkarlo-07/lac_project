@@ -370,7 +370,8 @@ def add_new_room_type(request):
             room.save()
 
 
-            print('saved')            
+            print('saved')
+            return redirect('dashboard:room')            
         else:
             if not form.is_valid():
                 print('Form errors:', form.errors)

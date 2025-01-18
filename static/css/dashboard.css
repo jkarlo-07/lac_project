@@ -130,9 +130,14 @@ li {
   gap: 5px;
 }
 
-.file-pic-group input {
-  background-color: #fff !important;
+.file-pic-group p{
+  font-size: 14px;
 }
+
+.file-pic-group input {
+  background-color: #fff !important;  
+}
+
 
 
 
@@ -318,6 +323,7 @@ li {
   display: none;
 }
 
+
 .select-group select{
   width: 50%;
 }
@@ -326,6 +332,7 @@ li {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 }
 
 .update-room-info{

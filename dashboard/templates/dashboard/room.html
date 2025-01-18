@@ -222,7 +222,30 @@
             {% endif %}
           </div>
         </div>
+
+        <div class="input-group cot_req">
+          <input type="checkbox" id="cottage_req" name="cottage_req" />
+          <label for="cottage_req">Cottage Required</label>
+        </div>
+      </div>
+
+      <div class="sec-container-rtype">
+        <h3>Amenities</h3>
+        <div class="amenities-checkbox">
+          {% for amenity in amenities %}
+          <div class="type-amenities">
+            <input type="checkbox" value={{amenity.id}} name="amenities">
+            <p>{{amenity.name}}</p>
+          </div>
+          {% endfor %}
+          
+          
+        </div>
+      </div>
+
+      <div class="third-container-rtype">
         <div class="pictures-room-container">
+          <h3>Add Image</h3>
           <div class="file-pic-group">
             <p>Picture 1</p>
             <input type="file" name="picture1" id="picture1" />
@@ -244,25 +267,8 @@
             <input type="file" name="picture5" id="picture5" />
           </div>
         </div>
-        
-        <div class="input-group cot_req">
-          <input type="checkbox" id="cottage_req" name="cottage_req" />
-          <label for="cottage_req">Cottage Required</label>
-        </div>
       </div>
-      <div class="sec-container-rtype">
-        <h3>Amenities</h3>
-        <div class="amenities-checkbox">
-          {% for amenity in amenities %}
-          <div class="type-amenities">
-            <input type="checkbox" value={{amenity.id}} name="amenities">
-            <p>{{amenity.name}}</p>
-          </div>
-          {% endfor %}
-          
-          
-        </div>
-      </div>
+
     </div>
 
     <button type="submit">Submit</button>
