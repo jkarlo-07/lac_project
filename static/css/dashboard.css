@@ -107,6 +107,12 @@ li {
   gap: 10px;
 }
 
+.add-rtype-btn{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
 .amenities-checkbox{
   display: flex;
   width: 300px;
@@ -135,7 +141,8 @@ li {
 }
 
 .file-pic-group input {
-  background-color: #fff !important;  
+  background-color: #fff !important; 
+  width: 180px; 
 }
 
 
@@ -654,17 +661,25 @@ canvas {
   background-color: var(--main-hover-color);
 }
 
+.filepond--credits{
+  display: none;
+}
+
+
+
 .upload-pic-submit{
   padding: 10px;
   background-color: #b58a60;
   border-radius: 5px;
   color: #fff;
   border: none;
+  cursor: pointer;
 }
 
 .upload-pic-submit:hover{
   background-color: #93683e;
 }
+
 
 .option_room_form{
   position: fixed;
@@ -726,6 +741,11 @@ canvas {
   width: 15px;
   height: 15px;
   cursor: pointer;
+}
+
+.button-sub-img {
+  display: flex;
+  justify-content: flex-end;
 }
 
 
@@ -994,7 +1014,7 @@ main {
 }
 
 .manage-email-btn-container button{
-  background-color: green;
+  background-color: #88f011;
 }
 
 .manage-email-btn-container p{

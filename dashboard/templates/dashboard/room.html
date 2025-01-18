@@ -105,9 +105,11 @@
     <div class="edit-pictures-div">
       <img src="/static/images/icons/reject.png" alt="close icon" id="edit-close-btn">
       <h1>EDIT PICTURES</h1>
-      <input type="file" id="test-files" multiple name="all-files">
-      <input type="hidden" name="roomtype_id_pic" id="roomtype_id_pic">
-      <input class="upload-pic-submit" type="submit" value="Upload Files">
+        <input type="file" id="test-files" multiple name="all-files">
+        <input type="hidden" name="roomtype_id_pic" id="roomtype_id_pic">
+        <div class="button-sub-img">
+          <input class="upload-pic-submit" type="submit" value="Upload Files">
+        </div>
     </div>
     
   </form>
@@ -284,8 +286,10 @@
       </div>
 
     </div>
-
-    <button type="submit">Submit</button>
+    <div class="add-rtype-btn" >
+      <button type="submit">Submit</button>
+    </div>
+    
   </form>
   <form action="{% url 'dashboard:add_existing_room' %}"
     method="post"
