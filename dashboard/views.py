@@ -937,3 +937,44 @@ def edit_amenity(request):
         form = EditAmenitiesForm()
             
     return render(request, "dashboard/amenities.html", {"form": form, "amenities" : amenities})
+
+def get_pictures(request):
+    room_type_id = request.GET.get('id')
+
+    if room_type_id is None:
+        return JsonResponse({'error': 'Missing id parameter'}, status=400)
+
+    try:
+        images = RoomTypeImage.objects.filter(room_type_id=room_type_id)
+
+        image_urls = [image.picture.url for image in images]
+
+        return JsonResponse({'image_urls': image_urls}, status=200)
+
+    except RoomTypeImage.DoesNotExist:
+        return JsonResponse({'error': 'No images found for the given RoomType ID'}, status=404)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
+def try_upload(request):
+    if request.method == 'POST':
+        uploaded_files = request.FILES.getlist('all-files')
+        room_id = request.POST.get('roomtype_id_pic')
+        if room_id:
+            room_type = RoomType.objects.get(id=room_id)
+            RoomTypeImage.objects.filter(room_type=room_type).delete()
+
+        for file in uploaded_files:
+            room_type_instance = RoomType.objects.get(id=room_id)  # Get RoomType with id=156
+            
+            # Create a new RoomTypeImage instance and save the uploaded file
+            room_type_image = RoomTypeImage(room_type=room_type_instance, picture=file)
+            room_type_image.save()
+            print(f"File name: {file.name}, File size: {file.size}")
+
+            
+        return JsonResponse({"message": "Files received and saved", "files": [file.name for file in uploaded_files]})
+
+    return render(request, 'your_template_name.html')

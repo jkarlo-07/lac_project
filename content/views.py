@@ -817,5 +817,30 @@ def get_municipalities(request):
     
     return []
 
-    
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import RoomType, RoomTypeImage
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
+def test_upload(request):
+    if request.method == 'POST':
+        username = request.POST.get('username') 
+        uploaded_files = request.FILES.getlist('all-files')
+
+        print(f"Username: {username}")
+        for file in uploaded_files:
+            print(f"File name: {file.name}, File size: {file.size}")
+
+            # Create and save RoomTypeImage instance for each uploaded file
+            room_type_instance = RoomType.objects.get(id=156)  # Get RoomType with id=156
+            
+            # Create a new RoomTypeImage instance and save the uploaded file
+            room_type_image = RoomTypeImage(room_type=room_type_instance, picture=file)
+            room_type_image.save()
+
+        # Return a response (just for testing, you can send JSON or a success message)
+        return JsonResponse({"message": "Files received and saved", "files": [file.name for file in uploaded_files]})
+
+    # For GET requests, return a template (optional)
+    return render(request, 'your_template_name.html')

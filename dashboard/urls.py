@@ -32,4 +32,6 @@ urlpatterns = [
     path('add_amenities', views.add_amenities, name='add_amenities'),
     path('delete_amenity', views.delete_amenity, name='delete_amenity'),
     path('edit_amenity', views.edit_amenity, name='edit_amenity'),
+    path('get_pictures', views.get_pictures, name='get_pictures'),
+    path('try_upload', views.try_upload, name='try_upload'),
 ]

@@ -6,6 +6,7 @@
       <th>Description</th>
       <th>Price</th>
       <th>Capacity</th>
+      <th>Edit Pictures</th>
       <th></th>
     </tr>
   </thead>
@@ -14,13 +15,13 @@
       <tr>
         <td>
           <div class="room-picture-table-container">
-            <img src="{{ roomtype.picture.url }}" alt="room" class="room-picture-table" />
             <p>{{ roomtype.room_type }}</p>
           </div>
         </td>
         <td>{{ roomtype.description }}</td>
         <td>{{ roomtype.price }}</td>
         <td>{{ roomtype.capacity }}</td>
+        <td><p class='open-edit-pic' data-rtype-id="{{roomtype.id}}">Edit Pictures</p></td>
         <td>
           <div class="dot-container2">
             <div class="dot-size2">
@@ -48,6 +49,16 @@
 </table>
 
 <script>
+  const editPicsForm = document.querySelector('.edit-pictures-container')
+  console.log('sin')
+  const openEditBtns = document.querySelectorAll('.open-edit-pic')
+  openEditBtns.forEach((openEdit) => {
+    openEdit.addEventListener('click', function (event) {
+      editPicsForm.style.display = 'block'
+      console.log('tests')
+      event.stopPropagation()
+       })
+   })
   const dotsActions = document.querySelectorAll('.dots-action2')
   dotsActions.forEach((dotsAction) => {
     dotsAction.addEventListener('click', function (event) {

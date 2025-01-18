@@ -578,11 +578,8 @@ canvas {
   object-fit: cover;
   border-radius: .75rem;
 }
-.room-picture-table-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+
+
 
 .room-selection{
   border-bottom: 1.5px solid #b58a60;
@@ -614,8 +611,59 @@ canvas {
   cursor: pointer;
 }
 
+/* edit pictures */
+.open-edit-pic {
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #85f506;
+}
+
+.filepond--root {
+  max-height: 80vh;
+  display: flex;
+  flex-wrap: nowrap;  /* Prevent wrapping of items */
+  overflow-x: auto;   /* Allow horizontal scrolling if necessary */
+}
+
+.filepond--root {
+  display: flex;
+  flex-wrap: nowrap;  /* Prevent wrapping of items */
+  overflow-x: auto;   /* Allow horizontal scrolling */
+  max-height: 250px;   /* Set a max height for the container */
+}
+
+/* FilePond file preview items - Set a max height and some spacing */
+.filepond--file {
+  margin-right: 10px;  /* Spacing between items */
+  max-height: 200px;    /* Set a max height for image previews */
+  overflow: hidden;    /* Hide overflow if image exceeds max height */
+}
+
+/* Ensure images fit within their container */
+.filepond--file img {
+  max-height: 100%;  /* Make sure the image height is limited by its parent container */
+  object-fit: contain; /* Prevent the image from being stretched */
+}
+
+.edit-pictures-container {
+  width: 80vh;
+  z-index: 1000;
+}
+
 .dashboard-add-room:hover, .dashboard-add-booking:hover{
   background-color: var(--main-hover-color);
+}
+
+.upload-pic-submit{
+  padding: 10px;
+  background-color: #b58a60;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+}
+
+.upload-pic-submit:hover{
+  background-color: #93683e;
 }
 
 .option_room_form{
@@ -681,7 +729,7 @@ canvas {
 }
 
 
-.updateroom-header img{
+.updateroom-header img, .edit-pictures-div img{
   position: absolute;
   top: 20px;
   right: 20px;
