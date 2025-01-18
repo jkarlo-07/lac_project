@@ -25,6 +25,31 @@
       document.getElementById("selected_date").value = checkinDate;
     }
 
+    // Normalize unavailable dates to "YYYY-MM-DD"
+    var unavailableDates = {{ unavailable_dates|safe }}.map(function(dateStr) {
+      var date = new Date(dateStr);
+      // Normalize to 'YYYY-MM-DD' format
+      return date.toLocaleDateString('en-CA');
+    });
+    console.log(unavailableDates);
+
+    function generateAvailableDates(start, end) {
+      var availableDates = [];
+      var current = new Date(start);
+
+      while (current <= new Date(end)) {
+        var dateStr = current.toISOString().split('T')[0];
+        if (!unavailableDates.includes(dateStr)) {
+          availableDates.push(dateStr); // Only add dates that are not fully booked
+        }
+        current.setDate(current.getDate() + 1); // Move to the next day
+      }
+
+      return availableDates;
+    }
+
+    var availableDates = generateAvailableDates(validRangeStart, validRangeEnd);
+    
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       contentHeight: 'auto',
@@ -37,6 +62,12 @@
       },
       dateClick: function(info) {
         var selectedDate = info.dateStr;
+        
+        // Prevent action on unavailable dates
+        if (unavailableDates.includes(selectedDate)) {
+          return; // Stop further execution
+        }
+
         handleSelectDate(selectedDate);  // Call the handleSelectDate function with the selected date
         
         // Remove the previous "Selected" label if it exists
@@ -55,11 +86,44 @@
           dateCell.appendChild(selectedTextDiv); // Append the text to the day cell
         }
       },
+      events: [
+        // Add events for fully booked dates
+        ...unavailableDates.map(date => ({
+          start: date,
+          allDay: true,
+          display: 'background',
+          title: 'Not Available',
+          className: 'na-date'
+        })),
+        ...availableDates.map(date => ({
+          start: date,
+          allDay: true,
+          display: 'background',
+          title: 'Available',
+          className: 'available'
+        }))
+      ],
+      eventDidMount: function(info) {
+        // Optionally style the "Available" and "Fully Booked" events differently
+        if (info.event.title === "Not Available") {
+          info.el.style.backgroundColor = 'rgb(255, 0, 21)';
+          info.el.style.color = '#fff'; 
+        } else if (info.event.title === "Available") {
+          info.el.style.color = '#000'; // Change the text color to gray
+          info.el.style.fontWeight = 'bold'; 
+        }
+      },
+      selectAllow: function(selectInfo) {
+        // Compare the startStr (YYYY-MM-DD) with unavailableDates (also YYYY-MM-DD)
+        return !unavailableDates.includes(selectInfo.startStr);
+      },
     });
   
     calendar.render();
   });
 </script>
+
+
 
 
 

@@ -140,3 +140,7 @@ class Amenities(models.Model):
 class RoomTypeImage(models.Model):
     room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE) 
     picture = models.ImageField(upload_to='room/', default='', blank=True)
+
+class RoomAvailability(models.Model):
+    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    na_date = models.CharField(max_length=20)

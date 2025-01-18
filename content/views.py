@@ -13,7 +13,7 @@ from paypal.standard.ipn.models import PayPalIPN
 from paypal.standard.ipn.signals import valid_ipn_received
 from datetime import timedelta, time, datetime
 from dashboard.views import check_add_fullbook
-from .models import RoomType, Room, Guest, TempGuest, Booking, FullyBookedDates, Amenities
+from .models import RoomType, Room, Guest, TempGuest, Booking, FullyBookedDates, Amenities, RoomAvailability
 from users.models import CustomUser
 from .forms import GuestForm, BookingForm, BookGuestForm
 from .controllers import create_payment_link
@@ -180,12 +180,19 @@ def book_view1(request):
 
 def room_detail_view(request, id):
     room = get_object_or_404(RoomType, id=id)
+
+    unavailable_dates = RoomAvailability.objects.filter(room_type=room).values_list('na_date', flat=True)
     room_images = RoomTypeImage.objects.filter(room_type=room)
 
 
     image_urls = [image.picture.url for image in room_images]
     amenities = Amenities.objects.filter(id__in=room.amenities)
-    return render(request, 'content/room_detail.html', {'room': room, 'amenities': amenities, 'images': image_urls})
+    return render(request, 'content/room_detail.html', {
+        'room': room, 
+        'amenities': amenities, 
+        'images': image_urls,
+        'unavailable_dates': list(unavailable_dates)
+        })
 
 def book_view2(request):
     # Retrieve session data

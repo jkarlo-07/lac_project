@@ -8,6 +8,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var fullyBookedDates = {{ fullBookDates|safe }};
+    console.log(typeof(fullyBookedDates))
     var currentDate = new Date();
     var currentTime = currentDate.getHours();
     var startDate = currentTime >= 22 ? new Date(currentDate.setDate(currentDate.getDate() + 1)) : currentDate;

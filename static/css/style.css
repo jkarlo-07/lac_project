@@ -49,6 +49,12 @@ li {
   gap: 5px;
 }
 
+.fc .fc-bg-event .fc-event-title {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .price-book-button p{
   font-weight: 800;
 }
