@@ -872,3 +872,103 @@ def test_upload(request):
 
     # For GET requests, return a template (optional)
     return render(request, 'your_template_name.html')
+
+from datetime import datetime, time, timedelta
+from django.utils.timezone import make_aware, get_current_timezone
+from django.http import JsonResponse
+
+from datetime import datetime, time, timedelta
+from django.utils.timezone import make_aware, get_current_timezone
+from django.http import JsonResponse
+
+from datetime import datetime, time, timedelta
+from django.utils.timezone import make_aware, get_current_timezone
+from django.http import JsonResponse
+
+from datetime import datetime, time, timedelta
+from django.utils.timezone import make_aware, get_current_timezone
+from django.http import JsonResponse
+
+def fetch_available_times(request):
+    date = request.GET.get('date')  # The date passed in the request
+    roomType = request.GET.get('roomType')  # The room type passed in the request
+
+    if date:
+        room_id = roomType  
+
+        now = datetime.now()
+        today = now.date()
+
+        # Parsing the date string and reassigning it to only the date part
+        provided_date = datetime.strptime(date, "%Y-%m-%d").date()
+
+        # Reassign provided_date to just the date (in the format YYYY-MM-DD)
+        provided_date = provided_date.strftime("%Y-%m-%d")
+
+        if datetime.strptime(provided_date, "%Y-%m-%d").date() == today:
+            if now.minute > 0 or now.second > 0:
+                start_time = now.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+            else:
+                start_time = now.replace(minute=0, second=0, microsecond=0)
+        else:
+            start_time = datetime.combine(datetime.strptime(provided_date, "%Y-%m-%d").date(), time(8, 0))
+
+        start_time = make_aware(start_time, timezone=get_current_timezone())
+
+        current_time = start_time
+        end_time = datetime.combine(datetime.strptime(provided_date, "%Y-%m-%d").date(), time(22, 0))
+        end_time = make_aware(end_time, timezone=get_current_timezone())
+
+        available_times = {}  # Store the available times in a dictionary
+
+        while current_time <= end_time:
+            # Check if the room is available at the current time
+            if is_room_type_available(roomType, provided_date, current_time.time(), 12):
+                # Format the time as "08:00 am", "09:00 am", etc.
+                readable_time = current_time.strftime("%I:%M %p").lower().lstrip("0")  # "08:00 am"
+                available_times[readable_time] = current_time.time()  # Store the readable time as key, actual time as value
+            
+            current_time += timedelta(hours=1)  # Move to the next hour
+
+        print("Available times:", available_times)
+
+        return JsonResponse({'date': provided_date, 'roomType': room_id, 'available_times': available_times})
+
+    return JsonResponse({'error': 'No date provided'}, status=400)
+
+
+import warnings
+
+warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*DateTimeField.*received a naive datetime.*")
+
+
+def is_room_type_available(room_type_id, date, time, duration):
+    start_datetime = datetime.strptime(f"{date} {time}", "%Y-%m-%d %H:%M:%S")
+    end_datetime = start_datetime + timedelta(hours=duration)
+
+    rooms = Room.objects.filter(room_type_id=room_type_id)
+
+    overlapping_bookings = Booking.objects.filter(
+        Q(room__in=rooms),
+        Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime),
+        status="Booked"
+    )
+
+    return not overlapping_bookings.exists()
+
+
+def fetch_duration(request):
+    date = request.GET.get('date')  # The date passed in the request
+    roomType = request.GET.get('roomType')  # The room type passed in the request
+    checkinTime = request.GET.get('checkinTime')
+
+    available_duration = {}
+
+    if (is_room_type_available(roomType, date, checkinTime, 12)):
+        available_duration["12 hrs"] = 12
+
+    if (is_room_type_available(roomType, date, checkinTime, 24)):
+        available_duration["24 hrs"] = 24
+    
+
+    return JsonResponse({'date': date, 'roomType': roomType, 'available_times': checkinTime, 'available_duration': available_duration})

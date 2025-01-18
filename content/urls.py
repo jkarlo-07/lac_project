@@ -26,4 +26,6 @@ urlpatterns = [
     path('get_provinces/', views.get_provinces, name='get_provinces'),
     path('get_municipalities/', views.get_municipalities, name='get_municipalities'),
     path('test_upload/', views.test_upload, name='test_upload'),
+    path('fetch_available_times/', views.fetch_available_times, name='fetch_available_times'),
+    path('fetch_duration/', views.fetch_duration, name='fetch_duration'),
 ]

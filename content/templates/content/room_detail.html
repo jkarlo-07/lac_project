@@ -18,38 +18,122 @@
     var startDate = currentTime >= 22 ? new Date(currentDate.setDate(currentDate.getDate() + 1)) : currentDate;
   
     var validRangeStart = startDate.toLocaleDateString('en-CA');
-    var validRangeEnd = new Date(new Date().setDate(new Date().getDate() + 365)).toLocaleDateString('en-CA'); // 365 days from now
+    var validRangeEnd = new Date(new Date().setDate(new Date().getDate() + 180)).toLocaleDateString('en-CA'); // 180 days from now
   
     function handleSelectDate(checkinDate) {
-      // Update the "Selected Date" in the input field with id "selected_date"
       document.getElementById("selected_date").value = checkinDate;
-    }
+      getAvailableTimes(checkinDate, {{room.id}});
 
-    // Normalize unavailable dates to "YYYY-MM-DD"
+    }
+  
+    function setDuration(checkinDate, roomType, checkinTime) {
+      console.log(checkinDate, roomType, checkinTime);
+    
+      fetch(
+        `{% url 'content:fetch_duration' %}?date=${encodeURIComponent(checkinDate)}&roomType=${encodeURIComponent(roomType)}&checkinTime=${encodeURIComponent(checkinTime)}`
+      )
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+    
+        const durationSelect = document.getElementById('duration');
+        
+        // Clear the current options
+        durationSelect.innerHTML = '';
+    
+        // If there are available durations, add them to the dropdown
+        if (data.available_duration && Object.keys(data.available_duration).length > 0) {
+          // Create a default "Please Select" option
+    
+          // Loop through available durations and add them to the dropdown
+          for (const [durationLabel, durationValue] of Object.entries(data.available_duration)) {
+            const option = document.createElement("option");
+            option.value = durationValue;
+            option.textContent = durationLabel;
+            durationSelect.appendChild(option);
+          }
+        } else {
+          // If no available durations, show a message
+          const noDurationOption = document.createElement("option");
+          noDurationOption.value = "";
+          noDurationOption.textContent = "No available durations";
+          durationSelect.appendChild(noDurationOption);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching room data:", error);
+      });
+    }
+    
+    
+  
+    function getAvailableTimes(checkInDate, roomType) {
+      fetch(
+        `{% url 'content:fetch_available_times' %}?date=${encodeURIComponent(checkInDate)}&roomType=${encodeURIComponent(roomType)}`
+      )
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+    
+          const checkinTimeSelect = document.getElementById("checkin_time");
+    
+          // Clear current options
+          checkinTimeSelect.innerHTML = ``;
+    
+          if (data.available_times && Object.keys(data.available_times).length > 0) {
+            for (const [readableTime, actualTime] of Object.entries(data.available_times)) {
+              const option = document.createElement("option");
+              option.value = actualTime;
+              option.textContent = readableTime;
+              checkinTimeSelect.appendChild(option);
+            }
+            
+            // Trigger `setDuration` after dropdown is populated
+            checkinTimeSelect.value = Object.values(data.available_times)[0]; // Set the first option by default
+            checkinTimeSelect.dispatchEvent(new Event('change'));
+          } else {
+            console.log("No available times found.");
+          }
+        })
+        .catch(error => console.error("Error fetching room data:", error));
+    }
+    
+  
+    const checkinTimeElement = document.getElementById("checkin_time");
+    checkinTimeElement.addEventListener("change", function() {
+      const checkinTime = this.value;
+      const checkinDate = document.getElementById('selected_date').value
+      setDuration(checkinDate, {{room.id}}, checkinTime)
+    });
+  
+    const selectedDateInput = document.getElementById('selected_date');
+    selectedDateInput.addEventListener('change', function() {
+      const selectedDate = this.value;
+      getAvailableTimes(selectedDate, {{room.id}});
+    });
+  
     var unavailableDates = {{ unavailable_dates|safe }}.map(function(dateStr) {
       var date = new Date(dateStr);
-      // Normalize to 'YYYY-MM-DD' format
       return date.toLocaleDateString('en-CA');
     });
-    console.log(unavailableDates);
-
+  
     function generateAvailableDates(start, end) {
       var availableDates = [];
       var current = new Date(start);
-
+  
       while (current <= new Date(end)) {
         var dateStr = current.toISOString().split('T')[0];
         if (!unavailableDates.includes(dateStr)) {
-          availableDates.push(dateStr); // Only add dates that are not fully booked
+          availableDates.push(dateStr);
         }
-        current.setDate(current.getDate() + 1); // Move to the next day
+        current.setDate(current.getDate() + 1);
       }
-
+  
       return availableDates;
     }
-
+  
     var availableDates = generateAvailableDates(validRangeStart, validRangeEnd);
-    
+  
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       contentHeight: 'auto',
@@ -62,32 +146,28 @@
       },
       dateClick: function(info) {
         var selectedDate = info.dateStr;
-        
-        // Prevent action on unavailable dates
+  
         if (unavailableDates.includes(selectedDate)) {
-          return; // Stop further execution
+          return;
         }
-
-        handleSelectDate(selectedDate);  // Call the handleSelectDate function with the selected date
-        
-        // Remove the previous "Selected" label if it exists
+  
+        handleSelectDate(selectedDate);
+  
         var previousSelectedTextDiv = document.querySelector('.selected-text');
         if (previousSelectedTextDiv) {
-          previousSelectedTextDiv.remove();  // Remove the previously added label
+          previousSelectedTextDiv.remove();
         }
-        
-        // Add custom text to the clicked date
-        var selectedText = "Selected"; // Custom label for the selected date
-        var dateCell = info.dayEl.querySelector('.fc-daygrid-day-number'); // Select the day number
+  
+        var selectedText = "Selected";
+        var dateCell = info.dayEl.querySelector('.fc-daygrid-day-number');
         if (dateCell) {
-          var selectedTextDiv = document.createElement('div'); // Create a new div for the text
-          selectedTextDiv.classList.add('selected-text'); // Add class for styling
-          selectedTextDiv.textContent = selectedText; // Set the text content
-          dateCell.appendChild(selectedTextDiv); // Append the text to the day cell
+          var selectedTextDiv = document.createElement('div');
+          selectedTextDiv.classList.add('selected-text');
+          selectedTextDiv.textContent = selectedText;
+          dateCell.appendChild(selectedTextDiv);
         }
       },
       events: [
-        // Add events for fully booked dates
         ...unavailableDates.map(date => ({
           start: date,
           allDay: true,
@@ -104,23 +184,22 @@
         }))
       ],
       eventDidMount: function(info) {
-        // Optionally style the "Available" and "Fully Booked" events differently
         if (info.event.title === "Not Available") {
           info.el.style.backgroundColor = 'rgb(255, 0, 21)';
-          info.el.style.color = '#fff'; 
+          info.el.style.color = '#fff';
         } else if (info.event.title === "Available") {
-          info.el.style.color = '#000'; // Change the text color to gray
-          info.el.style.fontWeight = 'bold'; 
+          info.el.style.color = '#000';
+          info.el.style.fontWeight = 'bold';
         }
       },
       selectAllow: function(selectInfo) {
-        // Compare the startStr (YYYY-MM-DD) with unavailableDates (also YYYY-MM-DD)
         return !unavailableDates.includes(selectInfo.startStr);
       },
     });
   
     calendar.render();
   });
+  
 </script>
 
 
@@ -201,11 +280,15 @@
           </div>
           <div class="input-filter-container">
             <label for="checkin_time">Check In Time:</label>
-            <input type="text" name="checkin_time">
+            <select name="checkin_time" id="checkin_time">
+              <option value="">---Select Check In Date First---</option>
+            </select>
           </div>
           <div class="input-filter-container">
             <label for="duration">Duration:</label>
-            <input type="text" name="duration">
+            <select name="duration" id="duration">
+              <option value="">---Select Check In Time First---</option>
+            </select>
           </div>
         
         
