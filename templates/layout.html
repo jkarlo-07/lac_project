@@ -129,6 +129,10 @@
         </div>
       </div>
       <p class="footer-copyright">Copyright L.A.C Resort 2024</p>
+      <div class="scroll-top">
+        <p class="button-scroll-top">↑ Scroll to top ↑</p>
+      </div>
+      
     </footer>
     {% block add_script %}
     {% endblock %}
@@ -146,6 +150,14 @@
           };
         };
       });
+
+      let mybutton = document.querySelector(".button-scroll-top");
+
+      mybutton.addEventListener('click', function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      })
+
     </script>
 
     <script>

@@ -3,11 +3,71 @@
 
 {% block title %} 
   About 
-{%endblock%}
+{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static "css/play.css" %}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+  
+    var currentDate = new Date();
+    var currentTime = currentDate.getHours();
+    var startDate = currentTime >= 22 ? new Date(currentDate.setDate(currentDate.getDate() + 1)) : currentDate;
+  
+    var validRangeStart = startDate.toLocaleDateString('en-CA');
+    var validRangeEnd = new Date(new Date().setDate(new Date().getDate() + 365)).toLocaleDateString('en-CA'); // 365 days from now
+  
+    function handleSelectDate(checkinDate) {
+      // Update the "Selected Date" in the input field with id "selected_date"
+      document.getElementById("selected_date").value = checkinDate;
+    }
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      contentHeight: 'auto',
+      aspectRatio: 1.8,
+      selectable: true,
+      longPressDelay: 0.1,
+      validRange: {
+        start: validRangeStart,
+        end: validRangeEnd
+      },
+      dateClick: function(info) {
+        var selectedDate = info.dateStr;
+        handleSelectDate(selectedDate);  // Call the handleSelectDate function with the selected date
+        
+        // Remove the previous "Selected" label if it exists
+        var previousSelectedTextDiv = document.querySelector('.selected-text');
+        if (previousSelectedTextDiv) {
+          previousSelectedTextDiv.remove();  // Remove the previously added label
+        }
+        
+        // Add custom text to the clicked date
+        var selectedText = "Selected"; // Custom label for the selected date
+        var dateCell = info.dayEl.querySelector('.fc-daygrid-day-number'); // Select the day number
+        if (dateCell) {
+          var selectedTextDiv = document.createElement('div'); // Create a new div for the text
+          selectedTextDiv.classList.add('selected-text'); // Add class for styling
+          selectedTextDiv.textContent = selectedText; // Set the text content
+          dateCell.appendChild(selectedTextDiv); // Append the text to the day cell
+        }
+      },
+    });
+  
+    calendar.render();
+  });
+</script>
+
+
+
+<style>
+  .fc-event.fc-bg, .fc-daygrid-event.fc-daygrid-block-event.fc-event {
+    opacity: 1;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -15,8 +75,7 @@
 <div class="play_container">
     <div class="btn-image-back">
         <a href="{% url "content:rooms" %}"><img src="{% static 'images/icons/left-arrow.png' %}" alt="back icon" class="back-step-form" /></a>
-        
-      </div>
+    </div>
     <div>
         <h1 calss="title-rooms-type">{{room.room_type}}</h1>
     </div>
@@ -24,7 +83,6 @@
         <div class='carousel-container'>
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                  
                   {% for image in images %}
                     <div class="swiper-slide"><img src="{{image}}" alt=""></div>
                   {% endfor %}
@@ -45,10 +103,9 @@
                     <li class="contact-list"><img class="contact-icon-image" src="{% static 'images/icons/email-1.png' %}" alt=""><a href="#">lacresort@gmail.com</a></li>
                 </ul>
             </div>
-            
         </div>
     </div>
-        
+
     <div class="r-detail-sec-container">
         <div class="room-card">
             <img src="{% static "images/icons/people.png" %}" alt="">
@@ -67,16 +124,39 @@
             <h4>Details</h4>
             <p>{{room.description}}</p>
         </div>  
-        <div class="price-book-button">
-            <h4>Room: {{room.room_type}}</h4>
-            <p>₱{{room.price}} / 12hrs</p>
-            <a href="{% url "content:calendar" %}"><p class="button-view-info">Reserve</p></a>
-        </div>
     </div>
+    <div class="third-column-rdetail">
+      <div class="calendar-container">
+        <div id="calendar"></div>
+      </div>
+      <div class="filter-room-container">
+        <div class="price-book-button">
+          <div class="input-filter-container">
+            <p>Selected Date:</p>
+            <input type="text" name="selected_date" id="selected_date" class="input-filter" readonly>
+          </div>
+          <div class="input-filter-container">
+            <label for="checkin_time">Check In Time:</label>
+            <input type="text" name="checkin_time">
+          </div>
+          <div class="input-filter-container">
+            <label for="duration">Duration:</label>
+            <input type="text" name="duration">
+          </div>
+        
+        
+          <p>Room: {{room.room_type}}</p>
+          <p>Price: ₱{{room.price}} / 12hrs</p>
+          <a href="{% url "content:calendar" %}"><p class="button-view-info">Reserve</p></a>
+        </div>
+      </div>
 
+
+      </div>
+
+
+    </div>
 </div>
-
-
 
 {% endblock %}
 
