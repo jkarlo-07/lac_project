@@ -105,8 +105,48 @@
 }
 
 
+/*GALLERY*/
 
+.footer-gallery-container .footer-gallery .gallery-image{
+    cursor: pointer;
+}
 
+.footer-gallery-container .popup-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0; 
+    bottom: 0; 
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center; 
+    padding: 20px; 
+}
+
+.footer-gallery-container .popup-image span {
+    position: absolute;
+    top: 10px; 
+    right: 20px;
+    font-size: 50px;
+    font-weight: bolder;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1001;  
+}
+
+.footer-gallery-container .popup-image img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #fff;
+    border-radius: 5px;
+    width: 75%; 
+    max-width: 750px;  
+    object-fit: cover;
+}
 
 .second-view-info-room{
     display: flex;
@@ -210,5 +250,9 @@
     .price-book-button{
         margin-top: 10px;
         width: 100%;
+    }
+
+    .footer-gallery-container .popup-image img{
+        width: 80%;
     }
 }
