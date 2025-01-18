@@ -7,6 +7,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static "css/play.css" %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 {% endblock %}
 
 {% block content %}
@@ -20,8 +21,18 @@
         <h1 calss="title-rooms-type">{{room.room_type}}</h1>
     </div>
     <div class="room-view-info-container">
-        <div class="room-view-info-img">
-            <img src="{{room.picture.url}}" alt="">
+        <div class='carousel-container'>
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                  
+                  {% for image in images %}
+                    <div class="swiper-slide"><img src="{{image}}" alt=""></div>
+                  {% endfor %}
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
         </div>
         <div class="room-info-reserve">
             <div class="booking-contact">
@@ -68,3 +79,21 @@
 
 
 {% endblock %}
+
+{% block add_script %}
+ <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        type: "fraction",
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  </script>
+{% endblock  %}

@@ -1,75 +1,73 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
 {% load static %}
+<head>
+  <meta charset="utf-8" />
+  <title>Swiper demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-{% block title %}
-  About
-{% endblock %}
+  <!-- Demo styles -->
+  <style>
+    html,
+    body {
+      position: relative;
+      height: 100%;
+    }
 
-{% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/play.css' %}">
-<!-- FilePond CSS -->
-<link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-{% endblock %}
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
 
-{% block content %}
-<!-- Form to handle file uploads -->
-<form id="file-upload-form" action="{% url 'content:test_upload' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <!-- Regular fields -->
-    <input type="text" name="username" placeholder="Enter your name" required>
-    <br>
-    <!-- FilePond input -->
-    <input type="file" id="test-files" multiple name="all-files">
-    <input type="submit" value="Upload Files">
-</form>
-{% endblock %}
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
 
-{% block add_script %}
-<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-<script>
-    // Define the static file paths you want to preload
-    
-    const initialFiles = [
-        '{% static "images/photos/events1.jpg" %}',  // Static file path for image 2
-    ];
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-    // Initialize FilePond
-    const inputElement = document.getElementById('test-files');
-    const pond = FilePond.create(inputElement, {
-        allowMultiple: true,
-        maxFiles: 6,
-        labelMaxFileCountExceeded: "You can only upload up to 6 files.",
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Swiper -->
+ 
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        type: "fraction",
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
     });
+  </script>
+</body>
 
-    // Add initial files to FilePond by their static file paths
-    initialFiles.forEach(filePath => pond.addFile(filePath));
-
-    // Handle form submission
-    const form = document.getElementById('file-upload-form');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();  // Prevent the default form submission
-
-        // Create a FormData object to append regular form fields and files
-        const formData = new FormData(form);
-
-        // Append the files from FilePond to FormData
-        pond.getFiles().forEach(file => {
-            formData.append('all-files', file.file);
-        });
-
-        // Create an AJAX request using Fetch API
-        fetch('{% url "content:test_upload" %}', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Files uploaded successfully!', data);
-            window.location.href = '{% url "content:index" %}';  // Redirect to index page after success
-        })
-        .catch(error => {
-            console.error('Upload failed:', error);
-        });
-    });
-</script>
-{% endblock %}
+</html>

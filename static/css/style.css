@@ -37,6 +37,45 @@ li {
   color: var(--secondary-text-color);
 }
 
+/* carousel room */
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-button-next {
+  color: #fff!important; /* Replace 'red' with your desired color */
+}
+
+/* Change the color of the previous button */
+.swiper-button-prev {
+  color: #fff !important; /* Replace 'red' with your desired color */
+}
+.swiper-pagination-fraction {
+  color: #fff !important;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-container {
+  width: 75%;
+  height: 70vh;
+}
+
+
 /* Overall header styles */
 header {
   background-color: var(--main-bg-color);

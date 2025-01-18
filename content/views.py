@@ -110,9 +110,26 @@ def paypal_ipn(request):
 def index(request):
     return render(request, "content/index.html")
 
+from django.shortcuts import render
+
 def room_view(request):
     roomtypes = RoomType.objects.all()
-    return render(request, "content/rooms.html", { 'roomtypes':roomtypes } )
+    
+    # Prepare a list to store room types with their first image URL
+    roomtypes_with_images = []
+
+    for room in roomtypes:
+        # Get the first RoomTypeImage for the room
+        first_image = RoomTypeImage.objects.filter(room_type=room).first()
+        
+        # Store the room and the image URL (if available)
+        if first_image:
+            roomtypes_with_images.append({'room': room, 'image_url': first_image.picture.url})
+        else:
+            roomtypes_with_images.append({'room': room, 'image_url': None})
+
+    return render(request, "content/rooms.html", {'roomtypes': roomtypes_with_images})
+
 
 def service_view(request):
     return render(request, "content/service.html")
@@ -163,8 +180,12 @@ def book_view1(request):
 
 def room_detail_view(request, id):
     room = get_object_or_404(RoomType, id=id)
+    room_images = RoomTypeImage.objects.filter(room_type=room)
+
+
+    image_urls = [image.picture.url for image in room_images]
     amenities = Amenities.objects.filter(id__in=room.amenities)
-    return render(request, 'content/room_detail.html', {'room': room, 'amenities': amenities})
+    return render(request, 'content/room_detail.html', {'room': room, 'amenities': amenities, 'images': image_urls})
 
 def book_view2(request):
     # Retrieve session data

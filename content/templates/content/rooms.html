@@ -1,4 +1,4 @@
-{% extends "layout.html" %} 
+{% extends "layout.html" %}
 {% load static %}
 {% load humanize %}
 
@@ -9,24 +9,29 @@
 {% block content %}
 <section class="title">
 	<div class="title__background"></div>
-  <img src="{% static 'images/photos/main-cover.jpg' %}" alt="" class="title__cover" width="100">
-  <h1 class="title__text">ROOMS</h1>
+    <img src="{% static 'images/photos/main-cover.jpg' %}" alt="" class="title__cover" width="100">
+    <h1 class="title__text">ROOMS</h1>
 </section>
+
 <section class="rooms-section">
 	{% for roomtype in roomtypes %}
 		<div class="room-container">
 			<div class="room-price-image-container">
-				<img src="{{ roomtype.picture.url }}" alt="" width="100">
-				<p>₱{{ roomtype.price|floatformat:2|intcomma }} / day</p>
+				{% if roomtype.image_url %}
+					<img src="{{ roomtype.image_url }}" alt="" width="100">
+				{% else %}
+					<img src="{% static 'images/default-room-image.jpg' %}" alt="No Image" width="100">
+				{% endif %}
+				<p>₱{{ roomtype.room.price|floatformat:2|intcomma }} / day</p>
 			</div>
 			<div class="room-info-container">
-				<div class>
-					<h2 class="secondary-text-color">{{ roomtype.room_type }}</h2>
-					<div class="seperator"></div>
-					<p class="mobile-room-price">₱{{ roomtype.price|floatformat:2|intcomma }} / day</p>	
-				</div>
-				<p>{{ roomtype.description }}</p>
-				<a href="{% url "content:room_detail" roomtype.id %}"><p class="room-book-btn">VIEW DETAILS</p></a>
+				<h2 class="secondary-text-color">{{ roomtype.room.room_type }}</h2>
+				<div class="seperator"></div>
+				<p class="mobile-room-price">₱{{ roomtype.room.price|floatformat:2|intcomma }} / day</p>	
+				<p>{{ roomtype.room.description }}</p>
+				<a href="{% url 'content:room_detail' roomtype.room.id %}">
+					<p class="room-book-btn">VIEW DETAILS</p>
+				</a>
 			</div>
 		</div>
 	{% endfor %}
