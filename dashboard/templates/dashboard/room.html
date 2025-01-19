@@ -71,7 +71,7 @@
           </div>
           
   
-          <div class="exist-file-group">
+          <div class="exist-file-group" style="display:none">
             <p>Picture</p>
             <input type="file" name="picture" id="update-dob-form" value="{{ form.picture.value|default:'' }}"/>
         </div>
@@ -101,7 +101,7 @@
   <form id="file-upload-form"action="{% url "dashboard:re_upload" %}" class="booking-forms-walkin edit-pictures-container" style="display:none" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="edit-pictures-div">
-      <img src="/static/images/icons/reject.png" alt="close icon" id="edit-close-btn">
+      <img src="{% static "images/icons/reject.png" %}" alt="close icon" id="edit-close-btn">
       <h1>Replace Pictures</h1>
       <div class="all_picture_room_container">
         <div>
