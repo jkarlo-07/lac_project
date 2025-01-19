@@ -5,9 +5,11 @@ certifi==2024.8.30
 charset-normalizer==3.3.2
 dj-database-url==2.2.0
 Django==5.1.1
+django-drf-filepond==0.5.0
 django-heroku==0.3.1
 django-paypal==2.1
 django-storages==1.14.4
+djangorestframework==3.15.2
 git-filter-repo==2.45.0
 gunicorn==23.0.0
 idna==3.10
@@ -23,6 +25,7 @@ python-dotenv==1.0.1
 pytz==2024.2
 requests==2.32.3
 s3transfer==0.10.2
+shortuuid==1.0.13
 six==1.16.0
 sqlparse==0.5.1
 typing_extensions==4.12.2
