@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="{% static 'lib/datatables/dataTables.css' %}" />
   <link rel="stylesheet" href="{% static 'css/option.css' %}" />
   <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+  <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
 {% endblock %}
 {% block in_body %}
   <form action="{% url "dashboard:update_room_type" %}"
@@ -71,7 +73,7 @@
           </div>
           
   
-          <div class="exist-file-group" style="display:none">
+          <div class="exist-file-group">
             <p>Picture</p>
             <input type="file" name="picture" id="update-dob-form" value="{{ form.picture.value|default:'' }}"/>
         </div>
@@ -98,36 +100,15 @@
     
   </form>
 
-  <form id="file-upload-form"action="{% url "dashboard:re_upload" %}" class="booking-forms-walkin edit-pictures-container" style="display:none" method="POST" enctype="multipart/form-data">
+  <form id="file-upload-form"action="" class="booking-forms-walkin edit-pictures-container" style="display:none">
     {% csrf_token %}
     <div class="edit-pictures-div">
       <img src="{% static "images/icons/reject.png" %}" alt="close icon" id="edit-close-btn">
-      <h1>Replace Pictures</h1>
-      <div class="all_picture_room_container">
-        <div>
-          <label for="test-files1">Picture 1</label>
-          <input type="file" id="test-files1" name="all-files1">
-        </div>
-        <div>
-          <label for="test-files2">Picture 2</label>
-          <input type="file" id="test-files2" name="all-files2">
-        </div>
-        <div>
-          <label for="test-files3">Picture 3</label>
-          <input type="file" id="test-files3" name="all-files3">
-        </div>
-        <div>
-          <label for="test-files4">Picture 4</label>
-          <input type="file" id="test-files4" name="all-files4">
-        </div>
-        <div>
-          <label for="test-files5">Picture 5</label>
-          <input type="file" id="test-files5" name="all-files5">
-        </div>
-      </div>
-        
+      <h1>EDIT PICTURES</h1>
+        <input type="file" id="test-files" multiple name="all-files">
         <input type="hidden" name="roomtype_id_pic" id="roomtype_id_pic">
         <div class="button-sub-img">
+          <p>Note: Only 5 pictures can be uploaded.</p>
           <input class="upload-pic-submit" type="submit" value="Upload Files">
         </div>
     </div>
@@ -371,6 +352,172 @@
   </div>
 {% endblock %}
 {% block extra_script %}
+  <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+
+<script>
+    console.log('testss')
+
+    const editPicsForm = document.querySelector('.edit-pictures-container');
+    const openEditBtns = document.querySelectorAll('.open-edit-pic');
+    const closeEditForm = document.getElementById('edit-close-btn');
+    
+    // Close button functionality
+    closeEditForm.addEventListener('click', function () {
+        editPicsForm.style.display = 'none';
+    });
+
+    // Loop through each "open-edit-pic" button
+    openEditBtns.forEach((openEdit) => {
+        openEdit.addEventListener('click', function (event) {
+            const rtype_id = openEdit.getAttribute('data-rtype-id'); // Get room type ID
+            const rtypeInput = document.querySelector('#roomtype_id_pic');
+            rtypeInput.value = rtype_id;
+            console.log('id ' + rtype_id);
+
+            // Fetch data for editing pictures
+            fetch("{% url 'dashboard:get_pictures' %}?id=" + encodeURIComponent(rtype_id))
+                .then(response => response.json())
+                .then(data => {
+                    // Log the fetched image URLs
+                    console.log(data.image_urls);
+
+                    // Update the initialFiles array with the fetched URLs
+                    const initialFiles = data.image_urls.map(url => ({
+                        source: url,
+                        options: {
+                            type: 'local',
+                        },
+                    }));
+
+                    // Clear existing files from FilePond
+                    pond.removeFiles(); // Remove all current files
+
+                    // Add the new files to FilePond
+                    initialFiles.forEach(file => pond.addFile(file.source));
+
+                    console.log('Updated FilePond with fetched images.');
+                })
+                .catch(error => console.error("Error fetching image data:", error));
+
+            // Show the edit pictures form
+            editPicsForm.style.display = 'block';
+
+            console.log('Edit pictures form opened');
+            event.stopPropagation(); // Stop propagation to prevent other listeners
+        });
+    });
+
+    function convertToJpg(file) {
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+              const img = new Image();
+              img.onload = function () {
+                  const canvas = document.createElement('canvas');
+                  const ctx = canvas.getContext('2d');
+  
+                  // Set canvas dimensions to the image dimensions
+                  canvas.width = img.width;
+                  canvas.height = img.height;
+  
+                  // Draw the image onto the canvas
+                  ctx.drawImage(img, 0, 0);
+  
+                  // Convert canvas to JPEG blob
+                  canvas.toBlob(
+                      (blob) => {
+                          if (blob) {
+                              const jpgFile = new File([blob], `${file.name.split('.')[0]}.jpg`, {
+                                  type: 'image/jpeg',
+                              });
+                              resolve(jpgFile);
+                          } else {
+                              reject(new Error('Canvas toBlob failed.'));
+                          }
+                      },
+                      'image/jpeg',
+                      0.95 // Quality (0.0 - 1.0)
+                  );
+              };
+              img.onerror = () => reject(new Error('Image load failed.'));
+              img.src = event.target.result;
+          };
+          reader.onerror = () => reject(new Error('FileReader failed.'));
+          reader.readAsDataURL(file);
+      });
+  }
+
+    // Register the Image Preview Plugin
+    FilePond.registerPlugin(FilePondPluginImagePreview);
+
+    // Initialize FilePond
+    const inputElement = document.getElementById('test-files');
+    const pond = FilePond.create(inputElement, {
+        allowMultiple: true,
+        maxFiles: 5,
+        labelMaxFileCountExceeded: "You can only upload up to 5 files.",
+        imagePreviewHeight: 100,  // Set preview image height
+        imagePreviewMaxHeight: 200,  // Maximum height for preview images
+        imagePreviewMinHeight: 50,  // Minimum height for preview images
+        imageCropAspectRatio: '1:1',  // Crop aspect ratio for preview images
+        imageResizeTargetWidth: 100,  // Resize preview images
+        imageResizeTargetHeight: 100,  // Resize preview images
+    });
+
+    // Add initial files (static images from server) to FilePond with previews
+    let initialFiles = [
+        '{% static "images/photos/events1.jpg" %}',  // Static file path for image
+    ];
+
+    // Directly add the static image paths to FilePond (no need to convert to blob)
+    initialFiles.forEach(filePath => {
+        pond.addFile(filePath);  // Add the static image file directly to FilePond
+    });
+
+    // Handle form submission
+    // Handle form submission
+const form = document.getElementById('file-upload-form');
+form.addEventListener('submit', async function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Create a FormData object
+    const formData = new FormData(form);
+
+    // Process files in FilePond
+    for (const fileItem of pond.getFiles()) {
+        const file = fileItem.file;
+
+        // Convert blob or any file to JPEG format
+        if (file.type !== 'image/jpeg' || file.type !== 'image/jpg') {
+            try {
+                const jpgFile = await convertToJpg(file);
+                formData.append('all-files', jpgFile);
+            } catch (error) {
+                console.error('Failed to convert to JPEG:', error);
+            }
+        } else {
+            // If already a JPEG, append as is
+            formData.append('all-files', file);
+        }
+    }
+
+    // Create an AJAX request using Fetch API
+    fetch('{% url "dashboard:try_upload" %}', {
+        method: 'POST',
+        body: formData,
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Files uploaded successfully!', data);
+            window.location.href = '{% url "dashboard:room" %}'; // Redirect on success
+        })
+        .catch((error) => {
+            console.error('Upload failed:', error);
+        });
+});
+</script>
+
   <script src="{% static 'lib/jquery/jquery-3.7.1.js' %}"></script>
   <script src="{% static 'lib/datatables/dataTables.js' %}"></script>
 
@@ -814,6 +961,31 @@
                         const rtypeInput = document.querySelector('#roomtype_id_pic')
                         rtypeInput.value = rtype_id
                         console.log('id ' + rtype_id);
+            
+                        // Fetch data for editing pictures
+                        fetch("{% url 'dashboard:get_pictures' %}?id=" + encodeURIComponent(rtype_id))
+                            .then(response => response.json())
+                            .then(data => {
+                                // Log the fetched image URLs
+                                console.log(data.image_urls);
+            
+                                // Update the initialFiles array with the fetched URLs
+                                const initialFiles = data.image_urls.map(url => ({
+                                    source: url,
+                                    options: {
+                                        type: 'local',
+                                    },
+                                }));
+            
+                                // Clear existing files from FilePond
+                                pond.removeFiles(); // Remove all current files
+            
+                                // Add the new files to FilePond
+                                initialFiles.forEach(file => pond.addFile(file.source));
+            
+                                console.log('Updated FilePond with fetched images.');
+                            })
+                            .catch(error => console.error("Error fetching image data:", error));
             
                         // Show the edit pictures form
                         editPicsForm.style.display = 'block';
