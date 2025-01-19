@@ -1010,3 +1010,23 @@ def try_upload(request):
         return JsonResponse({"message": "Files received and saved", "files": [file.name for file in uploaded_files]})
 
     return render(request, 'your_template_name.html')
+
+def re_upload(request):
+    if request.method == 'POST':
+        print('test this')
+        room_id = request.POST.get('roomtype_id_pic')
+        if room_id:
+            room_type = RoomType.objects.get(id=room_id)
+            RoomTypeImage.objects.filter(room_type=room_type).delete()
+            print(request.FILES)
+            for key, file in request.FILES.items():
+                print(f"Processing file: {file}")
+                
+                # Save each file associated with any key in request.FILES
+                rimage = RoomTypeImage(
+                    room_type=room_type,  # Assuming 'roomtype' is passed correctly
+                    picture=file
+                )
+                rimage.save()
+    
+    return redirect('dashboard:room')

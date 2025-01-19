@@ -619,6 +619,18 @@ canvas {
 }
 
 /* edit pictures */
+
+.all_picture_room_container{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+
+
 .open-edit-pic {
   cursor: pointer;
   border-radius: 5px;
@@ -653,8 +665,13 @@ canvas {
 }
 
 .edit-pictures-container {
-  width: 80vh;
+  width: 55vw;
   z-index: 1000;
+}
+
+.edit-pictures-container input{
+  width: 200px;
+
 }
 
 .dashboard-add-room:hover, .dashboard-add-booking:hover{
@@ -746,9 +763,11 @@ canvas {
 
 .button-sub-img {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
+
+
 
 .button-sub-img p{
   font-style: italic;
