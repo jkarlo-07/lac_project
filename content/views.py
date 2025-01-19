@@ -243,7 +243,11 @@ def book_view2(request):
     
     print(check_in_time)
     print(entrance_fee)
-    room_price = room.room_type.price
+    print('the duration is', duration)
+    if int(duration) == 12:
+        room_price = room.room_type.price
+    elif int(duration) == 24:
+        room_price = room.room_type.price*2
 
     total_amount = float(room_price) + float(entrance_fee)
     total_amount = total_amount + float(200)
@@ -382,6 +386,7 @@ def book_view3(request):
             request.session['phone'] = str(form.cleaned_data.get('phone', ''))
             request.session['date_of_birth'] = str(form.cleaned_data.get('date_of_birth', ''))
             request.session['email'] = email
+            request.session['duration'] = duration
             request.session['adult_count'] = str(form.cleaned_data.get('adult_count', ''))
             request.session['kid_count'] = str(form.cleaned_data.get('kid_count', ''))
             request.session['check_out'] = check_out.strftime('%Y-%m-%d') if check_out else None

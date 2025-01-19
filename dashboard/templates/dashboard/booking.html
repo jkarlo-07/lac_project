@@ -78,7 +78,7 @@
       </div>
       <div class="input-container">
         <label for="add-address">Address</label>
-        <input type="text" id="add-address" name="address" value="{{ form.address.value|default:'' }}">
+        <input type="text" id="add-address" name="address" value="{{ form.address.value|default:'' }}" required >
         {% if form.address.errors %}
             <p class="errorlist">{{ form.address.errors }}</p>
         {% endif %}
@@ -86,14 +86,14 @@
       <div class="add-phone-dob-container">
         <div class="input-container">
           <label for="add-phone">Phone</label>
-          <input type="text" id="add-phone" name="phone" value="{{ form.phone.value|default:'' }}">
+          <input type="text" id="add-phone" name="phone" value="{{ form.phone.value|default:'' }}" required>
           {% if form.phone.errors %}
             <p class="errorlist">{{ form.phone.errors }}</p>
           {% endif %}
         </div>
         <div class="input-container">
           <label for="add-dob">Date of birth</label>
-          <input type="text" id="add-dob" name="dob" placeholder="yyyy-mm-dd" value="{{ form.dob.value|default:'' }}" readonly>
+          <input type="text" id="add-dob" name="dob" placeholder="yyyy-mm-dd" value="{{ form.dob.value|default:'' }}" readonly required>
           {% if form.dob.errors %}
             <p class="errorlist">{{ form.dob.errors }}</p>
           {% endif %}
@@ -106,14 +106,14 @@
       <div class="add-select-option">
         <div class="input-container">
           <label for="checkin-datepicker">Check In Date</label>
-          <input type="text" id="checkin-datepicker" name="checkin_date" placeholder="yyyy-mm-dd" readonly >
+          <input type="text" id="checkin-datepicker" name="checkin_date" placeholder="yyyy-mm-dd" readonly required >
           {% if form.checkin_date.errors %}
             <p class="errorlist">{{ form.checkin_date.errors }}</p>
           {% endif %}
         </div>
         <div class="input-container">
           <label for="add-time-input">Check In Time</label>
-          <select name="checkin_time" id="add-time-input">
+          <select name="checkin_time" id="add-time-input" required>
             <option value="">---Select Check In Date First---</option>
           </select>
           {% if form.checkin_time.errors %}
@@ -124,7 +124,7 @@
       <div class="add-select-option">
         <div class="input-container">
           <label for="add-duration">Duration</label>
-          <select name="duration" id="add-duration">
+          <select name="duration" id="add-duration" required>
             <option value="12">12hrs</option>
             <option value="24">24hrs</option>
           </select>
@@ -134,7 +134,7 @@
         </div>
         <div class="input-container">
           <label for="add-capacity">Capacity</label>
-          <input type="text" name="capacity" id="add-capacity" value="1">
+          <input type="text" name="capacity" id="add-capacity" value="1" required>
           {% if form.capacity.errors %}
               <p class="errorlist">{{ form.capacity.errors }}</p>
             {% endif %}
@@ -146,7 +146,7 @@
         <div class="input-container add-room-container">
           <div class="input-container">
             <label for="add-room-booking">Room</label>
-            <select name="room" id="add-room-booking">
+            <select name="room" id="add-room-booking" required>
               <option value="">----</option>
             </select>
             {% if form.room.errors %}
@@ -158,14 +158,14 @@
         <div class="add-count-adult-kid">
           <div class="input-container">
             <label for="add-adult-count">Adult</label>
-            <input type="text" name="adult_count" id="add-adult-count" value="{{ form.adult_count.value|default:'' }}">
+            <input type="text" name="adult_count" id="add-adult-count" value="{{ form.adult_count.value|default:'' }}" required>
             {% if form.adult_count.errors %}
               <p class="errorlist">{{ form.adult_count.errors }}</p>
             {% endif %}
           </div>
           <div class="input-container">
             <label for="add-kid-count">Kid</label>
-            <input type="text" name="kid_count" id="add-kid-count" value="{{ form.kid_count.value|default:'' }}">
+            <input type="text" name="kid_count" id="add-kid-count" value="{{ form.kid_count.value|default:'' }}" required>
             {% if form.kid_count.errors %}
               <p class="errorlist">{{ form.kid_count.errors }}</p>
             {% endif %}
@@ -231,23 +231,23 @@
         </div>
       </div>
       <div class="check-inout-update">
-        <input type="text" name="checkin_date" id="datepicker" placeholder="Check In Date" readonly>
-        <select id="checkin-time-update" class="checkin-time-update" name="checkin_time">
+        <input type="text" name="checkin_date" id="datepicker" placeholder="Check In Date" readonly required>
+        <select id="checkin-time-update" class="checkin-time-update" name="checkin_time" required>
             <option value="8:00am">---Select Check In Date First---</option>
         </select>
       </div>
       <div class="input-flex">
-        <select name="duration" id="edit-duration-input">
+        <select name="duration" id="edit-duration-input" required>
           <option value="12">12 hrs</option>
           <option value="24">24 hrs</option>
         </select>
-        <input type="text" name="update-capacity" id="update-capacity" value="1">
+        <input type="text" name="update-capacity" id="update-capacity" value="1" required>
       </div>
       
       <div class="update-select-option">
         <label for="update-room-booking">Room</label>
         <div class="input-container">
-          <select name="room" id="update-room-booking">
+          <select name="room" id="update-room-booking" required>
             <option value="">....</option>
           </select>
           {% if form.room.errors %}

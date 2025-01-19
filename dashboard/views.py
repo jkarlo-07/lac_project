@@ -697,7 +697,11 @@ def update_booking(request):
             check_in = datetime.strptime(datetime_str, "%m/%d/%Y %I:%M %p")
             check_out = check_in + timedelta(hours=int(duration))
 
-            total = room.room_type.price
+            if int(duration) == 12:
+                room_price = room.room_type.price
+            elif int(duration) == 24:
+                room_price = room.room_type.price*2
+            total = room_price
             # Total price calculation
             if room.room_type.is_cottage_required:
                 total += room.room_type.cottage_price
@@ -765,6 +769,10 @@ def add_booking(request):
             end_time = time(22, 0) 
             check_in_time = check_in.time()
 
+            if int(duration) == 12:
+                room_price = room.room_type.price
+            elif int(duration) == 24:
+                room_price = room.room_type.price*2                
 
             if start_time <= check_in_time <= end_time or int(duration) == 24:
                 entrance_fee = (Decimal(adult_count)*150) + (Decimal(kid_count)*100)
@@ -772,8 +780,11 @@ def add_booking(request):
             else:
                 entrance_fee = (Decimal(adult_count)*100) + (Decimal(kid_count)*50)
                 is_overnight = False
-            total = room.room_type.price
+            total = room_price
             total += entrance_fee
+            
+            if room.room_type.is_cottage_required:
+                total += room.room_type.cottage_price
 
             book = Booking(
                 guest=guest,

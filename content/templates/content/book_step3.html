@@ -47,6 +47,7 @@
             <div class="book3-field">
               <label for="book3-fname">First Name:</label>
               <input type="text"
+              required
                 name="first_name"
                 value="{% if form.first_name.value %}{{ form.first_name.value }}
                 {% elif first_name %}{{ first_name }}
@@ -63,6 +64,7 @@
             <div class="book3-field">
               <label for="book3-lname">Last Name:</label>
               <input type="text"
+              required
                 id="book3-lname"
                 name="last_name"
                 value="{% if form.last_name.value %}{{ form.last_name.value }}{% elif last_name %}{{ last_name }}
@@ -80,7 +82,7 @@
           <div class="book3-twofields">
             <div class="book3-field">
               <label for="book3-region">Region:</label>
-              <select id="book3-region" name="region">
+              <select id="book3-region" name="region" required>
                 <option value="" disabled selected>--Regions--</option>
 
                 {% for key, region_name in regions.items %}
@@ -97,7 +99,7 @@
             </div>
             <div class="book3-field">
               <label for="book3-province">Province:</label>
-              <select id="book3-province" name="province">
+              <select id="book3-province" name="province" required>
                 <option value="" disabled selected>--Select region first--</option>
               </select>
               {% if form.province.errors %}
@@ -112,7 +114,7 @@
           <div class="book3-twofields">
             <div class="book3-field">
               <label for="book3-municipality">Municipality:</label>
-              <select id="book3-municipality" name="municipality">
+              <select id="book3-municipality" name="municipality" required>
                 <option value="" disabled selected>--Select province first--</option>
               </select>
               {% if form.municipality.errors %}
@@ -126,6 +128,7 @@
             <div class="book3-field">
               <label for="book3-dob">Date of Birth:</label>
               <input type="text"
+              required
                 id="book3-dob"
                 name="date_of_birth"
                 value="{% if form.date_of_birth.value %}{{ form.date_of_birth.value }}{% elif date_of_birth %}{{ date_of_birth }}{% endif %}"
@@ -142,7 +145,7 @@
           <div class="book3-twofields">
             <div class="book3-field">
               <label for="book3-phone">Phone:</label>
-              <input type="text"
+              <input type="text" required
                 id="book3-phone"
                 name="phone"
                 value="{% if form.phone.value %} {{ form.phone.value }}{% elif phone %}{{ phone }}{% endif %}" />
@@ -162,7 +165,7 @@
           <div class="book3-twofields">
             <div class="book3-field">
               <label for="book3-adult_count">Adult Count:</label>
-              <input type="text"
+              <input type="text" required
                 name="adult_count"
                 value="{% if form.adult_count.value %}{{ form.adult_count.value }}{% elif adult_count %}{{ adult_count }}
                 {% endif %}" />
@@ -176,7 +179,7 @@
             </div>
             <div class="book3-field">
               <label for="book3-kid_count">Kid Count:</label>
-              <input type="text"
+              <input type="text" required
                 id="book3-lname"
                 name="kid_count"
                 value="{% if form.kid_count.value %}{{ form.kid_count.value }}{% elif kid_count %}{{ kid_count }}{% endif %}" />
