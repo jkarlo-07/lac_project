@@ -581,9 +581,13 @@ def delete_booking(request):
     if request.method == 'POST':
         book_id = request.POST.get('deleteID')
         book_record = get_object_or_404(Booking, id=book_id)
+        past_room_type = book_record.room.room_type.id
         checkin_date = book_record.check_in.date()
         book_record.delete()
         check_remove_fullbook(checkin_date)
+        from content.views import  removeAvailability
+        removeAvailStr = checkin_date.strftime('%Y-%m-%d')
+        removeAvailability(removeAvailStr, past_room_type)
         return render(request, "dashboard/booking.html", {'booking': bookings})
 
 def get_time(request):
@@ -672,6 +676,12 @@ def update_booking(request):
         book_id = request.POST.get('id')
         booking = get_object_or_404(Booking, id=book_id)
         past_checkin_date = booking.check_in.date()
+        print(f"Room: {booking.room}")  # Ensure room is not None
+        print(f"Room Type: {booking.room.room_type}")  # Ensure room_type is correct
+        print(f"Room Type ID: {booking.room.room_type.id}")  # Should now print the ID
+
+        past_room_type = booking.room.room_type.id
+        print('yeye', past_room_type)
         form = UpdateBookingForm(request.POST)
         bookings = Booking.objects.all().order_by('-check_in')
         if form.is_valid():
@@ -714,6 +724,12 @@ def update_booking(request):
             booking.kid_count = int(kid_count)
             booking.save(update_fields=['check_in', 'check_out', 'duration', 'room','kid_count', 'adult_count', 'is_overnight', 'total_amount'])
             check_add_fullbook(check_in.date())
+            checkAvailStr = booking.check_in.date().strftime('%Y-%m-%d')
+            removeAvailStr = past_checkin_date.strftime('%Y-%m-%d')
+            from content.views import checkAvailability, removeAvailability
+            checkAvailability(checkAvailStr, room.room_type.id)
+            print('past', past_checkin_date)
+            removeAvailability(removeAvailStr, past_room_type)
             check_remove_fullbook(past_checkin_date)
             
 
@@ -774,6 +790,9 @@ def add_booking(request):
             
             book.save()
             checkin_date = check_in.date()
+            checkAvailStr = book.check_in.date().strftime('%Y-%m-%d')
+            from content.views import checkAvailability
+            checkAvailability(checkAvailStr, room.room_type.id)
             check_add_fullbook(checkin_date)
 
             form = AddBookingForm()
@@ -866,17 +885,30 @@ def check_remove_fullbook(checkin_date):
 
 def change_booking_status(request):
     if request.method == 'POST':
+        
+        from content.views import checkAvailability, removeAvailability
         book_id = request.POST.get('id')
         book_record = get_object_or_404(Booking, id=book_id)
+        rm_id = book_record.room.room_type.id
+        from django.utils.timezone import localtime
+        need_time = localtime(book_record.check_in)
+        print('bungi', need_time)
+
         checkin_date = book_record.check_in.date()
         if book_record.status == "Booked":
             book_record.status = "Canceled"
             book_record.save(update_fields=['status'])
             check_remove_fullbook(checkin_date)
+            removeStr = need_time.strftime('%Y-%m-%d')
+            print('gina', removeStr)
+            removeAvailability(removeStr, rm_id)
         else:
             book_record.status = "Booked"
             book_record.save(update_fields=['status'])
             check_add_fullbook(checkin_date)
+            checkAvailStr = need_time.strftime('%Y-%m-%d')
+            print('gina', checkAvailStr)
+            checkAvailability(checkAvailStr, rm_id)
         
         return redirect('dashboard:booking')
     

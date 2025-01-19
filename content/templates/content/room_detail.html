@@ -273,20 +273,22 @@
         <div id="calendar"></div>
       </div>
       <div class="filter-room-container">
-        <div class="price-book-button">
+        <form class="price-book-button" action="{% url "content:book_3" %}">
+          {% csrf_token %}
+          <input type="hidden" name="roomtype" value="{{room.id}}" required>
           <div class="input-filter-container">
             <p>Selected Date:</p>
-            <input type="text" name="selected_date" id="selected_date" class="input-filter" readonly>
+            <input type="text" name="book_check_in_date" id="selected_date" class="input-filter" readonly>
           </div>
           <div class="input-filter-container">
             <label for="checkin_time">Check In Time:</label>
-            <select name="checkin_time" id="checkin_time">
+            <select name="book_check_in_time" id="checkin_time" required>
               <option value="">---Select Check In Date First---</option>
             </select>
           </div>
           <div class="input-filter-container">
             <label for="duration">Duration:</label>
-            <select name="duration" id="duration">
+            <select name="book_duration" id="duration" required>
               <option value="">---Select Check In Time First---</option>
             </select>
           </div>
@@ -294,8 +296,9 @@
         
           <p>Room: {{room.room_type}}</p>
           <p>Price: ₱{{room.price}} / 12hrs</p>
-          <a href="{% url "content:calendar" %}"><p class="button-view-info">Reserve</p></a>
-        </div>
+          <button type="submit">Reserve</button>
+        </form>
+        <p class="booking-note">Note: You must be logged in to reserve this booking.</p>
       </div>
 
 

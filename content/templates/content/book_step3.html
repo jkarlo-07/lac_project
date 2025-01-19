@@ -354,15 +354,13 @@
       initialLoading()
       handleResize()
     
-      const backBooking = document.getElementById('back_booking')
+      const backBooking = document.getElementById('back_booking');
       backBooking.addEventListener('click', function () {
-        const urlParams = new URLSearchParams(window.location.search)
-    
-        let check_in_date = urlParams.get('book_check_in_date')
-        let dateObj = new Date(check_in_date)
-        let formattedDate = formatDate(dateObj)
-        window.location.href = '{% url "content:initial_search" %}?check_in=' + encodeURIComponent(formattedDate)
-      })
+        const roomId = {{room.room_type.id}}; // Replace with the actual room ID or fetch it dynamically
+        const url = `/room/${roomId}/`; // Construct the URL with the dynamic room ID
+        window.location.href = url;
+    });
+
     })
     
     function formatDate(date) {

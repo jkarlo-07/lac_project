@@ -77,9 +77,31 @@ li {
   font-weight: 800;
 }
 
-.input-filter-container input{
+.input-filter-container select, .input-filter-container input{
   width: 100%;
   padding: 10px 5px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.price-book-button button{
+  padding: 10px 5px;
+  background-color: blue;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.price-book-button button:hover{
+  background-color: rgb(84, 84, 241);
+}
+
+.booking-note{
+  text-align: center;
+  color: red;
+  font-style: italic; 
+  font-size: 15px;
 }
 
 

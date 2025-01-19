@@ -23,10 +23,12 @@ def login_view(request):
                 login(request, user)
                 if user.is_staff:
                     return redirect("dashboard:dashboard")
-                next_url = request.session.get('next_url', '/')
+                print('hey')
+                next_url = request.session.get('next_url', 'content:rooms')
                 print('hey', next_url)
                 if next_url:
                     return redirect(next_url)
+
                 
                 
             else:
@@ -48,7 +50,7 @@ def signup_view(request):
             user.email = form.cleaned_data['email']
             user.save()
             login(request, user)  
-            return redirect('users:signupsuc') 
+            return redirect('content:rooms') 
     else:
         form = CustomUserCreationForm()
     

@@ -79,6 +79,8 @@ def paypal_ipn(request):
             booking_created_at=datetime.now()
         )
         book.save()
+        checkAvailStr = book.check_in.date().strftime('%Y-%m-%d')
+        checkAvailability(checkAvailStr, room.room_type.id)
         check_add_fullbook(book.check_in.date())
         name =  "sample"
         email = "camalig.j29@gmail.com"
@@ -473,8 +475,14 @@ def book_view3(request):
         print('address:', address)
         return render(request, 'content/book_step3.html', context)
     else:
-        check_in_unformat = request.GET.get('book_check_in_date')
-        check_in_time = request.GET.get("book_check_in_time")
+        initial_checkin_date = request.GET.get('book_check_in_date')
+        date_object = datetime.strptime(initial_checkin_date, '%Y-%m-%d')
+        check_in_unformat = date_object.strftime('%b. %d, %Y')
+
+        initial_check_in_time = request.GET.get("book_check_in_time")
+        time_object = datetime.strptime(initial_check_in_time, '%H:%M:%S')
+        check_in_time = time_object.strftime('%I:%M %p')
+
         duration = request.GET.get('book_duration')
         duration = int(duration)
         date_object = datetime.strptime(check_in_unformat, '%b. %d, %Y')
@@ -496,10 +504,10 @@ def book_view3(request):
         check_in_time = start_datetime.time()
         check_in_time = check_in_time.strftime("%I %p").lower()
         check_in_time = check_in_time.replace('am', 'a.m.').replace('pm', 'p.m.')
-
-        print(check_in_time)
         room_id = request.GET.get('roomtype')
-        room = get_object_or_404(Room, id=room_id)
+        room = search_room_id(room_id, initial_checkin_date, initial_check_in_time, duration)
+        print('hehey', room)
+        room = get_object_or_404(Room, id=room)
         email = request.user.email
         form = GuestForm()  
         
@@ -873,28 +881,21 @@ def test_upload(request):
     # For GET requests, return a template (optional)
     return render(request, 'your_template_name.html')
 
-from datetime import datetime, time, timedelta
-from django.utils.timezone import make_aware, get_current_timezone
-from django.http import JsonResponse
 
-from datetime import datetime, time, timedelta
-from django.utils.timezone import make_aware, get_current_timezone
+from datetime import datetime, timedelta
 from django.http import JsonResponse
+from django.utils.timezone import make_aware, get_current_timezone
+from datetime import time
+import warnings
 
-from datetime import datetime, time, timedelta
-from django.utils.timezone import make_aware, get_current_timezone
-from django.http import JsonResponse
-
-from datetime import datetime, time, timedelta
-from django.utils.timezone import make_aware, get_current_timezone
-from django.http import JsonResponse
+warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*DateTimeField.*received a naive datetime.*")
 
 def fetch_available_times(request):
     date = request.GET.get('date')  # The date passed in the request
     roomType = request.GET.get('roomType')  # The room type passed in the request
 
     if date:
-        room_id = roomType  
+        room_id = roomType
 
         now = datetime.now()
         today = now.date()
@@ -920,26 +921,33 @@ def fetch_available_times(request):
         end_time = make_aware(end_time, timezone=get_current_timezone())
 
         available_times = {}  # Store the available times in a dictionary
+        available_rooms = []  # Store the available rooms for each available time
 
         while current_time <= end_time:
-            # Check if the room is available at the current time
-            if is_room_type_available(roomType, provided_date, current_time.time(), 12):
+            # Get available room at the current time
+            room = is_room_type_available(roomType, provided_date, current_time.time(), 12)
+
+            if room:  # If a room is available
                 # Format the time as "08:00 am", "09:00 am", etc.
                 readable_time = current_time.strftime("%I:%M %p").lower().lstrip("0")  # "08:00 am"
                 available_times[readable_time] = current_time.time()  # Store the readable time as key, actual time as value
-            
+
+                # Add the room ID to available_rooms
+                available_rooms.append({
+                    'time': readable_time,
+                    'room_id': room.id  # Store only the room ID
+                })
+
             current_time += timedelta(hours=1)  # Move to the next hour
 
-        print("Available times:", available_times)
+        # If available times exist, return the first room ID available
+        if available_rooms:
+            return JsonResponse({'date': provided_date, 'roomType': room_id, 'available_times': available_times, 'room_id': available_rooms[0]['room_id']})
 
-        return JsonResponse({'date': provided_date, 'roomType': room_id, 'available_times': available_times})
+        # If no available times, return a message
+        return JsonResponse({'error': 'No available rooms for the selected date and time'}, status=400)
 
     return JsonResponse({'error': 'No date provided'}, status=400)
-
-
-import warnings
-
-warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*DateTimeField.*received a naive datetime.*")
 
 
 def is_room_type_available(room_type_id, date, time, duration):
@@ -948,13 +956,20 @@ def is_room_type_available(room_type_id, date, time, duration):
 
     rooms = Room.objects.filter(room_type_id=room_type_id)
 
-    overlapping_bookings = Booking.objects.filter(
-        Q(room__in=rooms),
-        Q(check_in__lt=end_datetime) & Q(check_out__gt=start_datetime),
-        status="Booked"
-    )
+    for room in rooms:
+        overlapping_bookings = Booking.objects.filter(
+            room=room,
+            check_in__lt=end_datetime,
+            check_out__gt=start_datetime,
+            status="Booked"
+        )
 
-    return not overlapping_bookings.exists()
+        # If a room is available (no overlapping bookings), return the room
+        if not overlapping_bookings.exists():
+            return room  # Return the room object if it is available
+
+    # If no room is available, return None
+    return None
 
 
 def fetch_duration(request):
@@ -972,3 +987,156 @@ def fetch_duration(request):
     
 
     return JsonResponse({'date': date, 'roomType': roomType, 'available_times': checkinTime, 'available_duration': available_duration})
+
+def search_room_id(room_type_id, date, check_in_time, duration):
+    """
+    Search for an available room based on the room type, date, check-in time, and duration.
+
+    Args:
+        room_type_id (str): The room type ID.
+        date (str): The date of the booking in the format 'YYYY-MM-DD'.
+        check_in_time (str): The time of check-in in the format 'HH:MM:SS'.
+        duration (int): The duration of the booking in hours.
+
+    Returns:
+        room_id (int): The ID of an available room if found, or None if no room is available.
+    """
+
+    # Parse the date and check_in_time to get the start datetime
+    start_datetime = datetime.strptime(f"{date} {check_in_time}", "%Y-%m-%d %H:%M:%S")
+    # Calculate the end datetime based on the duration
+    end_datetime = start_datetime + timedelta(hours=duration)
+
+    # Make the datetime aware if it is naive
+    start_datetime = make_aware(start_datetime)
+    end_datetime = make_aware(end_datetime)
+
+    # Query the rooms of the specified room type
+    rooms = Room.objects.filter(room_type_id=room_type_id)
+
+    for room in rooms:
+        # Check for any existing bookings that overlap with the requested time
+        overlapping_bookings = Booking.objects.filter(
+            room=room,
+            check_in__lt=end_datetime,
+            check_out__gt=start_datetime,
+            status="Booked"
+        )
+
+        # If no overlapping bookings are found, the room is available
+        if not overlapping_bookings.exists():
+            return room.id  # Return the room ID if available
+
+    # If no rooms are available, return None
+    return None
+
+def checkAvailability(date, roomType):
+    if date:
+
+        now = datetime.now()
+        today = now.date()
+
+        # Parsing the date string and reassigning it to only the date part
+        provided_date = datetime.strptime(date, "%Y-%m-%d").date()
+
+        # Reassign provided_date to just the date (in the format YYYY-MM-DD)
+        provided_date = provided_date.strftime("%Y-%m-%d")
+
+        if datetime.strptime(provided_date, "%Y-%m-%d").date() == today:
+            if now.minute > 0 or now.second > 0:
+                start_time = now.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+            else:
+                start_time = now.replace(minute=0, second=0, microsecond=0)
+        else:
+            start_time = datetime.combine(datetime.strptime(provided_date, "%Y-%m-%d").date(), time(8, 0))
+
+        start_time = make_aware(start_time, timezone=get_current_timezone())
+
+        current_time = start_time
+        end_time = datetime.combine(datetime.strptime(provided_date, "%Y-%m-%d").date(), time(22, 0))
+        end_time = make_aware(end_time, timezone=get_current_timezone())
+
+        available_times = {}  # Store the available times in a dictionary
+        available_rooms = []  # Store the available rooms for each available time
+
+        while current_time <= end_time:
+            # Get available room at the current time
+            room = is_room_type_available(roomType, provided_date, current_time.time(), 12)
+
+            if room:  # If a room is available
+                # Format the time as "08:00 am", "09:00 am", etc.
+                readable_time = current_time.strftime("%I:%M %p").lower().lstrip("0")  # "08:00 am"
+                available_times[readable_time] = current_time.time()  # Store the readable time as key, actual time as value
+
+                # Add the room ID to available_rooms
+                available_rooms.append({
+                    'time': readable_time,
+                    'room_id': room.id  # Store only the room ID
+                })
+
+            current_time += timedelta(hours=1)  # Move to the next hour
+
+        if available_times:
+           print('test')
+        else:
+           add = RoomAvailability(
+                na_date=date,
+                room_type_id=roomType
+            )
+           
+           add.save()
+
+def removeAvailability(date, roomType):
+    if date:
+
+        now = datetime.now()
+        today = now.date()
+
+        # Parsing the date string and reassigning it to only the date part
+        provided_date = datetime.strptime(date, "%Y-%m-%d").date()
+
+        # Reassign provided_date to just the date (in the format YYYY-MM-DD)
+        provided_date = provided_date.strftime("%Y-%m-%d")
+
+        if datetime.strptime(provided_date, "%Y-%m-%d").date() == today:
+            if now.minute > 0 or now.second > 0:
+                start_time = now.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+            else:
+                start_time = now.replace(minute=0, second=0, microsecond=0)
+        else:
+            start_time = datetime.combine(datetime.strptime(provided_date, "%Y-%m-%d").date(), time(8, 0))
+
+        start_time = make_aware(start_time, timezone=get_current_timezone())
+
+        current_time = start_time
+        end_time = datetime.combine(datetime.strptime(provided_date, "%Y-%m-%d").date(), time(22, 0))
+        end_time = make_aware(end_time, timezone=get_current_timezone())
+
+        available_times = {}  # Store the available times in a dictionary
+        available_rooms = []  # Store the available rooms for each available time
+
+        while current_time <= end_time:
+            # Get available room at the current time
+            room = is_room_type_available(roomType, provided_date, current_time.time(), 12)
+
+            if room:  # If a room is available
+                # Format the time as "08:00 am", "09:00 am", etc.
+                readable_time = current_time.strftime("%I:%M %p").lower().lstrip("0")  # "08:00 am"
+                available_times[readable_time] = current_time.time()  # Store the readable time as key, actual time as value
+
+                # Add the room ID to available_rooms
+                available_rooms.append({
+                    'time': readable_time,
+                    'room_id': room.id  # Store only the room ID
+                })
+
+            current_time += timedelta(hours=1)  # Move to the next hour
+
+        if available_times:
+           print('it deltes i think', date, roomType)
+
+           droom = RoomAvailability.objects.filter(room_type=roomType, na_date=date)
+           print(droom)
+           droom.delete()
+        else:
+           print('test')
